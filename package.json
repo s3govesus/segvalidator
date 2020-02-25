@@ -1,0 +1,32 @@
+{
+  "name": "segvalidator",
+  "version": "1.1.1",
+  "description": "A collection of functions for validating inputs and providing detailed error data",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node src/tests.js",
+    "tests": "node src/tests.js",
+    "lint": "eslint --ext .js --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext .js --ignore-path .gitignore ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s3govesus/segvalidator.git"
+  },
+  "author": "Adam S. Underwood",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s3govesus/segvalidator/issues"
+  },
+  "homepage": "https://github.com/s3govesus/segvalidator#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  }
+}
