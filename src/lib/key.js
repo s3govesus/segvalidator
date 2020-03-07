@@ -106,7 +106,7 @@ function checkInvalid(key, type, size, isCaseSensitive) {
     if (isCaseSensitive === true) {
       keyExp = new RegExp(`^[0-9a-zA-Z]{${size}}$`); // some sketchy-ass lookin' shit here
     } else {
-      keyExp = new RegExp(`^[0-9A-Z]{${size}}$`);
+      keyExp = new RegExp(`^[0-9a-z]{${size}}$`);
     }
     if (keyExp.test(key) === false) {
       result = {
