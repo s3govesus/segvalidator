@@ -61,7 +61,7 @@ module.exports.checkKey = (value, options) => {
       value = value.trim();
     }
     if (options.isCaseSensitive === false) {
-      value = value.toUpperCase();
+      value = value.toLowerCase();
     }
     result.value = value;
   } catch (ex) {

@@ -9,9 +9,9 @@ const {
 //
 // const exOptions = {
 //   isRequired: true,
-//   long: false,
+//   long: false, // check if the string is too long
 //   max: 255, // maximum number of characters for checking long
-//   short: false,
+//   short: false, // check if the string is too short
 //   min: 0, // minimum number of characters for checking minshort
 //   regex: undefined, // a custom regex to check (returns an 'invalid' error if failed)
 //   list: [], // an array of possible strings to check for
