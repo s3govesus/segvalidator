@@ -60,7 +60,7 @@ module.exports.checkString = (value, options) => {
       if (options.max === undefined) {
         options.max = 255;
       } else {
-        options.max = toBoolean(options.max);
+        options.max = Number(options.max);
       }
       if (options.short === undefined) {
         options.short = false;
