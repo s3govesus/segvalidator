@@ -4,12 +4,11 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //
 // const exOptions = {
 //   isRequired: true,
-//   version: 1,
 //   trim: true,
 //   toLowerCase: true,
-//   type: `account ID`
+//   type: `mongodb object ID`,
 // };
-module.exports.checkUUID = (value, options) => {
+module.exports.checkID = (value, options) => {
   const result = {
     value,
     errors: [],
@@ -18,25 +17,19 @@ module.exports.checkUUID = (value, options) => {
 
   // try to clean up the input
   try {
-    // get the options data or fill it with defaults if necessary
+    // get the options data, or fill it with defaults if necessary
     if (options === undefined || typeof options !== `object`) {
       options = {
         isRequired: true,
-        version: 1,
         trim: true,
         toLowerCase: true,
-        type: `account ID`,
+        type: `mongodb object ID`,
       };
     } else {
       if (options.isRequired === undefined) {
         options.isRequired = true;
       } else {
         options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.version === undefined) {
-        options.version = 1;
-      } else {
-        options.version = Number(options.version);
       }
       if (options.trim === undefined) {
         options.trim = true;
@@ -49,11 +42,9 @@ module.exports.checkUUID = (value, options) => {
         options.toLowerCase = toBoolean(options.toLowerCase);
       }
       if (options.type === undefined) {
-        options.type = `account ID`;
-      } else if (options.type.indexOf(`ID`) < 0) {
-        options.type = `${String(options.type)} ID`;
+        options.type = `mongodb object ID`;
       } else {
-        options.type = String(options.type);
+        options.type = options.type.toString();
       }
     }
 
@@ -75,6 +66,7 @@ module.exports.checkUUID = (value, options) => {
     return result;
   }
 
+  // if the value is required, make sure it has something other that whitespace characters
   if (options.isRequired === true) {
     const checkedEmpty = checkEmpty(result.value, { type: options.type });
     if (checkedEmpty) {
@@ -89,7 +81,7 @@ module.exports.checkUUID = (value, options) => {
     return result;
   }
 
-  const checkedInvalid = checkInvalid(result.value, options.type, options.version);
+  const checkedInvalid = checkInvalid(result.value, options.type);
   if (checkedInvalid) {
     result.errors.push(checkedInvalid);
     result.errstr += `${checkedInvalid.error}\r\n`;
@@ -100,29 +92,14 @@ module.exports.checkUUID = (value, options) => {
 
 /******************************************************************************/
 
-function checkInvalid(uuid, type, version) {
+// make sure the mongodb object ID matches the specifications of a regex checking that the string is a valid 96-bit hexadecimal string
+function checkInvalid(id, type) {
   let result;
   try {
-    let uuidExp;
-    switch (version) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-        uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-        break;
-      case 6:
-      case 7:
-        uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}=[0-9a-f]{4}-[0-9a-f]{12}$/i;
-        break;
-      default:
-        uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-        break;
-    }
-    if (uuidExp.test(uuid) === false) {
+    const idExp = /^[0-9a-fA-F]{24}$/;
+    if (idExp.test(id) === false) {
       result = {
-        error: `The ${type} is not valid.`,
+        error: `The ${type} was not valid.`,
       };
     }
   } catch (ex) {
