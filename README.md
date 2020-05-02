@@ -1,5 +1,5 @@
 # segvalidator
-WARNING: This project was never really intended to be used by others - it's just some stuff I use with some of my other projects to handle validating input on the frontend and backend, but I decided to go ahead and make the source code public.  In other words, use with caution!
+This project is designed to handle validating input and provide fairly detailed and formatted error data.
 
 ## Installation
 use `npm install --save s3govesus/segvalidator` in the root of your Node.js project.  This assumes you already have Node.js and NPM installed, with a NPM project already set up.
