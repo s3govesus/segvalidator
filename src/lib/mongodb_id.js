@@ -63,6 +63,7 @@ module.exports.checkID = (value, options) => {
       exception: ex.message,
     };
     result.errors.push(error);
+    result.errstr += `${error.error}\r\n`;
     return result;
   }
 
