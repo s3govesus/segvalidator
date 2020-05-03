@@ -78,18 +78,18 @@ module.exports.checkName = (value, options) => {
     return result;
   }
 
-  if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(result.value, { type: options.type });
-    if (checkedEmpty) {
-      result.errors.push(checkedEmpty);
-      result.errstr += `${checkedEmpty.error}\r\n`;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
-
-  if (result.value === `` && options.isRequired === false) {
+  if (options.isRequired === false && result.value === ``) {
     return result;
+  }
+
+  const checkedEmpty = checkEmpty(result.value, { type: options.type });
+  if (checkedEmpty) {
+    result.errors.push(checkedEmpty);
+    result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
   const checkedShort = checkShort(result.value, { type: options.type, min: options.min, filterWhitespace: false });

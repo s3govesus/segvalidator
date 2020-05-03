@@ -95,6 +95,14 @@ module.exports.checkNumber = (value, options) => {
       }
     }
 
+    // if the value isn't required and it's empty, just return nothing-ish
+    if (options.isRequired === false && result.value.toString().replace(/\s\t\r\n/g, ``) === ``) {
+      result.value = ``;
+    }
+    if (options.isRequired === false && result.value === ``) {
+      return result;
+    }
+
     // attempt to reformat the data in 'value' to force it to be a number
     value = Number(value);
     result.value = value;
@@ -106,11 +114,6 @@ module.exports.checkNumber = (value, options) => {
     result.errors.push(error);
     result.errstr += `${error.error}\r\n`;
     return result;
-  }
-
-  if (options.isRequired === true) {
-    // TODO figure out what to do with this
-    // ?
   }
 
   if (isNaN(result.value)) {

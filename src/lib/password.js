@@ -69,18 +69,18 @@ module.exports.checkPassword = (value, options) => {
     return result;
   }
 
-  if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(result.value, { type: `password` });
-    if (checkedEmpty) {
-      result.errors.push(checkedEmpty);
-      result.errstr += `${checkedEmpty.error}\r\n`;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
-
-  if (result.value === `` && options.isRequired === false) {
+  if (options.isRequired === false && result.value === ``) {
     return result;
+  }
+
+  const checkedEmpty = checkEmpty(result.value, { type: `password` });
+  if (checkedEmpty) {
+    result.errors.push(checkedEmpty);
+    result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
   const checkedShort = checkShort(result.value, { type: `password`, min: options.min, filterWhitespace: false });
@@ -160,18 +160,18 @@ module.exports.checkPasswordConfirm = (value, confirm, options) => {
     return result;
   }
 
-  if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(confirm, { type: `password confirmation` });
-    if (checkedEmpty) {
-      result.errors.push(checkedEmpty);
-      result.errstr += `${checkedEmpty.error}\r\n`;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
-
-  if (result.value === `` && options.isRequired === false) {
+  if (options.isRequired === false && result.value === ``) {
     return result;
+  }
+
+  const checkedEmpty = checkEmpty(confirm, { type: `password confirmation` });
+  if (checkedEmpty) {
+    result.errors.push(checkedEmpty);
+    result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
   const checkedMismatch = checkMismatch(result.value, confirm);

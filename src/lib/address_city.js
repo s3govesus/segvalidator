@@ -53,19 +53,19 @@ module.exports.checkAddressCity = (value, options) => {
     return result;
   }
 
-  // check to make sure the city name isn't empty
-  if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(result.value, { type: `city name` });
-    if (checkedEmpty) {
-      result.errors.push(checkedEmpty);
-      result.errstr += `${checkedEmpty.error}\r\n`;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
-
-  if (result.value === `` && options.isRequired === false) {
+  if (options.isRequired === false && result.value === ``) {
     return result;
+  }
+
+  // check to make sure the city name isn't empty
+  const checkedEmpty = checkEmpty(result.value, { type: `city name` });
+  if (checkedEmpty) {
+    result.errors.push(checkedEmpty);
+    result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
   // check to make sure the city name isn't too long

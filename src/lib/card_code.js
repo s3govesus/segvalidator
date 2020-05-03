@@ -52,18 +52,18 @@ module.exports.checkCardCode = (value, options) => {
     return result;
   }
 
-  if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(result.value, { type: `card security code` });
-    if (checkedEmpty) {
-      result.errors.push(checkedEmpty);
-      result.errstr += `${checkedEmpty.error}\r\n`;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
-
-  if (result.value === `` && options.isRequired === false) {
+  if (options.isRequired === false && result.value === ``) {
     return result;
+  }
+
+  const checkedEmpty = checkEmpty(result.value, { type: `card security code` });
+  if (checkedEmpty) {
+    result.errors.push(checkedEmpty);
+    result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
   // check to make sure the card security code is a 3-digit or 4-digit number

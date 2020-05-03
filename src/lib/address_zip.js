@@ -57,19 +57,18 @@ module.exports.checkAddressZip = (value, options) => {
     return result;
   }
 
-  if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(result.value, { type: `zip code` });
-    if (checkedEmpty) {
-      result.errors.push(checkedEmpty);
-      result.errstr += `${checkedEmpty.error}\r\n`;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
-
-  // check if the zip code is a valid 5 digit zip code or 10-character/9-digit zip+4 code
-  if (result.value === `` && options.isRequired === false) {
+  if (options.isRequired === false && result.value === ``) {
     return result;
+  }
+
+  const checkedEmpty = checkEmpty(result.value, { type: `zip code` });
+  if (checkedEmpty) {
+    result.errors.push(checkedEmpty);
+    result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
   const checkedValid = checkValid(result.value);

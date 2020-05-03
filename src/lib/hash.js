@@ -77,20 +77,20 @@ module.exports.checkHash = (value, options) => {
     return result;
   }
 
-  if (options.isRequired === true) {
-    if (result.value.replace(/\s/g, ``) === ``) {
-      const error = {
-        error: `A value must be entered for the ${options.type} hash.`,
-      };
-      result.errors.push(error);
-      result.errstr += `${error.error}\r\n`;
-      return result;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
+  if (options.isRequired === false && result.value === ``) {
+    return result;
+  }
 
-  if (result.value === `` && options.isRequired === false) {
+  if (result.value.replace(/\s/g, ``) === ``) {
+    const error = {
+      error: `A value must be entered for the ${options.type} hash.`,
+    };
+    result.errors.push(error);
+    result.errstr += `${error.error}\r\n`;
     return result;
   }
 

@@ -53,6 +53,14 @@ module.exports.checkAddressLine1 = (value, options) => {
     return result;
   }
 
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+    result.value = ``;
+  }
+  if (options.isRequired === false && result.value === ``) {
+    return result;
+  }
+
   // check to make sure the address line 1 isn't just an empty string or whitespace characters
   const checkedEmpty = checkEmpty(result.value, { type: `address line 1` });
   if (checkedEmpty) {
@@ -123,20 +131,20 @@ module.exports.checkAddressLine2 = (value, options) => {
     return result;
   }
 
-  if (options.isRequired === true) {
-    if (result.value.replace(/\s/g, ``) === ``) {
-      const error = {
-        error: `A value must be entered for the address line 2.`,
-      };
-      result.errors.push(error);
-      result.errstr += `${error.error}\r\n`;
-      return result;
-    }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  // if the value isn't required and it's empty, just return nothing-ish
+  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
     result.value = ``;
   }
+  if (options.isRequired === false && result.value === ``) {
+    return result;
+  }
 
-  if (result.value === `` && options.isRequired === false) {
+  if (result.value.replace(/\s/g, ``) === ``) {
+    const error = {
+      error: `A value must be entered for the address line 2.`,
+    };
+    result.errors.push(error);
+    result.errstr += `${error.error}\r\n`;
     return result;
   }
 
