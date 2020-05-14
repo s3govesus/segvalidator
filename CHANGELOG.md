@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 6 : boolean trigger
+- added 'boolean' as a possible trigger for `checkBool()`
+
 ### 5 : fix isRequired
 - fixed all check functions to properly return the result early if isRequired is false and the value is blank
 

@@ -6,7 +6,9 @@ module.exports.countries = countries;
 const { checkAddressState, states } = require(`./lib/address_state`);
 module.exports.checkAddressState = checkAddressState;
 module.exports.states = states;
-const { checkAddressLine1, checkAddressLine2 } = require(`./lib/address_street`);
+const { checkAddressLine1, checkAddressLine2 } = require(
+  `./lib/address_street`,
+);
 module.exports.checkAddressLine1 = checkAddressLine1;
 module.exports.checkAddressLine2 = checkAddressLine2;
 const { checkAddressZip } = require(`./lib/address_zip`);
@@ -15,7 +17,9 @@ const { checkBool } = require(`./lib/bool`);
 module.exports.checkBool = checkBool;
 const { checkCardCode } = require(`./lib/card_code`);
 module.exports.checkCardCode = checkCardCode;
-const { checkCardExpirationMonth, checkCardExpirationYear } = require(`./lib/card_expiration`);
+const { checkCardExpirationMonth, checkCardExpirationYear } = require(
+  `./lib/card_expiration`,
+);
 module.exports.checkCardExpirationMonth = checkCardExpirationMonth;
 module.exports.checkCardExpirationYear = checkCardExpirationYear;
 const { checkCardNumber } = require(`./lib/card_number`);
@@ -50,7 +54,11 @@ module.exports.checkID = checkID;
 
 // expose the sublib functions
 const {
-  checkEmpty, checkLong, checkShort, checkRegex, toBoolean,
+  checkEmpty,
+  checkLong,
+  checkShort,
+  checkRegex,
+  toBoolean,
 } = require(`./lib/sublib/misc`);
 module.exports.checkEmpty = checkEmpty;
 module.exports.checkLong = checkLong;
@@ -98,6 +106,7 @@ module.exports.check = (type, arg1, arg2, arg3) => {
       result = checkAddressZip(arg1, arg2);
       break;
     case `bool`:
+    case `boolean`:
       result = checkBool(arg1, arg2);
       break;
     case `card code`:
