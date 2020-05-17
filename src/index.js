@@ -49,8 +49,8 @@ const { checkString } = require(`./lib/string`);
 module.exports.checkString = checkString;
 const { checkUUID } = require(`./lib/uuid`);
 module.exports.checkUUID = checkUUID;
-const { checkID } = require(`./lib/mongodb_id`);
-module.exports.checkID = checkID;
+const { checkMongodbID } = require(`./lib/mongodb_id`);
+module.exports.checkMongodbID = checkMongodbID;
 
 // expose the sublib functions
 const {
@@ -221,7 +221,7 @@ module.exports.check = (type, arg1, arg2, arg3) => {
     case `mongodb id`:
     case `mongoid`:
     case `mongodbid`:
-      result = checkID(arg1, arg2);
+      result = checkMongodbID(arg1, arg2);
       break;
     default:
       throw new Error(`Validation failed to find a suitable case.`);

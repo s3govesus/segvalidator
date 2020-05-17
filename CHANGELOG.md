@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 7 : checkMongodbID()
+- changed the name of `checkID()` to `checkMongodbID()` to better match the filename
+
 ### 6 : boolean trigger
 - added 'boolean' as a possible trigger for `checkBool()`
 

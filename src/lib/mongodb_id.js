@@ -8,7 +8,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   toLowerCase: true,
 //   type: `mongodb object ID`,
 // };
-module.exports.checkID = (value, options) => {
+module.exports.checkMongodbID = (value, options) => {
   const result = {
     value,
     errors: [],
@@ -59,7 +59,8 @@ module.exports.checkID = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error:
+        `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -68,7 +69,10 @@ module.exports.checkID = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (
+    options.isRequired === false &&
+    result.value.replace(/\s\t\r\n/g, ``) === ``
+  ) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -104,7 +108,8 @@ function checkInvalid(id, type) {
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the ${type} was a valid ID value.`,
+      error:
+        `An exception error occurred while attempting to check if the ${type} was a valid ID value.`,
       exception: ex.message,
     };
   }
