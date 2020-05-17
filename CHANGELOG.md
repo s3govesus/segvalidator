@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 8 : name.js
+- changed the filename of '/lib/name_general.js' to just '/lib/name.js' and updated any references accordingly
+
 ### 7 : checkMongodbID()
 - changed the name of `checkID()` to `checkMongodbID()` to better match the filename
 
