@@ -64,7 +64,7 @@ module.exports.checkEmailAddress = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -140,8 +140,8 @@ module.exports.checkEmailConfirm = (value, confirm, options) => {
     }
 
     // attempt to reformat the value data if the options specify to do so
-    value = String(value);
-    confirm = String(confirm);
+    value = value.toString();
+    confirm = confirm.toString();
     if (options.trim === true) {
       value = value.trim();
       confirm = confirm.trim();
@@ -150,7 +150,7 @@ module.exports.checkEmailConfirm = (value, confirm, options) => {
       value = value.toLowerCase();
       confirm = confirm.toLowerCase();
     }
-    result.value = confirm;
+    result.value = value;
   } catch (ex) {
     const error = {
       error: `An exception error occurred while attempting to reformat the e-mail address confirmation for error-checking.`,
@@ -167,7 +167,7 @@ module.exports.checkEmailConfirm = (value, confirm, options) => {
       result.errors.push(checkedEmpty);
       result.errstr += `${checkedEmpty.error}\r\n`;
     }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  } else if (result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
 

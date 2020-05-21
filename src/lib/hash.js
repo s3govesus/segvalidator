@@ -6,10 +6,11 @@ const { toBoolean } = require(`./sublib/misc`);
 // const options = {
 //   isRequired: true,
 //   trim: true,
-//   size: 512,
+//   size: 128,
 //   type: `cryptographic`,
 //   toLowerCase: true
 // };
+// TODO add more specific error-checking with specific error messages, like for length
 module.exports.checkHash = (value, options) => {
   const result = {
     value,
@@ -24,7 +25,7 @@ module.exports.checkHash = (value, options) => {
       options = {
         isRequired: true,
         trim: true,
-        size: 512,
+        size: 128,
         type: `cryptographic`,
         toLowerCase: true,
       };
@@ -40,7 +41,7 @@ module.exports.checkHash = (value, options) => {
         options.trim = toBoolean(options.trim);
       }
       if (options.size === undefined) {
-        options.size = 512;
+        options.size = 128;
       } else {
         options.size = Number(options.size);
       }
@@ -65,8 +66,6 @@ module.exports.checkHash = (value, options) => {
       value = value.toLowerCase();
     }
     result.value = value;
-
-    options.size = Math.floor(options.size / 4);
   } catch (ex) {
     const error = {
       error: `An exception error occurred while attempting to reformat the ${options.type} hash for error-checking.`,
@@ -78,14 +77,14 @@ module.exports.checkHash = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
     return result;
   }
 
-  if (result.value.replace(/\s/g, ``) === ``) {
+  if (result.value.replace(/[\s]/g, ``) === ``) {
     const error = {
       error: `A value must be entered for the ${options.type} hash.`,
     };

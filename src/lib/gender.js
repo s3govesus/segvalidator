@@ -8,6 +8,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   trim: true,
 //   toLowerCase: true
 // };
+// TODO make this more PC to optionally allow specific non-binary genders instead of simply `other`
 module.exports.checkGender = (value, options) => {
   const result = {
     value,
@@ -61,7 +62,7 @@ module.exports.checkGender = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {

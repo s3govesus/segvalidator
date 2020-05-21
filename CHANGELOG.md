@@ -7,6 +7,21 @@
 
 ## CHANGELOG
 
+### 9 : tests and fixes
+- rewrote the '/tests.js' file completely to exemplify use-case scenarios for each function
+- fixed an issue with `checkBool()` where it was calling the `checkInvalid()` function, which didn't exist for some reason
+- fixed an issue with `toBoolean()` in '/lib/sublib/misc.js' where it wasn't throwing an exception error on unknown string values
+- moved `countries` and `states` lists to their own files in '/lib/sublib/' and now import them where necessary to fix issues with their values not being available when necessary due to the lists being after the functions that utilize them for error-checking, and updated any references where necessary
+- fixed some regular expressions involved in checking for whitespace characters
+- fixed an issue with `checkEmailConfirm()` where I foolishly assigned `result.value` to the same value as the `confirm` parameter before it ever checks to make sure `value` and `confirm` match
+- made it so '/index.js' will export `checkEmailAddressConfirm()` in addition to the shorter `checkEmailConfirm()`
+- modified the `size` property on the `options` parameter for `checkHash()` to use the number of characters in the string instead of the total bit size of the hexadecimal hash
+- removed the `mustBeFloat` option from `checkNumber()` as it was unnecessary
+- fixed an issue where I foolishly assigned `confirm` to `result.value` before checking for mismatch
+- removed the `short` and `long` properties from the options parameter for `checkString()`, now these will be assuming if the `min` or `max` properties are greater than or equal to 0 (use a negative number to skip checking these; `-1` is assigned as the defaults)
+- added distinct regular expressions for testing each version of UUID, as well as `0` for a more generic UUID
+- made the default `version` for `checkUUID()` `0`
+
 ### 8 : name.js
 - changed the filename of '/lib/name_general.js' to just '/lib/name.js' and updated any references accordingly
 

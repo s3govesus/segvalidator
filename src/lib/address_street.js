@@ -1,5 +1,8 @@
 const { checkEmpty, checkLong, toBoolean } = require(`./sublib/misc`);
 
+// TODO add options to restrict certain characters
+// TODO add an option to check a regex
+
 /******************************************************************************/
 
 // check and validate an address line 1 on payment sources / shipping info
@@ -54,7 +57,7 @@ module.exports.checkAddressLine1 = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -132,7 +135,7 @@ module.exports.checkAddressLine2 = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {

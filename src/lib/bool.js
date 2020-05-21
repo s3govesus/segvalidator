@@ -1,8 +1,8 @@
 const { toBoolean } = require(`./sublib/misc`);
 
 // check a boolean value to see if it's valid, also check if it's required
-// ! note that the isRequired property on the options for this function is somewhat different from most
-// ! on this function it checks to make sure the boolean value is true
+// ! note that the `isRequired` property on the options for this function is somewhat different from most
+// ! on this function it checks to make sure the boolean value is whatever the value for `mustBe` is
 //
 // OPTIONS EXAMPLE
 // const options = {
@@ -57,12 +57,6 @@ module.exports.checkBool = (value, options) => {
 
   if (result.value === true) {
     result.intVal = 1;
-  }
-
-  const checkedInvalid = checkInvalid(result.value, options.type);
-  if (checkedInvalid) {
-    result.errors.push(checkedInvalid);
-    result.errstr += `${checkedInvalid.error}\r\n`;
   }
 
   if (options.isRequired === true) {

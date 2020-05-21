@@ -58,7 +58,7 @@ module.exports.checkAddressZip = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -90,7 +90,7 @@ function checkValid(zip) {
     const regex = /(^[0-9]{5}$)|(^[0-9]{5}-[0-9]{4}$)/g;
     if (regex.test(zip) === false) {
       result = {
-        error: `The zip code is not a valid five-digit or nine-digit zip+4 value.`,
+        error: `The zip code is not a valid five-digit zip code or nine-digit zip+4 value.`,
       };
     }
   } catch (ex) {

@@ -54,7 +54,7 @@ module.exports.checkAddressCity = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -69,7 +69,7 @@ module.exports.checkAddressCity = (value, options) => {
   }
 
   // check to make sure the city name isn't too long
-  const checkedLong = checkLong(result.value, { type: `city name`, max: 255, filterWhitespace: false });
+  const checkedLong = checkLong(result.value, { type: `city name`, max: 50, filterWhitespace: false });
   if (checkedLong) {
     result.errors.push(checkedLong);
     result.errstr += `${checkedLong.error}\r\n`;

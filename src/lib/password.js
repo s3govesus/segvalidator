@@ -46,12 +46,10 @@ module.exports.checkPassword = (value, options) => {
       } else {
         options.max = Number(options.max);
       }
-      if (options.regex !== undefined) {
-        options.regex = undefined;
-      } else if (typeof options.regex === `string`) {
+      if (typeof options.regex === `string`) {
         options.regex = new RegExp(options.regex);
       } else if (typeof options.regex === `object`) {
-        // DO NOTHING
+        // DO NOTHING???
       } else {
         options.regex = undefined;
       }
@@ -70,7 +68,7 @@ module.exports.checkPassword = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -129,7 +127,7 @@ module.exports.checkPassword = (value, options) => {
 // };
 module.exports.checkPasswordConfirm = (value, confirm, options) => {
   const result = {
-    value: confirm,
+    value,
     errors: [],
     errstr: ``,
   };
@@ -149,7 +147,7 @@ module.exports.checkPasswordConfirm = (value, confirm, options) => {
     // attempt to reformat the value data if specified to do so by the options
     value = String(value);
     confirm = String(confirm);
-    result.value = confirm;
+    result.value = value;
   } catch (ex) {
     const error = {
       error: `An exception error occurred while attempting to reformat the password confirmation for error-checking.`,
@@ -161,7 +159,7 @@ module.exports.checkPasswordConfirm = (value, confirm, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {

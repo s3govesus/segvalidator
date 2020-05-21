@@ -7,7 +7,6 @@ const { toBoolean } = require(`./sublib/misc`);
 //   min: undefined,
 //   max: undefined,
 //   mustBeInt: false,
-//   mustBeFloat: false,
 //   mustBePositive: false,
 //   mustBeNegative: false,
 //   mustBeOdd: false,
@@ -31,7 +30,6 @@ module.exports.checkNumber = (value, options) => {
         min: undefined,
         max: undefined,
         mustBeInt: false,
-        mustBeFloat: false,
         mustBePositive: false,
         mustBeNegative: false,
         mustBeOdd: false,
@@ -55,11 +53,6 @@ module.exports.checkNumber = (value, options) => {
         options.mustBeInt = false;
       } else {
         options.mustBeInt = toBoolean(options.mustBeInt);
-      }
-      if (options.mustBeFloat === undefined) {
-        options.mustBeFloat = false;
-      } else {
-        options.mustBeFloat = toBoolean(options.mustBeFloat);
       }
       if (options.mustBePositive === undefined) {
         options.mustBePositive = false;
@@ -96,7 +89,7 @@ module.exports.checkNumber = (value, options) => {
     }
 
     // if the value isn't required and it's empty, just return nothing-ish
-    if (options.isRequired === false && result.value.toString().replace(/\s\t\r\n/g, ``) === ``) {
+    if (options.isRequired === false && result.value.toString().replace(/[\s\t\r\n]/g, ``) === ``) {
       result.value = ``;
     }
     if (options.isRequired === false && result.value === ``) {
@@ -146,17 +139,9 @@ module.exports.checkNumber = (value, options) => {
 
   // handle error-checking for mustBeInteger and mustBeFloat options
   if (options.mustBeInt === true) {
-    if (result.value.isInteger() === false) {
+    if (Number.isInteger(result.value) === false) {
       const error = {
         error: `The ${options.type} value must be an integer (whole number).`,
-      };
-      result.errors.push(error);
-      result.errstr += `${error.error}\r\n`;
-    }
-  } else if (options.mustBeFloat === true) {
-    if (result.value.isInteger() === true) {
-      const error = {
-        error: `The ${options.type} value must be a floating point number (decimal number, NOT a whole number).`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;

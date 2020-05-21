@@ -4,7 +4,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //
 // const exOptions = {
 //   isRequired: true,
-//   version: 1,
+//   version: 0,
 //   trim: true,
 //   toLowerCase: true,
 //   type: `account ID`
@@ -34,7 +34,7 @@ module.exports.checkUUID = (value, options) => {
         options.isRequired = toBoolean(options.isRequired);
       }
       if (options.version === undefined) {
-        options.version = 1;
+        options.version = 0;
       } else {
         options.version = Number(options.version);
       }
@@ -76,7 +76,7 @@ module.exports.checkUUID = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -105,19 +105,30 @@ function checkInvalid(uuid, type, version) {
   try {
     let uuidExp;
     switch (version) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-        uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      case 0: // generic
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
         break;
-      case 6:
+      case 1:
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+        break;
+      case 2:
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[2][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+        break;
+      case 3:
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[3][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+        break;
+      case 4:
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+        break;
+      case 5:
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+        break;
+      case 6: // avoid 6 and 7
       case 7:
-        uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}=[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}-[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}=[0-9A-F]{4}-[0-9A-F]{12}$/i;
         break;
       default:
-        uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
         break;
     }
     if (uuidExp.test(uuid) === false) {

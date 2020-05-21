@@ -10,6 +10,9 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   isCaseSensitive: false,
 //   type: `confirmation`
 // };
+// TODO add a `clean` option that removes any hyphens or whitespace between characters
+// TODO add more specific error messages for things like length - don't rely only on a regular expression to check for validity
+// TODO make it so there's a `toLowerCase` option instead of having the result automatically convert it to lowercase if `isCaseSensitive` is false
 module.exports.checkKey = (value, options) => {
   const result = {
     value,
@@ -75,7 +78,7 @@ module.exports.checkKey = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {

@@ -31,6 +31,7 @@ module.exports.checkDate = checkDate;
 const { checkEmailAddress, checkEmailConfirm } = require(`./lib/email_address`);
 module.exports.checkEmailAddress = checkEmailAddress;
 module.exports.checkEmailConfirm = checkEmailConfirm;
+module.exports.checkEmailAddressConfirm = checkEmailConfirm;
 const { checkGender } = require(`./lib/gender`);
 module.exports.checkGender = checkGender;
 const { checkHash } = require(`./lib/hash`);

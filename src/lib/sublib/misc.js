@@ -17,14 +17,15 @@ module.exports.checkEmpty = (value, options) => {
     }
 
     const valueCheck = value;
-    if (valueCheck.replace(/\s\t\r\n/g, ``).length === 0) {
+    if (valueCheck.replace(/[\s\t\r\n]/g, ``).length === 0) {
       result = {
         error: `The value for the ${options.type} is effectively empty.`,
       };
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the ${options.type} was empty.`,
+      error:
+        `An exception error occurred while attempting to check if the ${options.type} was empty.`,
       exception: ex.message,
     };
   }
@@ -65,16 +66,18 @@ module.exports.checkLong = (value, options) => {
 
     let valueCheck = value;
     if (options.filterWhitespace === true) {
-      valueCheck = valueCheck.replace(/\s\t\r\n/g, ``);
+      valueCheck = valueCheck.replace(/[\s\t\r\n]/g, ``);
     }
     if (valueCheck.length > options.max) {
       result = {
-        error: `The ${options.type} is too long (max. ${options.max} characters).`,
+        error:
+          `The ${options.type} is too long (max. ${options.max} characters).`,
       };
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the ${options.type} was too long.`,
+      error:
+        `An exception error occurred while attempting to check if the ${options.type} was too long.`,
       exception: ex.message,
     };
   }
@@ -120,22 +123,25 @@ module.exports.checkShort = (value, options) => {
 
     let valueCheck = value;
     if (options.filterWhitespace === true) {
-      valueCheck = valueCheck.replace(/\s\t\r\n/g, ``);
+      valueCheck = valueCheck.replace(/[\s\t\r\n]/g, ``);
     }
     if (valueCheck.length < options.min) {
       result = {
-        error: `The ${options.type} is too short (min. ${options.min} characters).`,
+        error:
+          `The ${options.type} is too short (min. ${options.min} characters).`,
       };
     }
   } catch (ex) {
     try {
       return {
-        error: `An exception error occurred while attempting to check if the ${options.type} was too short.`,
+        error:
+          `An exception error occurred while attempting to check if the ${options.type} was too short.`,
         exception: ex.message,
       };
     } catch (ex2) {
       return {
-        error: `An exception error occurred while attempting to determine the configuration for checking if a character string was too short : ${ex2.message}`,
+        error:
+          `An exception error occurred while attempting to determine the configuration for checking if a character string was too short : ${ex2.message}`,
         exception: ex.message,
       };
     }
@@ -164,12 +170,14 @@ module.exports.checkRegex = (value, regex, options) => {
     } else {
       options.type = options.type.toString();
     }
-
-    regex = new RegExp(regex);
+    if (typeof regex !== `object`) {
+      regex = new RegExp(regex);
+    }
   } catch (ex) {
     // TODO ? nothing ?
     return {
-      error: `An exception error occurred while attempting to determine the configuration for checking a data value against a regular expression : ${ex.message}`,
+      error:
+        `An exception error occurred while attempting to determine the configuration for checking a data value against a regular expression : ${ex.message}`,
       exception: ex.message,
     };
   }
@@ -177,12 +185,14 @@ module.exports.checkRegex = (value, regex, options) => {
   try {
     if (regex.test(value) === false) {
       result = {
-        error: `The ${options.type} failed to meet specific criteria defined by a regular expression and was determined to be invalid.`,
+        error:
+          `The ${options.type} failed to meet specific criteria defined by a regular expression and was determined to be invalid.`,
       };
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to test the ${options.type} against a regular expression.`,
+      error:
+        `An exception error occurred while attempting to test the ${options.type} against a regular expression.`,
       exception: ex.message,
     };
   }
@@ -199,14 +209,29 @@ module.exports.toBoolean = (value) => {
       return true;
     }
     return false;
-  } if (typeof value === `string`) {
+  }
+  if (typeof value === `string`) {
     value = value.toLowerCase();
-    if (value === `true` || value === `yes` || value === `1`) {
+    if (
+      value === `true` || value === `yes` || value === `1` || value === `on`
+    ) {
       return true;
     }
-    return false;
-  } if (typeof value === `boolean`) {
+    if (
+      value === `false` || value === `no` || value === `0` || value === `off`
+    ) {
+      return false;
+    }
+    throw new Error(
+      `Error attempting to parse ${
+        JSON.stringify(value)
+      } as a boolean value : unknown string value.`,
+    );
+  }
+  if (typeof value === `boolean`) {
     return value;
   }
-  throw new Error(`Error attempting to parse ${JSON.stringify(value)} as a boolean value.`);
+  throw new Error(
+    `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
+  );
 };

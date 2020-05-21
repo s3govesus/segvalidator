@@ -65,7 +65,7 @@ module.exports.checkCardNumber = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -80,6 +80,7 @@ module.exports.checkCardNumber = (value, options) => {
 
   try {
     let isValid = false;
+    // TODO add an option to restrict error-checking to require a specific pre-defined card type
     if (checkVisa(result.value) === true) {
       result.type = `Visa`;
       isValid = true;
@@ -123,6 +124,7 @@ module.exports.checkCardNumber = (value, options) => {
 /******************************************************************************/
 
 // checks if the given credit card number is a valid Visa card number, returns true or false
+// TODO improve these to optionally allow hyphens where applicable
 function checkVisa(number) {
   const reg = /^4[0-9]{12}(?:[0-9]{3})?$/;
   return reg.test(number);

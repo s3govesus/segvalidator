@@ -1,5 +1,9 @@
 const {
-  checkEmpty, checkLong, checkShort, checkRegex, toBoolean,
+  checkEmpty,
+  checkLong,
+  checkShort,
+  checkRegex,
+  toBoolean,
 } = require(`./sublib/misc`);
 
 /******************************************************************************/
@@ -9,10 +13,8 @@ const {
 //
 // const exOptions = {
 //   isRequired: true,
-//   long: false, // check if the string is too long
-//   max: 255, // maximum number of characters for checking long
-//   short: false, // check if the string is too short
-//   min: 0, // minimum number of characters for checking minshort
+//   max: -1, // maximum number of characters for checking long - use a value less than 0 to skip checking for this
+//   min: -1, // minimum number of characters for checking minshort - use a value less than 0 to skip checking for this
 //   regex: undefined, // a custom regex to check (returns an 'invalid' error if failed)
 //   list: [], // an array of possible strings to check for
 //   whitespace: false, // whether or not to remove all whitespace from inside the string
@@ -34,10 +36,8 @@ module.exports.checkString = (value, options) => {
     if (options === undefined || typeof options !== `object`) {
       options = {
         isRequired: true,
-        long: false,
-        max: 255,
-        short: false,
-        min: 0,
+        max: -1,
+        min: -1,
         regex: undefined,
         list: [],
         whitespace: false,
@@ -52,23 +52,13 @@ module.exports.checkString = (value, options) => {
       } else {
         options.isRequired = toBoolean(options.isRequired);
       }
-      if (options.long === undefined) {
-        options.long = false;
-      } else {
-        options.long = toBoolean(options.long);
-      }
       if (options.max === undefined) {
-        options.max = 255;
+        options.max = -1;
       } else {
         options.max = Number(options.max);
       }
-      if (options.short === undefined) {
-        options.short = false;
-      } else {
-        options.short = toBoolean(options.short);
-      }
       if (options.min === undefined) {
-        options.min = 0;
+        options.min = -1;
       } else {
         options.min = Number(options.min);
       }
@@ -116,7 +106,7 @@ module.exports.checkString = (value, options) => {
     // apply any string formatting defined by the options
     value = String(value);
     if (options.whitespace === true) {
-      value = value.replace(/\s\t\r\n/g, ``);
+      value = value.replace(/[\s\t\r\n]/g, ``);
     }
     if (options.toLowerCase === true) {
       value = value.toLowerCase();
@@ -130,7 +120,8 @@ module.exports.checkString = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error:
+        `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -139,7 +130,10 @@ module.exports.checkString = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (
+    options.isRequired === false &&
+    result.value.replace(/[\s\t\r\n]/g, ``) === ``
+  ) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -154,8 +148,11 @@ module.exports.checkString = (value, options) => {
   }
 
   // check if the string is too long, if necessary
-  if (options.long === true) {
-    const checkedLong = checkLong(result.value, { type: options.type, max: options.max, filterWhitespace: false });
+  if (options.max >= 0) {
+    const checkedLong = checkLong(
+      result.value,
+      { type: options.type, max: options.max, filterWhitespace: false },
+    );
     if (checkedLong) {
       result.errors.push(checkedLong);
       result.errstr += `${checkedLong.error}\r\n`;
@@ -163,8 +160,11 @@ module.exports.checkString = (value, options) => {
   }
 
   // check if the string is too short, if necessary
-  if (options.short === true) {
-    const checkedShort = checkShort(result.value, { type: options.type, min: options.min, filterWhitespace: false });
+  if (options.min >= 0) {
+    const checkedShort = checkShort(
+      result.value,
+      { type: options.type, min: options.min, filterWhitespace: false },
+    );
     if (checkedShort) {
       result.errors.push(checkedShort);
       result.errstr += `${checkedShort.error}\r\n`;
@@ -182,7 +182,8 @@ module.exports.checkString = (value, options) => {
     }
     if (listFound === false) {
       const error = {
-        error: `The ${options.type} value did not match any of the possible values from a predefined list.`,
+        error:
+          `The ${options.type} value did not match any of the possible values from a predefined list.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -191,7 +192,11 @@ module.exports.checkString = (value, options) => {
 
   // check if the string matches the requirements of a regular expression, if necessary
   if (options.regex !== undefined) {
-    const checkedRegex = checkRegex(result.value, options.regex, { type: options.type });
+    const checkedRegex = checkRegex(
+      result.value,
+      options.regex,
+      { type: options.type },
+    );
     if (checkedRegex) {
       result.errors.push(checkedRegex);
       result.errstr += `${checkedRegex.error}\r\n`;

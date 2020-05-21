@@ -8,6 +8,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   isRequired: true,
 //   trim: true
 // }
+// TODO add an option to fill zeroes before single digit months
 module.exports.checkCardExpirationMonth = (value, options) => {
   const result = {
     value,
@@ -53,7 +54,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -152,7 +153,7 @@ module.exports.checkCardExpirationYear = (value, options) => {
       result.errors.push(checkedEmpty);
       result.errstr += `${checkedEmpty.error}\r\n`;
     }
-  } else if (result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  } else if (result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
 

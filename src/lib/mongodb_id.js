@@ -70,8 +70,8 @@ module.exports.checkMongodbID = (value, options) => {
 
   // if the value isn't required and it's empty, just return nothing-ish
   if (
-    options.isRequired === false &&
-    result.value.replace(/\s\t\r\n/g, ``) === ``
+    options.isRequired === false
+    && result.value.replace(/[\s\t\r\n]/g, ``) === ``
   ) {
     result.value = ``;
   }

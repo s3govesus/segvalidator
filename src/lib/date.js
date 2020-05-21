@@ -96,7 +96,7 @@ module.exports.checkDate = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/\s\t\r\n/g, ``) === ``) {
+  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
@@ -156,7 +156,7 @@ function checkYoung(date, type, age) {
     // gregorian year is 365.2425 days, which equates to 31,556,952 seconds
     if (currentTime - dateUnixTime < (31556952 * age)) {
       result = {
-        error: `You must be at least 18 years of age or older.`,
+        error: `You must be at least ${age} years of age or older.`,
       };
     }
   } catch (ex) {
