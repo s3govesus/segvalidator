@@ -86,6 +86,7 @@ module.exports.checkLong = (value, options) => {
 
 /******************************************************************************/
 
+// check if a string is too few characters in length
 //
 // EXAMPLE OPTIONS
 // const options = {
@@ -224,7 +225,7 @@ module.exports.toBoolean = (value) => {
     }
     throw new Error(
       `Error attempting to parse ${
-        JSON.stringify(value)
+      JSON.stringify(value)
       } as a boolean value : unknown string value.`,
     );
   }

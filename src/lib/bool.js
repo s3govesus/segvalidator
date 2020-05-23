@@ -78,7 +78,7 @@ function checkRequired(value, type, mustBe) {
   try {
     if (mustBe === true) {
       if (value !== true) {
-        if (value.toLowerCase().indexOf(`agreement`) > -1) {
+        if (type.toLowerCase().indexOf(`agreement`) > -1) {
           result = {
             error: `You must agree to the ${type}.`,
           };

@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 10 : bool checkRequired fix
+- fixed a minor issue with `checkRequired()` in '/lib/bool.js' where a conditional was meant to be assessing the `type` parameter to determine an appropriate possible error message, but instead was assessing the `value` parameter
+
 ### 9 : tests and fixes
 - rewrote the '/tests.js' file completely to exemplify use-case scenarios for each function
 - fixed an issue with `checkBool()` where it was calling the `checkInvalid()` function, which didn't exist for some reason
