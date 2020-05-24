@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 13 : reversion
+- reverted the changes from patch # 12, as I misunderstood what was going on there
+
 ### 12 : card number result.type fix
 - fixed an issue where `checkCardNumber()` was frequently trying to access the `type` property on `result` instead of `options`
 

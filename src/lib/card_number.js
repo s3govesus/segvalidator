@@ -67,8 +67,8 @@ module.exports.checkCardNumber = (value, options) => {
 
   // if the value isn't required and it's empty, just return nothing-ish
   if (
-    options.isRequired === false &&
-    result.value.replace(/[\s\t\r\n]/g, ``) === ``
+    options.isRequired === false
+    && result.value.replace(/[\s\t\r\n]/g, ``) === ``
   ) {
     result.value = ``;
   }
@@ -89,22 +89,22 @@ module.exports.checkCardNumber = (value, options) => {
     let isValid = false;
     // TODO add an option to restrict error-checking to require a specific pre-defined card type
     if (checkVisa(result.value) === true) {
-      options.type = `Visa`;
+      result.type = `Visa`;
       isValid = true;
     } else if (checkMasterCard(result.value) === true) {
-      options.type = `Mastercard`;
+      result.type = `Mastercard`;
       isValid = true;
     } else if (checkAmericanExpress(result.value) === true) {
-      options.type = `American Express`;
+      result.type = `American Express`;
       isValid = true;
     } else if (checkDinersClub(result.value) === true) {
-      options.type = `Diners Club`;
+      result.type = `Diners Club`;
       isValid = true;
     } else if (checkDiscover(result.value) === true) {
-      options.type = `Discover`;
+      result.type = `Discover`;
       isValid = true;
     } else if (checkJCB(result.value) === true) {
-      options.type = `JCB`;
+      result.type = `JCB`;
       isValid = true;
     }
 
@@ -142,8 +142,7 @@ function checkVisa(number) {
 
 // checks if the given credit card number is a valid MasterCard card number, returns true or false
 function checkMasterCard(number) {
-  const reg =
-    /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/;
+  const reg = /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/;
   return reg.test(number);
 }
 
