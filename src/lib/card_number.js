@@ -56,7 +56,8 @@ module.exports.checkCardNumber = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the payment card number for error-checking.`,
+      error:
+        `An exception error occurred while attempting to reformat the payment card number for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -65,14 +66,20 @@ module.exports.checkCardNumber = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
+  if (
+    options.isRequired === false &&
+    result.value.replace(/[\s\t\r\n]/g, ``) === ``
+  ) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
     return result;
   }
 
-  const checkedEmpty = checkEmpty(result.value, { type: `payment card number` });
+  const checkedEmpty = checkEmpty(
+    result.value,
+    { type: `payment card number` },
+  );
   if (checkedEmpty) {
     result.errors.push(checkedEmpty);
     result.errstr += `${checkedEmpty.error}\r\n`;
@@ -82,22 +89,22 @@ module.exports.checkCardNumber = (value, options) => {
     let isValid = false;
     // TODO add an option to restrict error-checking to require a specific pre-defined card type
     if (checkVisa(result.value) === true) {
-      result.type = `Visa`;
+      options.type = `Visa`;
       isValid = true;
     } else if (checkMasterCard(result.value) === true) {
-      result.type = `Mastercard`;
+      options.type = `Mastercard`;
       isValid = true;
     } else if (checkAmericanExpress(result.value) === true) {
-      result.type = `American Express`;
+      options.type = `American Express`;
       isValid = true;
     } else if (checkDinersClub(result.value) === true) {
-      result.type = `Diners Club`;
+      options.type = `Diners Club`;
       isValid = true;
     } else if (checkDiscover(result.value) === true) {
-      result.type = `Discover`;
+      options.type = `Discover`;
       isValid = true;
     } else if (checkJCB(result.value) === true) {
-      result.type = `JCB`;
+      options.type = `JCB`;
       isValid = true;
     }
 
@@ -110,7 +117,8 @@ module.exports.checkCardNumber = (value, options) => {
     }
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to check if the payment card number was valid.`,
+      error:
+        `An exception error occurred while attempting to check if the payment card number was valid.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -134,7 +142,8 @@ function checkVisa(number) {
 
 // checks if the given credit card number is a valid MasterCard card number, returns true or false
 function checkMasterCard(number) {
-  const reg = /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/;
+  const reg =
+    /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/;
   return reg.test(number);
 }
 

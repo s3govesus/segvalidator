@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 12 : card number result.type fix
+- fixed an issue where `checkCardNumber()` was frequently trying to access the `type` property on `result` instead of `options`
+
 ### 11 : cardExpirationYear fix
 - fixed a minor typo bug in `checkCardExpirationYear()` where the last try/catch block was trying to push an error to `result.error` instead of `result.errors`
 
