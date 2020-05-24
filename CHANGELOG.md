@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 11 : cardExpirationYear fix
+- fixed a minor typo bug in `checkCardExpirationYear()` where the last try/catch block was trying to push an error to `result.error` instead of `result.errors`
+
 ### 10 : bool checkRequired fix
 - fixed a minor issue with `checkRequired()` in '/lib/bool.js' where a conditional was meant to be assessing the `type` parameter to determine an appropriate possible error message, but instead was assessing the `value` parameter
 

@@ -45,7 +45,8 @@ module.exports.checkCardExpirationMonth = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the card expiration month for error-checking.`,
+      error:
+        `An exception error occurred while attempting to reformat the card expiration month for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -54,14 +55,20 @@ module.exports.checkCardExpirationMonth = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
+  if (
+    options.isRequired === false &&
+    result.value.replace(/[\s\t\r\n]/g, ``) === ``
+  ) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
     return result;
   }
 
-  const checkedEmpty = checkEmpty(result.value, { type: `card expiration month` });
+  const checkedEmpty = checkEmpty(
+    result.value,
+    { type: `card expiration month` },
+  );
   if (checkedEmpty) {
     result.errors.push(checkedEmpty);
     result.errstr += `${checkedEmpty.error}\r\n`;
@@ -78,7 +85,8 @@ module.exports.checkCardExpirationMonth = (value, options) => {
     }
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to check if the card expiration month was a valid month.`,
+      error:
+        `An exception error occurred while attempting to check if the card expiration month was a valid month.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -139,7 +147,8 @@ module.exports.checkCardExpirationYear = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the card expiration year for error-checking.`,
+      error:
+        `An exception error occurred while attempting to reformat the card expiration year for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -148,7 +157,10 @@ module.exports.checkCardExpirationYear = (value, options) => {
   }
 
   if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(result.value, { type: `card expiration year` });
+    const checkedEmpty = checkEmpty(
+      result.value,
+      { type: `card expiration year` },
+    );
     if (checkedEmpty) {
       result.errors.push(checkedEmpty);
       result.errstr += `${checkedEmpty.error}\r\n`;
@@ -172,10 +184,11 @@ module.exports.checkCardExpirationYear = (value, options) => {
     }
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to check if the card expiration year was a valid year.`,
+      error:
+        `An exception error occurred while attempting to check if the card expiration year was a valid year.`,
       exception: ex.message,
     };
-    result.error.push(error);
+    result.errors.push(error);
     result.errstr += `${error.error}\r\n`;
     return result;
   }
