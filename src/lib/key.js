@@ -28,7 +28,7 @@ module.exports.checkKey = (value, options) => {
         trim: true,
         size: 20,
         isCaseSensitive: false,
-        type: `confirmation`,
+        type: `alphanumeric key`,
       };
     } else {
       if (options.isRequired === undefined) {
@@ -52,9 +52,11 @@ module.exports.checkKey = (value, options) => {
         options.isCaseSensitive = toBoolean(options.isCaseSensitive);
       }
       if (options.type === undefined) {
-        options.type = `confirmation`;
+        options.type = `alphanumeric key`;
+      } else if (options.type.indexOf(`key`) < 0) {
+        options.type = `${options.type} key`;
       } else {
-        options.type = String(options.type);
+        options.type = options.type.toString();
       }
     }
 
@@ -69,7 +71,8 @@ module.exports.checkKey = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} key for error-checking.`,
+      error:
+        `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -78,20 +81,31 @@ module.exports.checkKey = (value, options) => {
   }
 
   // if the value isn't required and it's empty, just return nothing-ish
-  if (options.isRequired === false && result.value.replace(/[\s\t\r\n]/g, ``) === ``) {
+  if (
+    options.isRequired === false &&
+    result.value.replace(/[\s\t\r\n]/g, ``) === ``
+  ) {
     result.value = ``;
   }
   if (options.isRequired === false && result.value === ``) {
     return result;
   }
 
-  const checkedEmpty = checkEmpty(result.value, { type: `${options.type} key` });
+  const checkedEmpty = checkEmpty(
+    result.value,
+    { type: `${options.type}` },
+  );
   if (checkedEmpty) {
     result.errors.push(checkedEmpty);
     result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
-  const checkedInvalid = checkInvalid(result.value, options.type, options.size, options.isCaseSensitive);
+  const checkedInvalid = checkInvalid(
+    result.value,
+    options.type,
+    options.size,
+    options.isCaseSensitive,
+  );
   if (checkedInvalid) {
     result.errors.push(checkedInvalid);
     result.errstr += `${checkedInvalid.error}\r\n`;
@@ -113,12 +127,13 @@ function checkInvalid(key, type, size, isCaseSensitive) {
     }
     if (keyExp.test(key) === false) {
       result = {
-        error: `The ${type} key is not valid.`,
+        error: `The ${type} is not valid.`,
       };
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the ${type} key was a valid alphanumeric key.`,
+      error:
+        `An exception error occurred while attempting to check if the ${type} was a valid alphanumeric key.`,
       exception: ex.message,
     };
   }

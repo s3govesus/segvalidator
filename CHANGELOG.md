@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 14 : checkKey to alphanumeric key
+- made some minor adjustments to the error messages and the options interpretation so that the default `options.type` is now `alphanumeric key` or ` key` is always appended to the `options.type` if it doesn't contain `key` in the string already
+
 ### 13 : reversion
 - reverted the changes from patch # 12, as I misunderstood what was going on there
 
