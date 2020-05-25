@@ -7,6 +7,9 @@
 
 ## CHANGELOG
 
+### 15 : .length fix in checkNumber()
+- changed an instance where I tried to access the `count` property on an array in `checkNumber()` to instead use the correct `length` property
+
 ### 14 : checkKey to alphanumeric key
 - made some minor adjustments to the error messages and the options interpretation so that the default `options.type` is now `alphanumeric key` or ` key` is always appended to the `options.type` if it doesn't contain `key` in the string already
 

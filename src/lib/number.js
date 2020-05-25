@@ -89,7 +89,10 @@ module.exports.checkNumber = (value, options) => {
     }
 
     // if the value isn't required and it's empty, just return nothing-ish
-    if (options.isRequired === false && result.value.toString().replace(/[\s\t\r\n]/g, ``) === ``) {
+    if (
+      options.isRequired === false &&
+      result.value.toString().replace(/[\s\t\r\n]/g, ``) === ``
+    ) {
       result.value = ``;
     }
     if (options.isRequired === false && result.value === ``) {
@@ -101,7 +104,8 @@ module.exports.checkNumber = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error:
+        `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -111,7 +115,8 @@ module.exports.checkNumber = (value, options) => {
 
   if (isNaN(result.value)) {
     const error = {
-      error: `The value for the ${options.type} is not a valid numerical value.`,
+      error:
+        `The value for the ${options.type} is not a valid numerical value.`,
     };
     result.errors.push(error);
     result.errstr += `${error.error}\r\n`;
@@ -120,7 +125,8 @@ module.exports.checkNumber = (value, options) => {
   if (options.min !== undefined) {
     if (result.value < options.min) {
       const error = {
-        error: `The ${options.type} value is not greater than the required minimum value of '${options.min}'.`,
+        error:
+          `The ${options.type} value is not greater than the required minimum value of '${options.min}'.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -130,7 +136,8 @@ module.exports.checkNumber = (value, options) => {
   if (options.max !== undefined) {
     if (result.value > options.max) {
       const error = {
-        error: `The ${options.type} value is not less than the required maximum value of '${options.max}'.`,
+        error:
+          `The ${options.type} value is not less than the required maximum value of '${options.max}'.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -152,7 +159,8 @@ module.exports.checkNumber = (value, options) => {
   if (options.mustBePositive === true) {
     if (result.value < 0) {
       const error = {
-        error: `The ${options.type} value must be a positive number greater than or equal to zero.`,
+        error:
+          `The ${options.type} value must be a positive number greater than or equal to zero.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -160,7 +168,8 @@ module.exports.checkNumber = (value, options) => {
   } else if (options.mustBeNegative === true) {
     if (result.value > 0) {
       const error = {
-        error: `The ${options.type} value must be a negative number less than or equal to zero.`,
+        error:
+          `The ${options.type} value must be a negative number less than or equal to zero.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -187,7 +196,7 @@ module.exports.checkNumber = (value, options) => {
   }
 
   // if there are items in the list property in the options parameter, check to make sure the value matches something in that list
-  if (options.list.count > 0) {
+  if (options.list.length > 0) {
     let valueFound = false;
     for (let i = 0; i < options.list.length; i += 1) {
       if (options.list[i] === result.value) {
@@ -197,7 +206,8 @@ module.exports.checkNumber = (value, options) => {
     }
     if (valueFound === false) {
       const error = {
-        error: `The ${options.type} value did not match any of the possible values from a predefined list.`,
+        error:
+          `The ${options.type} value did not match any of the possible values from a predefined list.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
