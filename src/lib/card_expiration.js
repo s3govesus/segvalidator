@@ -6,9 +6,9 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 // OPTIONS EXAMPLE
 // const options = {
 //   isRequired: true,
-//   trim: true
+//   trim: true,
+//   fill: false
 // }
-// TODO add an option to fill zeroes before single digit months
 module.exports.checkCardExpirationMonth = (value, options) => {
   const result = {
     value,
@@ -23,6 +23,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
       options = {
         isRequired: true,
         trim: true,
+        fill: false,
       };
     } else {
       if (options.isRequired === undefined) {
@@ -35,12 +36,22 @@ module.exports.checkCardExpirationMonth = (value, options) => {
       } else {
         options.trim = toBoolean(options.trim);
       }
+      if (options.fill === undefined) {
+        options.fill = false;
+      } else {
+        options.fill = toBoolean(options.fill);
+      }
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'
     value = String(value);
     if (options.trim === true) {
       value = value.trim();
+    }
+    if (options.fill === true) {
+      if (value.length < 2) {
+        value = `0${value}`;
+      }
     }
     result.value = value;
   } catch (ex) {
@@ -56,8 +67,8 @@ module.exports.checkCardExpirationMonth = (value, options) => {
 
   // if the value isn't required and it's empty, just return nothing-ish
   if (
-    options.isRequired === false &&
-    result.value.replace(/[\s\t\r\n]/g, ``) === ``
+    options.isRequired === false
+    && result.value.replace(/[\s\t\r\n]/g, ``) === ``
   ) {
     result.value = ``;
   }
@@ -109,8 +120,9 @@ module.exports.checkCardExpirationMonth = (value, options) => {
 //
 // OPTIONS EXAMPLE
 // const options = {
-//   isRequired: true,
-//   trim: true
+//   isRequired: true, // whether or not an error will be retuned if the value is effectively empty
+//   trim: true, // whether or not to trim any extra whitespace characters from the ends of the string - recommended : true
+//   fill: false // whether or not to automatically add `20` in front of the value if it is only 2 characters in length - recommended : false
 // };
 module.exports.checkCardExpirationYear = (value, options) => {
   const result = {
@@ -125,6 +137,7 @@ module.exports.checkCardExpirationYear = (value, options) => {
       options = {
         isRequired: true,
         trim: true,
+        fill: false,
       };
     } else {
       if (options.isRequired === undefined) {
@@ -137,12 +150,22 @@ module.exports.checkCardExpirationYear = (value, options) => {
       } else {
         options.trim = toBoolean(options.trim);
       }
+      if (options.fill === undefined) {
+        options.fill = false;
+      } else {
+        options.fill = toBoolean(options.fill);
+      }
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'
     value = String(value);
     if (options.trim === true) {
       value = value.trim();
+    }
+    if (options.fill === true) {
+      if (value.length === 2) {
+        value = `20${value}`;
+      }
     }
     result.value = value;
   } catch (ex) {

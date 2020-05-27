@@ -7,6 +7,10 @@
 
 ## CHANGELOG
 
+### 16 : fill for card expiration
+- implemented the `fill` property on the options parameter for `checkCardExpirationMonth()`
+- implemented the `fill` property on the options parameter for `checkCardExpirationYear()`
+
 ### 15 : .length fix in checkNumber()
 - changed an instance where I tried to access the `count` property on an array in `checkNumber()` to instead use the correct `length` property
 
