@@ -59,6 +59,14 @@ module.exports.checkKey = (value, options) => {
         options.type = options.type.toString();
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the ${options.type} is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the data in 'value' if options specify to do so
     value = String(value);
@@ -82,8 +90,8 @@ module.exports.checkKey = (value, options) => {
 
   // if the value isn't required and it's empty, just return nothing-ish
   if (
-    options.isRequired === false &&
-    result.value.replace(/[\s\t\r\n]/g, ``) === ``
+    options.isRequired === false
+    && result.value.replace(/[\s\t\r\n]/g, ``) === ``
   ) {
     result.value = ``;
   }

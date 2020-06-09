@@ -41,6 +41,14 @@ module.exports.checkColumnName = (value, options) => {
         options.clean = toBoolean(options.clean);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the column name is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the data in 'value' however defined by 'options'
     value = String(value);

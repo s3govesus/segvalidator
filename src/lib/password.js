@@ -54,6 +54,14 @@ module.exports.checkPassword = (value, options) => {
         options.regex = undefined;
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the password is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     value = String(value);
     result.value = value;
@@ -142,6 +150,22 @@ module.exports.checkPasswordConfirm = (value, confirm, options) => {
       options.isRequired = true;
     } else {
       options.isRequired = toBoolean(options.isRequired);
+    }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the password is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
+    if (confirm === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the password confirmation is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
     }
 
     // attempt to reformat the value data if specified to do so by the options

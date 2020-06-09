@@ -56,6 +56,14 @@ module.exports.checkUUID = (value, options) => {
         options.type = String(options.type);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the ${options.type} is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the data in 'value' if options specify to do so
     value = String(value);

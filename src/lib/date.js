@@ -76,6 +76,14 @@ module.exports.checkDate = (value, options) => {
         options.targetFormat.replace(`/[-_ .]/g`, `/`);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the ${options.type} is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the data in 'value' however defined by 'options'
     value = String(value);

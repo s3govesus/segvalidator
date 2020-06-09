@@ -39,6 +39,14 @@ module.exports.checkAddressLine1 = (value, options) => {
         options.trim = toBoolean(options.trim);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the address line 1 is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the value data if specified to do so by the options
     value = String(value);
@@ -116,6 +124,14 @@ module.exports.checkAddressLine2 = (value, options) => {
       } else {
         options.trim = toBoolean(options.trim);
       }
+    }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the address line 2 is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
     }
 
     // attempt to reformat the value data if specified to do so by the options

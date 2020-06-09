@@ -56,6 +56,14 @@ module.exports.checkHash = (value, options) => {
         options.toLowerCase = toBoolean(options.toLowerCase);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the ${options.type} is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the value data if the options specify to do so
     value = String(value);

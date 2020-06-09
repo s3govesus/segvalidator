@@ -35,6 +35,14 @@ module.exports.checkCardCode = (value, options) => {
         options.trim = toBoolean(options.trim);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the card security code is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the value data if specified to do so by the options
     value = String(value);

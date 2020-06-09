@@ -42,6 +42,14 @@ module.exports.checkCardExpirationMonth = (value, options) => {
         options.fill = toBoolean(options.fill);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the card expiration month is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the data in 'value' however defined by 'options'
     value = String(value);
@@ -155,6 +163,14 @@ module.exports.checkCardExpirationYear = (value, options) => {
       } else {
         options.fill = toBoolean(options.fill);
       }
+    }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the card expiration year is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'

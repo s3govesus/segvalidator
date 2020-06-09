@@ -1,11 +1,7 @@
-## TODO
-
-### TODO : improve address
-- improved address validation regex
-
----
-
 ## CHANGELOG
+
+### 17 : undefined checking
+- implemented error-checking for undefined values for all functions
 
 ### 16 : fill for card expiration
 - implemented the `fill` property on the options parameter for `checkCardExpirationMonth()`
@@ -68,3 +64,10 @@
 
 ### 1 : initial commit
 - initial commit
+
+---
+
+## TODO
+
+### TODO : improve address
+- improved address validation regex

@@ -43,6 +43,14 @@ module.exports.checkEmailAddress = (value, options) => {
         options.toLowerCase = toBoolean(options.toLowerCase);
       }
     }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the e-mail address is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
 
     // attempt to reformat the data in 'value' if the options specify to do so
     value = String(value);
@@ -137,6 +145,22 @@ module.exports.checkEmailConfirm = (value, confirm, options) => {
       } else {
         options.toLowerCase = toBoolean(options.toLowerCase);
       }
+    }
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the e-mail address is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
+    }
+    if (confirm === undefined && options.isRequired === true) {
+      const error = {
+        error: `The value for the e-mail address confirmation is undefined.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
     }
 
     // attempt to reformat the value data if the options specify to do so
