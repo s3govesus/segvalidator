@@ -69,7 +69,7 @@ module.exports.checkNumber = (value, options) => {
       } else {
         options.mustBeOdd = toBoolean(options.mustBeOdd);
       }
-      if (options.list !== undefined) {
+      if (options.list === undefined) {
         options.list = [];
       } else {
         // reparse the data with every item being forced into a number

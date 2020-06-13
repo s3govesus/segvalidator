@@ -864,6 +864,7 @@ function testName() {
     max: 50,
   });
   console.log(`checkedB | value : ${JSON.stringify(checkedB)}\r\n`);
+  console.log(`checkedB error length : ${checkedB.errors.length}`);
 
   // * is effectively empty, but the isRequired option is false, so it's okay
   const c = `     `;
@@ -1025,6 +1026,16 @@ function testNumber() {
     type: `number`,
   });
   console.log(`checkedG | value : ${JSON.stringify(checkedH)}\r\n`);
+
+  const i = 1;
+  const checkedI = checkNumber(i, {
+    isRequired: true,
+    min: 0,
+    max: 999999,
+    mustBeInt: true,
+    type: `some dumb number`,
+  });
+  console.log(`checkedI | value : ${JSON.stringify(checkedI)}\r\n`);
 
   console.log(
     `/******************************************************************************/\r\n`,

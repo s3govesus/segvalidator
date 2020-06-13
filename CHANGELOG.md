@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 18 : checkNumber list fix
+- fixed an issue where the `list` property on the `options` parameter for `checkNumber()` wasn't being assigned a default value of an empty array if the provided value was undefined
+
 ### 17 : undefined checking
 - implemented error-checking for undefined values for all functions
 
@@ -69,5 +72,6 @@
 
 ## TODO
 
-### TODO : improve address
+- added maximum length limits to error message variables
+
 - improved address validation regex
