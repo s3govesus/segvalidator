@@ -24,6 +24,8 @@ module.exports.checkCardExpirationMonth = checkCardExpirationMonth;
 module.exports.checkCardExpirationYear = checkCardExpirationYear;
 const { checkCardNumber } = require(`./lib/card_number`);
 module.exports.checkCardNumber = checkCardNumber;
+const { checkCheckbox } = require(`./lib/checkbox`);
+module.exports.checkCheckbox = checkCheckbox;
 const { checkColumnName } = require(`./lib/column_name`);
 module.exports.checkColumnName = checkColumnName;
 const { checkDate } = require(`./lib/date`);
@@ -125,6 +127,9 @@ module.exports.check = (type, arg1, arg2, arg3) => {
     case `card number`:
     case `cardnumber`:
       result = checkCardNumber(arg1, arg2);
+      break;
+    case `checkbox`:
+      result = checkCheckbox(arg1, arg2);
       break;
     case `column name`:
     case `columnname`:

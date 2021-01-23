@@ -10,6 +10,7 @@ const {
   checkCardExpirationMonth,
   checkCardExpirationYear,
   checkCardNumber,
+  checkCheckbox,
   checkColumnName,
   checkDate,
   checkEmailAddress,
@@ -467,6 +468,33 @@ function testCardNumber() {
   );
 }
 testCardNumber();
+
+/******************************************************************************/
+
+function testCheckbox() {
+  console.log(`tests for checkCheckbox()...\r\n`);
+
+  const a = true;
+  const checkedA = checkCheckbox(a, {
+    isRequired: true,
+    mustBe: true,
+    type: `I agree to the terms of service.`,
+  });
+  console.log(`checkedA | value : ${JSON.stringify(checkedA)}\r\n`);
+
+  const b = false;
+  const checkedB = checkCheckbox(b, {
+    isRequired: true,
+    mustBe: true,
+    type: `I agree to the terms of service.`,
+  });
+  console.log(`checkedB | value : ${JSON.stringify(checkedB)}\r\n`);
+
+  console.log(
+    `/******************************************************************************/\r\n`,
+  );
+}
+testCheckbox();
 
 /******************************************************************************/
 
