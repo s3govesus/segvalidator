@@ -92,7 +92,7 @@ function checkRequired(value, type, mustBe) {
           };
         } else {
           result = {
-            error: `The checkbox value for '${type}' is unchecked but is required to be checked and confirmed to be true.`,
+            error: `The checkbox value for '${type}' is unchecked but is required to be checked.`,
           };
         }
       }
@@ -103,7 +103,7 @@ function checkRequired(value, type, mustBe) {
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the '${type}' checkbox had the correct required value.`,
+      error: `An exception error occurred while attempting to assess if the '${type}' checkbox had the correct required value.`,
       exception: ex.message,
     };
   }

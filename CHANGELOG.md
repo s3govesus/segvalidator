@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.3.2-1: checkCheckbox messages
+- made some minor adjustments to the error messages for `checkCheckbox()` to reduce some excess verbosity
+
 ### 1.3.1-2: grammar fixes
 - various minor grammar corrections were made for error messages
 
