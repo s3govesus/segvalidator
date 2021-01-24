@@ -225,7 +225,7 @@ module.exports.toBoolean = (value) => {
     }
     throw new Error(
       `Error attempting to parse ${
-      JSON.stringify(value)
+        JSON.stringify(value)
       } as a boolean value : unknown string value.`,
     );
   }

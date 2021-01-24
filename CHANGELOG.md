@@ -1,6 +1,9 @@
 ## CHANGELOG
 
-### 1.3.1: checkCheckbox
+### 1.3.1-2: grammar fixes
+- various minor grammar corrections were made for error messages
+
+### 1.3.1-1: checkCheckbox
 - added `checkCheckbox()` to the list of possible functions as a means to check the boolean values specifically for form checkboxes (the error messages are tailored specifically for this, in contrast to `checkBool()`)
 
 ### 18 : checkNumber list fix

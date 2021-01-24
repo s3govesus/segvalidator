@@ -92,13 +92,13 @@ function checkRequired(value, type, mustBe) {
           };
         } else {
           result = {
-            error: `The checkbox value for '${type}' was unchecked but is required to be checked and confirmed to be true.`,
+            error: `The checkbox value for '${type}' is unchecked but is required to be checked and confirmed to be true.`,
           };
         }
       }
     } else if (value === true) {
       result = {
-        error: `The checkbox value for '${type}' was checked but is required to be unchecked and denied.`,
+        error: `The checkbox value for '${type}' is checked but is required to be unchecked.`,
       };
     }
   } catch (ex) {

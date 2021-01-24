@@ -92,13 +92,13 @@ function checkRequired(value, type, mustBe) {
           };
         } else {
           result = {
-            error: `The boolean value for the ${type} was false but is required to be true.`,
+            error: `The boolean value for the ${type} is false but is required to be true.`,
           };
         }
       }
     } else if (value === true) {
       result = {
-        error: `The boolean value for the ${type} was true but is required to be false.`,
+        error: `The boolean value for the ${type} is true but is required to be false.`,
       };
     }
   } catch (ex) {
