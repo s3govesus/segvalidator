@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.3.2-2: checkHash type typo
+- fixed a typo with the default type option for `checkHash()`
+
 ### 1.3.2-1: checkCheckbox messages
 - made some minor adjustments to the error messages for `checkCheckbox()` to reduce some excess verbosity
 

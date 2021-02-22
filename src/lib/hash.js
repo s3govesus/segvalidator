@@ -46,7 +46,7 @@ module.exports.checkHash = (value, options) => {
         options.size = Number(options.size);
       }
       if (options.type === undefined) {
-        options.type = `cryptograhpic`;
+        options.type = `cryptographic`;
       } else {
         options.type = String(options.type);
       }
@@ -58,7 +58,7 @@ module.exports.checkHash = (value, options) => {
     }
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the ${options.type} is undefined.`,
+        error: `The value for the ${options.type} hash is undefined.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
