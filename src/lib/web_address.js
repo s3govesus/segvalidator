@@ -137,7 +137,7 @@ function checkInvalid(value, type, mode) {
           break;
         case `domain`:
           result = {
-            error: `The ${type} web address is invalid.`,
+            error: `The ${type} address is invalid.`,
           };
           break;
         default:

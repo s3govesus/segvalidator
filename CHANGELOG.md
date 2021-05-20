@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.4.2: web address error fix
+- fixed a minor mistake in one of the error messages for `checkInvalid()` on `checkWebAddress()`
+
 ### 1.4.1: web address
 - added `checkWebAddress()` to '/api/web_address.js' for checking web addresses
 - added a test function for `checkWebAddress()` to '/tests.js'

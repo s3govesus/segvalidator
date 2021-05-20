@@ -1,6 +1,6 @@
 {
   "name": "segvalidator",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A collection of functions for validating inputs and providing detailed error data",
   "main": "src/index.js",
   "scripts": {
