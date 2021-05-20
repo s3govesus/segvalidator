@@ -54,6 +54,8 @@ const { checkUUID } = require(`./lib/uuid`);
 module.exports.checkUUID = checkUUID;
 const { checkMongodbID } = require(`./lib/mongodb_id`);
 module.exports.checkMongodbID = checkMongodbID;
+const { checkWebAddress } = require(`./lib/web_address`);
+module.exports.checkWebAddress = checkWebAddress;
 
 // expose the sublib functions
 const {

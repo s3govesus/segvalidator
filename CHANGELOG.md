@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 1.4.1: web address
+- added `checkWebAddress()` to '/api/web_address.js' for checking web addresses
+- added a test function for `checkWebAddress()` to '/tests.js'
+
 ### 1.3.2-2: checkHash type typo
 - fixed a typo with the default type option for `checkHash()`
 

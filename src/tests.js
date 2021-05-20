@@ -25,6 +25,7 @@ const {
   checkPasswordConfirm,
   checkString,
   checkUUID,
+  checkWebAddress,
 } = require(`./index`);
 const { checkEmailAddressConfirm } = require(`./lib/email_address`);
 
@@ -1270,3 +1271,39 @@ function testUUID() {
   );
 }
 testUUID();
+
+/******************************************************************************/
+
+function testWebAddress() {
+  console.log(`testing checkWebAddress()...\r\n`);
+
+  const a = `192.168.86.254`;
+  const checkedA = checkWebAddress(a, {
+    isRequired: true,
+    trim: true,
+    mode: `either`,
+    type: `server`,
+  });
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  const b = `www.google.com`;
+  const checkedB = checkWebAddress(b, {
+    isRequired: true,
+    trim: true,
+    mode: `ip`,
+    type: `IP`
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  const c = `www.google.com`;
+  const checkedC = checkWebAddress(c, {
+    isRequired: true,
+    trim: true,
+    mode: `domain`,
+    type: `domain`,
+  });
+  console.log(`${JSON.stringify(checkedC)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testWebAddress();
