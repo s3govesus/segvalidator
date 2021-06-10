@@ -64,12 +64,16 @@ const {
   checkShort,
   checkRegex,
   toBoolean,
+  hexToLatin,
+  latinToHex,
 } = require(`./lib/sublib/misc`);
 module.exports.checkEmpty = checkEmpty;
 module.exports.checkLong = checkLong;
 module.exports.checkShort = checkShort;
 module.exports.checkRegex = checkRegex;
 module.exports.toBoolean = toBoolean;
+module.exports.hexToLatin = hexToLatin;
+module.exports.latinToHex = latinToHex;
 
 /******************************************************************************/
 

@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.5.1: hex to latin conversions
+- added sublib functions `hexToLatin()` and `latinToHex()` for converting between strings of hexadecimal characters and their utf8 character equivalent and vice versa
+
 ### 1.4.2: web address error fix
 - fixed a minor mistake in one of the error messages for `checkInvalid()` on `checkWebAddress()`
 

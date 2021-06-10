@@ -224,8 +224,7 @@ module.exports.toBoolean = (value) => {
       return false;
     }
     throw new Error(
-      `Error attempting to parse ${
-        JSON.stringify(value)
+      `Error attempting to parse ${JSON.stringify(value)
       } as a boolean value : unknown string value.`,
     );
   }
@@ -236,3 +235,34 @@ module.exports.toBoolean = (value) => {
     `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
   );
 };
+
+/******************************************************************************/
+
+// takes a string of hexadecimal characters and converts them to plain-text latin1 encoded characters
+// * resulting string will be 1/2x in length
+module.exports.hexToLatin = (hexStr) => {
+  let result;
+
+  result = hexStr.split(/(\w\w)/g)
+    .filter((p) => !!p)
+    .map((c) => String.fromCharCode(parseInt(c, 16)))
+    .join(``);
+
+  return result;
+};
+const { hexToLatin } = this;
+
+/******************************************************************************/
+
+// takes a string of plain-text latin1 encoded characters and converts them to a hexadecimal string
+// * resulting string will be 2x in length
+module.exports.latinToHex = (plainStr) => {
+  let result;
+
+  result = plainStr.split(``)
+    .map((c) => c.charCodeAt(0).toString(16).padStart(2, `0`))
+    .join(``);
+
+  return result;
+};
+const { latinToHex } = this;
