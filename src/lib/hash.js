@@ -7,6 +7,7 @@ const { toBoolean } = require(`./sublib/misc`);
 //   isRequired: true,
 //   trim: true,
 //   size: 128,
+//   isCompressed: false,
 //   type: `cryptographic`,
 //   toLowerCase: true
 // };
@@ -23,11 +24,12 @@ module.exports.checkHash = (value, options) => {
     // get the options data or fill it with defaults if necessary
     if (options === undefined) {
       options = {
-        isRequired: true,
-        trim: true,
-        size: 128,
-        type: `cryptographic`,
-        toLowerCase: true,
+        isRequired: true, // * if false, accepts an empty value
+        trim: true, // * remove any whitespace from the ends of the string
+        size: 128, // * how many characters the value string should be in length
+        isCompressed: false, // * if true, assumes the hex has been converted using `hexToLatin()` and will accept any character instead of only hex values
+        type: `cryptographic`, // * for error messages
+        toLowerCase: true, // * convert the value string to all lowercase characters before processing
       };
     } else {
       if (options.isRequired === undefined) {
@@ -44,6 +46,11 @@ module.exports.checkHash = (value, options) => {
         options.size = 128;
       } else {
         options.size = Number(options.size);
+      }
+      if (options.isCompressed === undefined) {
+        options.isCompressed = false;
+      } else {
+        options.isCompressed = toBoolean(options.isCompressed);
       }
       if (options.type === undefined) {
         options.type = `cryptographic`;
@@ -67,6 +74,7 @@ module.exports.checkHash = (value, options) => {
 
     // attempt to reformat the value data if the options specify to do so
     value = String(value);
+    console.log(value);
     if (options.trim === true) {
       value = value.trim();
     }
@@ -74,6 +82,7 @@ module.exports.checkHash = (value, options) => {
       value = value.toLowerCase();
     }
     result.value = value;
+    console.log(result.value);
   } catch (ex) {
     const error = {
       error: `An exception error occurred while attempting to reformat the ${options.type} hash for error-checking.`,
@@ -101,7 +110,7 @@ module.exports.checkHash = (value, options) => {
     return result;
   }
 
-  const checkedInvalid = checkInvalid(result.value, options.type, options.size);
+  const checkedInvalid = checkInvalid(result.value, options.type, options.size, options.isCompressed);
   if (checkedInvalid) {
     result.errors.push(checkedInvalid);
     result.errstr += `${checkedInvalid.error}\r\n`;
@@ -113,11 +122,17 @@ module.exports.checkHash = (value, options) => {
 /******************************************************************************/
 
 // check if the hash is valid
-function checkInvalid(hash, type, size) {
+function checkInvalid(hash, type, size, isCompressed) {
   let result;
   try {
-    const regexHash = new RegExp(`^[a-f0-9]{${size}}$`); // /\b[A-Fa-f0-9]{128}\b/;
-    if (regexHash.test(hash) === false) {
+    let regex;
+    if (isCompressed === true) {
+      regex = new RegExp(`^[\S\s]{${size}}$`);
+    } else {
+      regex = new RegExp(`^[a-f0-9]{${size}}$`);
+    }
+
+    if (regex.test(hash) === false) {
       result = {
         error: `The ${type} hash is not valid.`,
       };

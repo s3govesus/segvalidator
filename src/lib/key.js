@@ -79,8 +79,7 @@ module.exports.checkKey = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error:
-        `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -140,8 +139,7 @@ function checkInvalid(key, type, size, isCaseSensitive) {
     }
   } catch (ex) {
     result = {
-      error:
-        `An exception error occurred while attempting to check if the ${type} was a valid alphanumeric key.`,
+      error: `An exception error occurred while attempting to check if the ${type} was a valid alphanumeric key.`,
       exception: ex.message,
     };
   }

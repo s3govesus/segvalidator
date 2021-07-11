@@ -128,8 +128,7 @@ module.exports.checkString = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error:
-        `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -190,8 +189,7 @@ module.exports.checkString = (value, options) => {
     }
     if (listFound === false) {
       const error = {
-        error:
-          `The ${options.type} value did not match any of the possible values from a predefined list.`,
+        error: `The ${options.type} value did not match any of the possible values from a predefined list.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;

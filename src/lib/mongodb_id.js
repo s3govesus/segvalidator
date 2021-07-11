@@ -67,8 +67,7 @@ module.exports.checkMongodbID = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error:
-        `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -116,8 +115,7 @@ function checkInvalid(id, type) {
     }
   } catch (ex) {
     result = {
-      error:
-        `An exception error occurred while attempting to check if the ${type} was a valid ID value.`,
+      error: `An exception error occurred while attempting to check if the ${type} was a valid ID value.`,
       exception: ex.message,
     };
   }

@@ -1,5 +1,18 @@
 ## CHANGELOG
 
+### 1.6.1: form input checking
+- added functions specifically designed for providing error-checking for data submitted through html form inputs
+- added `checkFormCheckbox()` to `src/lib/form_checkbox.js` for handling checkbox (boolean) error-checking
+- added `checkFormColor()` to `src/lib/form_color.js` for handling color select input error-checking
+- added `checkFormDate()` to `src/lib/form_date.js` for handling date input error-checking
+- added `checkFormEmail()` to `src/lib/form_email.js` for handling email address input error-checking
+- added `checkFormNumber()` to `src/lib/form_number.js` for handling number input error-checking
+- added `checkFormPassword()` to `src/lib/form_password.js` for handling password input error-checking
+- added `checkFormSelect()` to `src/lib/form_select.js` for handling select input error-checking
+- added `checkFormText()` to `src/lib/form_text.js` for handling text input error-checking
+- added `checkFormTextArea()` to `src/lib/form_text_area.js` for handling text area input error-checking, even though it's basically identical to basic text area input error-checking
+- updated `src/tests.js` to include tests for the new form check functions
+
 ### 1.5.1: hex to latin conversions
 - added sublib functions `hexToLatin()` and `latinToHex()` for converting between strings of hexadecimal characters and their utf8 character equivalent and vice versa
 

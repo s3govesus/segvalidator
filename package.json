@@ -1,6 +1,6 @@
 {
   "name": "segvalidator",
-  "version": "1.5.1",
+  "version": "1.6.1",
   "description": "A collection of functions for validating inputs and providing detailed error data",
   "main": "src/index.js",
   "scripts": {
@@ -19,12 +19,11 @@
     "url": "https://github.com/s3govesus/segvalidator/issues"
   },
   "homepage": "https://github.com/s3govesus/segvalidator#readme",
-  "dependencies": {},
   "devDependencies": {
-    "eslint": "^7.18.0",
+    "eslint": "^7.30.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0"

@@ -6,9 +6,7 @@ module.exports.countries = countries;
 const { checkAddressState, states } = require(`./lib/address_state`);
 module.exports.checkAddressState = checkAddressState;
 module.exports.states = states;
-const { checkAddressLine1, checkAddressLine2 } = require(
-  `./lib/address_street`,
-);
+const { checkAddressLine1, checkAddressLine2 } = require(`./lib/address_street`);
 module.exports.checkAddressLine1 = checkAddressLine1;
 module.exports.checkAddressLine2 = checkAddressLine2;
 const { checkAddressZip } = require(`./lib/address_zip`);
@@ -17,9 +15,7 @@ const { checkBool } = require(`./lib/bool`);
 module.exports.checkBool = checkBool;
 const { checkCardCode } = require(`./lib/card_code`);
 module.exports.checkCardCode = checkCardCode;
-const { checkCardExpirationMonth, checkCardExpirationYear } = require(
-  `./lib/card_expiration`,
-);
+const { checkCardExpirationMonth, checkCardExpirationYear } = require(`./lib/card_expiration`);
 module.exports.checkCardExpirationMonth = checkCardExpirationMonth;
 module.exports.checkCardExpirationYear = checkCardExpirationYear;
 const { checkCardNumber } = require(`./lib/card_number`);
@@ -34,6 +30,24 @@ const { checkEmailAddress, checkEmailConfirm } = require(`./lib/email_address`);
 module.exports.checkEmailAddress = checkEmailAddress;
 module.exports.checkEmailConfirm = checkEmailConfirm;
 module.exports.checkEmailAddressConfirm = checkEmailConfirm;
+const { checkFormCheckbox } = require(`./lib/form_checkbox`);
+module.exports.checkFormCheckbox = checkFormCheckbox;
+const { checkFormColor } = require(`./lib/form_color`);
+module.exports.checkFormColor = checkFormColor;
+const { checkFormDate } = require(`./lib/form_date`);
+module.exports.checkFormDate = checkFormDate;
+const { checkFormEmail } = require(`./lib/form_email`);
+module.exports.checkFormEmail = checkFormEmail;
+const { checkFormNumber } = require(`./lib/form_number`);
+module.exports.checkFormNumber = checkFormNumber;
+const { checkFormPassword } = require(`./lib/form_password`);
+module.exports.checkFormPassword = checkFormPassword;
+const { checkFormSelect } = require(`./lib/form_select`);
+module.exports.checkFormSelect = checkFormSelect;
+const { checkFormText } = require(`./lib/form_text`);
+module.exports.checkFormText = checkFormText;
+const { checkFormTextArea } = require(`./lib/form_text_area`);
+module.exports.checkFormTextArea = checkFormTextArea;
 const { checkGender } = require(`./lib/gender`);
 module.exports.checkGender = checkGender;
 const { checkHash } = require(`./lib/hash`);
@@ -77,13 +91,13 @@ module.exports.latinToHex = latinToHex;
 
 /******************************************************************************/
 
-module.exports.check = (type, arg1, arg2, arg3) => {
+module.exports.check = (mode, arg1, arg2, arg3) => {
   let result;
 
-  type = type.toString();
-  type = type.trim();
-  type = type.toLowerCase();
-  switch (type) {
+  mode = mode.toString();
+  mode = mode.trim();
+  mode = mode.toLowerCase();
+  switch (mode) {
     case `address city`:
     case `addresscity`:
       result = checkAddressCity(arg1, arg2);
@@ -157,6 +171,43 @@ module.exports.check = (type, arg1, arg2, arg3) => {
     case `email address confirmation`:
     case `emailaddressconfirmation`:
       result = checkEmailConfirm(arg1, arg2, arg3);
+      break;
+    case `formcheckbox`:
+    case `form checkbox`:
+      result = checkFormCheckbox(arg1, arg2, arg3);
+      break;
+    case `formcolor`:
+    case `form color`:
+      result = checkFormColor(arg1, arg2, arg3);
+      break;
+    case `formdate`:
+    case `form date`:
+      result = checkFormDate(arg1, arg2, arg3);
+      break;
+    case `formemail`:
+    case `form email`:
+      result = checkFormEmail(arg1, arg2, arg3);
+      break;
+    case `formnumber`:
+    case `form number`:
+      result = checkFormNumber(arg1, arg2, arg3);
+      break;
+    case `formpassword`:
+    case `form password`:
+      result = checkFormPassword(arg1, arg2, arg3);
+      break;
+    case `formselect`:
+    case `form select`:
+      result = checkFormSelect(arg1, arg2, arg3);
+      break;
+    case `formtextarea`:
+    case `form textarea`:
+    case `form text area`:
+      result = checkFormTextArea(arg1, arg2, arg3);
+      break;
+    case `formtext`:
+    case `form text`:
+      result = checkFormText(arg1, arg2, arg3);
       break;
     case `game csv id`:
     case `gamecsvid`:

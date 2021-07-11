@@ -15,6 +15,15 @@ const {
   checkDate,
   checkEmailAddress,
   checkEmailConfirm,
+  checkFormCheckbox,
+  checkFormColor,
+  checkFormDate,
+  checkFormEmail,
+  checkFormNumber,
+  checkFormPassword,
+  checkFormSelect,
+  checkFormTextArea,
+  checkFormText,
   checkGender,
   checkHash,
   checkKey,
@@ -26,6 +35,8 @@ const {
   checkString,
   checkUUID,
   checkWebAddress,
+  hexToLatin,
+  latinToHex,
 } = require(`./index`);
 const { checkEmailAddressConfirm } = require(`./lib/email_address`);
 
@@ -757,6 +768,19 @@ function testHash() {
   });
   console.log(`checkedD | value : ${JSON.stringify(checkedD)}\r\n`);
 
+  const e = `a1108fdd3f7ea1`;
+  const eConversion = hexToLatin(e);
+  const checkedE = checkHash(eConversion, {
+    isRequired: true,
+    trim: false,
+    size: 7,
+    type: `character`,
+    toLowerCase: false,
+  });
+  console.log(`checkedE | value ${JSON.stringify(checkedE)}\r\n`);
+  console.log(checkedE.value);
+  console.log(checkedE.value.length);
+
   console.log(
     `/******************************************************************************/\r\n`,
   );
@@ -1291,7 +1315,7 @@ function testWebAddress() {
     isRequired: true,
     trim: true,
     mode: `ip`,
-    type: `IP`
+    type: `IP`,
   });
   console.log(`${JSON.stringify(checkedB)}\r\n`);
 
@@ -1307,3 +1331,306 @@ function testWebAddress() {
   console.log(`/******************************************************************************/\r\n`);
 }
 testWebAddress();
+
+/******************************************************************************/
+
+function testHexToLatin() {
+  console.log(`testing hexToLatin()...\r\n`);
+
+  const a = `a1108fdd3f7ea1`;
+  const aConversion = hexToLatin(a);
+  console.log(`${a} : ${aConversion}`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testHexToLatin();
+
+/******************************************************************************/
+
+function testFormCheckbox() {
+  console.log(`testing checkFormCheckbox()...\r\n`);
+
+  const a = true;
+  const checkedA = checkFormCheckbox(a, `i agree to the thing`, {
+    isRequired: false,
+  });
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  const b = false;
+  const checkedB = checkFormCheckbox(b, `i agree to the thing`, {
+    isRequired: true,
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormCheckbox();
+
+/******************************************************************************/
+
+function testFormColor() {
+  console.log(`testing checkFormColor()...\r\n`);
+
+  const a = `#aabbcc`;
+  const checkedA = checkFormColor(a, `Favorite Color`);
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  const b = `#aabbdcc`;
+  const checkedB = checkFormColor(b, `Favorite Color`);
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormColor();
+
+/******************************************************************************/
+
+// test check form date
+function testFormDate() {
+  console.log(`testing checkFormDate()...\r\n`);
+
+  const a = `1985-09-29`;
+  const checkedA = checkFormDate(a, `Date of Birth`, {
+    isRequired: true,
+    min: new Date(`1970-01-01`).getTime(),
+    max: new Date(`2000-01-01`).getTime(),
+  });
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  const b = `2001-01-01`;
+  const checkedB = checkFormDate(b, `Date of Birth`, {
+    isRequired: true,
+    min: new Date(`1970-01-01`).getTime(),
+    max: new Date(`1999-01-01`).getTime(),
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  const c = `1980-02-02`;
+  const checkedC = checkFormDate(c, `Date of Birth`, {
+    isRequired: true,
+    min: new Date(`1985-03-04`).getTime(),
+    max: new Date(`2002-04-05`).getTime(),
+  });
+  console.log(`${JSON.stringify(checkedC)}\r\n`);
+
+  const d = undefined;
+  const checkedD = checkFormDate(d, `Date of Birth`, {
+    isRequired: false,
+  });
+  console.log(`${JSON.stringify(checkedD)}\r\n`);
+
+  const e = `fart fart fart`;
+  const checkedE = checkFormDate(e, `Date of Birth`, {
+    isRequired: true,
+  });
+  console.log(`${JSON.stringify(checkedE)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormDate();
+
+/******************************************************************************/
+
+// test check form email
+function testFormEmail() {
+  console.log(`testing checkFormEmail()...\r\n`);
+
+  const a = `thisis@atest.com`;
+  const checkedA = checkFormEmail(a, `E-mail Address`); // use default options
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  // check invalid
+  const b = `you eat poo`;
+  const checkedB = checkFormEmail(b, `Dumb E-mail Address`);
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  // check min
+  const c = `thisemailistooshort@iguess.com`;
+  const checkedC = checkFormEmail(c, `Dumb E-mail Address`,
+    {
+      min: 200,
+    });
+  console.log(`${JSON.stringify(checkedC)}\r\n`);
+
+  // check max
+  const d = `johnsmith@email.com`;
+  const checkedD = checkFormEmail(d, `Dumb Stuff`, {
+    max: 10,
+  });
+  console.log(`${JSON.stringify(checkedD)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormEmail();
+
+/******************************************************************************/
+
+// TODO test check form number
+function testFormNumber() {
+  console.log(`testing checkFormNumber()...\r\n`);
+
+  const a = 7;
+  const checkedA = checkFormNumber(a, `Favorite Number`);
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  // test max
+  const b = 101;
+  const checkedB = checkFormNumber(b, `Favorite Number`, {
+    max: 100,
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  // test min
+  const c = -1;
+  const checkedC = checkFormNumber(c, `Favorite Number`, {
+    min: 0,
+  });
+  console.log(`${JSON.stringify(checkedC)}\r\n`);
+
+  // test step
+  const d = 4.5;
+  const checkedD = checkFormNumber(d, `Favorite Number`, {
+    step: 1,
+  });
+  console.log(`${JSON.stringify(checkedD)}\r\n`);
+
+  // test invalid
+  const e = `fart`;
+  const checkedE = checkFormNumber(e, `Favorite Number`);
+  console.log(`${JSON.stringify(checkedE)}]\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormNumber();
+
+/******************************************************************************/
+
+// test check form password
+function testFormPassword() {
+  console.log(`testing checkFormPassword()...\r\n`);
+
+  // basic test
+  const a = `somepassword`;
+  const checkedA = checkFormPassword(a, `Account Password`);
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  // test min
+  const b = `youeatfarts`;
+  const checkedB = checkFormPassword(b, `Account Password`, {
+    min: 13,
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  // test max
+  const c = `thisisalongpasswordbutprobablynotthelongestever`;
+  const checkedC = checkFormPassword(c, `Account Password`, {
+    max: 10,
+  });
+  console.log(`${JSON.stringify(checkedC)}\r\n`);
+
+  // test size
+  const d = `b2d4e6r8a`;
+  const checkedD = checkFormPassword(d, `Account Password`, {
+    size: 10,
+  });
+  console.log(`${JSON.stringify(checkedD)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormPassword();
+
+/******************************************************************************/
+
+// test check form select
+function testFormSelect() {
+  console.log(`testing checkFormSelect()...\r\n`);
+
+  // basic test
+  const a = `foo`;
+  const checkedA = checkFormSelect(a, `Favorite Thing`, {
+    options: [
+      {
+        value: `foo`,
+      },
+      {
+        value: `bar`,
+      },
+    ],
+  });
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  // not in the list of options
+  const b = `wub`;
+  const checkedB = checkFormSelect(b, `Favorite Thing`, {
+    options: [
+      {
+        value: `foo`,
+      },
+      {
+        value: `bar`,
+      },
+    ],
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormSelect();
+
+/******************************************************************************/
+
+// test check form text area
+function testFormTextArea() {
+  console.log(`testing testFormTextArea()...\r\n`);
+
+  const a = `This is a sample value for a text area.`;
+  const checkedA = checkFormTextArea(a, `New Entry`);
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  // test min
+  const b = `This is a test sample value for min limits.`;
+  const checkedB = checkFormTextArea(b, `New Entry`, {
+    min: 144,
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  // test max
+  const c = `This is a test sample value for max limits.`;
+  const checkedC = checkFormTextArea(c, `New Entry`, {
+    max: 10,
+  });
+  console.log(`${JSON.stringify(checkedC)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormTextArea();
+
+/******************************************************************************/
+
+// test check form text
+function testFormText() {
+  console.log(`testing checkFormText()...\r\n`);
+
+  const a = `This is a sample text input.`;
+  const checkedA = checkFormText(a, `Favorite Phrase`);
+  console.log(`${JSON.stringify(checkedA)}\r\n`);
+
+  // test min
+  const b = `This is a test for the min option.`;
+  const checkedB = checkFormText(b, `Favorite Phrase`, {
+    min: 100,
+  });
+  console.log(`${JSON.stringify(checkedB)}\r\n`);
+
+  // test max
+  const c = `This is a test for the max options.`;
+  const checkedC = checkFormText(c, `Favorite Phrase`, {
+    max: 11,
+  });
+  console.log(`${JSON.stringify(checkedC)}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testFormText();
+
+/******************************************************************************/
