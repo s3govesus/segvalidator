@@ -74,7 +74,7 @@ module.exports.checkHash = (value, options) => {
 
     // attempt to reformat the value data if the options specify to do so
     value = String(value);
-    console.log(value);
+
     if (options.trim === true) {
       value = value.trim();
     }
@@ -82,7 +82,6 @@ module.exports.checkHash = (value, options) => {
       value = value.toLowerCase();
     }
     result.value = value;
-    console.log(result.value);
   } catch (ex) {
     const error = {
       error: `An exception error occurred while attempting to reformat the ${options.type} hash for error-checking.`,

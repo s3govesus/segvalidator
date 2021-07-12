@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.6.2: checkHash fix
+- removed some `console.log()` statements from `checkHash()`
+
 ### 1.6.1: form input checking
 - added functions specifically designed for providing error-checking for data submitted through html form inputs
 - added `checkFormCheckbox()` to `src/lib/form_checkbox.js` for handling checkbox (boolean) error-checking
