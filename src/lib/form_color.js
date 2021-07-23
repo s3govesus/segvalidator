@@ -1,7 +1,7 @@
 const { toBoolean } = require(`./sublib/misc`);
 
 const defaultOptions = {
-  isRequired: false,
+  required: false,
   allow3: false, // allow shortened 3 character values
   allow4: false, // allow shortened 4 character with opacity values
   allow6: true, // this is the standard format for html color input
@@ -19,14 +19,14 @@ module.exports.checkFormColor = (value, type, options) => {
   // assign some basic default values if necessary
   type = type !== undefined ? type : `form color`;
   options = options !== undefined ? options : {};
-  options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : defaultOptions.isRequired;
+  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
   options.allow3 = options.allow3 !== undefined ? options.allow3 : defaultOptions.allow3;
   options.allow4 = options.allow4 !== undefined ? options.allow4 : defaultOptions.allow4;
   options.allow6 = options.allow6 !== undefined ? options.allow6 : defaultOptions.allow6;
   options.allow8 = options.allow8 !== undefined ? options.allow8 : defaultOptions.allow8;
 
   // if the value is empty and required, make an early return
-  if (options.isRequired === true && (result.value === undefined || result.value === ``)) {
+  if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
       error: `The value for the ${type} was empty.`,
@@ -36,7 +36,7 @@ module.exports.checkFormColor = (value, type, options) => {
     return result;
   }
   // early return if a value is not required and the value is empty
-  if (options.isRequired === false && (result.value === undefined || result.value === ``)) {
+  if (options.required === false && (result.value === undefined || result.value === ``)) {
     return result;
   }
 

@@ -1,7 +1,7 @@
 const { toBoolean } = require(`./sublib/misc`);
 
 const defaultOptions = {
-  isRequired: false, // if isRequired === true, the checkbox value must be check, but false doesn't require unchecked
+  required: false, // if required === true, the checkbox value must be check, but false doesn't require unchecked
 };
 
 //
@@ -17,7 +17,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
   // assign some basic default values if necessary
   type = type !== undefined ? type : `form checkbox`;
   options = options !== undefined ? options : {};
-  options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : defaultOptions.isRequired;
+  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
 
   // possibly reformat the value
   // assign valueAsString and valueAsBool
@@ -36,7 +36,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
 
   // if the value is required, check to make sure the value is true
   try {
-    if (options.isRequired !== undefined && options.isRequired === true && result.valueAsBool === false) {
+    if (options.required !== undefined && options.required === true && result.valueAsBool === false) {
       const err = {
         code: 102,
         error: `The ${type} must be checked.`,

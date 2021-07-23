@@ -1,7 +1,7 @@
 const { toBoolean } = require(`./sublib/misc`);
 
 const defaultOptions = {
-  isRequired: false,
+  required: false,
   max: undefined,
   min: undefined,
   step: undefined,
@@ -20,13 +20,13 @@ module.exports.checkFormNumber = (value, type, options) => {
   // assign some basic default values if necessary
   type = type !== undefined ? type : `form number`;
   options = options !== undefined ? options : {};
-  options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : defaultOptions.isRequired;
+  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
   options.max = options.max !== undefined ? options.max : defaultOptions.max;
   options.min = options.min !== undefined ? options.min : defaultOptions.min;
   options.step = options.step !== undefined ? options.step : defaultOptions.step;
 
   // if the value is empty and required, make an early return
-  if (options.isRequired === true && (result.value === undefined || result.value === ``)) {
+  if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
       error: `The value for the ${type} was empty.`,
@@ -36,7 +36,7 @@ module.exports.checkFormNumber = (value, type, options) => {
     return result;
   }
   // early return if a value is not required and the value is empty
-  if (options.isRequired === false && (result.value === undefined || result.value === ``)) {
+  if (options.required === false && (result.value === undefined || result.value === ``)) {
     return result;
   }
 

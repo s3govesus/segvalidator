@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.6.3: check form options changes
+- changed some of the names of the properties on the options for various check form functions to more accurately reflect the HTML equivalent
+
 ### 1.6.2: checkHash fix
 - removed some `console.log()` statements from `checkHash()`
 

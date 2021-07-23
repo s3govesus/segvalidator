@@ -1,9 +1,9 @@
 const { toBoolean } = require(`./sublib/misc`);
 
 const defaultOptions = {
-  isRequired: false,
-  max: undefined,
-  min: undefined,
+  required: false,
+  maxlength: undefined,
+  minlength: undefined,
 };
 
 //
@@ -17,12 +17,12 @@ module.exports.checkFormTextArea = (value, type, options) => {
   // assign some basic default values if necessary
   type = type !== undefined ? type : `form field`;
   options = options !== undefined ? options : {};
-  options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : defaultOptions.isRequired;
-  options.max = options.max !== undefined ? options.max : defaultOptions.max;
-  options.min = options.min !== undefined ? options.min : defaultOptions.min;
+  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
+  options.maxlength = options.maxlength !== undefined ? options.maxlength : defaultOptions.maxlength;
+  options.minlength = options.minlength !== undefined ? options.minlength : defaultOptions.minlength;
 
   // if the value is empty and required, make an early return
-  if (options.isRequired === true && (result.value === undefined || result.value === ``)) {
+  if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
       error: `The value for the ${type} was empty.`,
@@ -32,7 +32,7 @@ module.exports.checkFormTextArea = (value, type, options) => {
     return result;
   }
   // early return if a value is not required and the value is empty
-  if (options.isRequired === false && (result.value === undefined || result.value === ``)) {
+  if (options.required === false && (result.value === undefined || result.value === ``)) {
     return result;
   }
 
@@ -47,12 +47,12 @@ module.exports.checkFormTextArea = (value, type, options) => {
     result.value = result.value.toUpperCase();
   }
 
-  // check to make sure the value meets the max length spec
-  if (options.max !== undefined) {
+  // check to make sure the value meets the maxlength length spec
+  if (options.maxlength !== undefined) {
     try {
-      if (result.value.length > Number(options.max)) {
+      if (result.value.length > Number(options.maxlength)) {
         const err = {
-          error: `The value for the ${type} is too long (max ${options.max} characters).`,
+          error: `The value for the ${type} is too long (maxlength ${options.maxlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -67,12 +67,12 @@ module.exports.checkFormTextArea = (value, type, options) => {
     }
   }
 
-  // check to make sure the value meets the min length spec
-  if (options.min !== undefined) {
+  // check to make sure the value meets the minlength length spec
+  if (options.minlength !== undefined) {
     try {
-      if (result.value.length < Number(options.min)) {
+      if (result.value.length < Number(options.minlength)) {
         const err = {
-          error: `The value for the ${type} is too short (min ${options.min} characters).`,
+          error: `The value for the ${type} is too short (minlength ${options.minlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
