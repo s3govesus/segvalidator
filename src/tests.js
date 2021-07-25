@@ -1339,11 +1339,24 @@ function testHexToLatin() {
 
   const a = `a1108fdd3f7ea1`;
   const aConversion = hexToLatin(a);
-  console.log(`${a} : ${aConversion}`);
+  console.log(`${a} : ${aConversion}\r\n`);
 
   console.log(`/******************************************************************************/\r\n`);
 }
 testHexToLatin();
+
+/******************************************************************************/
+
+function testLatinToHex() {
+  console.log(`testing latinToHex()...\r\n`);
+
+  const a = `this is a test`;
+  const aConversion = latinToHex(a);
+  console.log(`${a} : ${aConversion}\r\n`);
+
+  console.log(`/******************************************************************************/\r\n`);
+}
+testLatinToHex();
 
 /******************************************************************************/
 
@@ -1352,13 +1365,13 @@ function testFormCheckbox() {
 
   const a = true;
   const checkedA = checkFormCheckbox(a, `i agree to the thing`, {
-    isRequired: false,
+    required: false,
   });
   console.log(`${JSON.stringify(checkedA)}\r\n`);
 
   const b = false;
   const checkedB = checkFormCheckbox(b, `i agree to the thing`, {
-    isRequired: true,
+    required: true,
   });
   console.log(`${JSON.stringify(checkedB)}\r\n`);
 
@@ -1391,7 +1404,7 @@ function testFormDate() {
 
   const a = `1985-09-29`;
   const checkedA = checkFormDate(a, `Date of Birth`, {
-    isRequired: true,
+    required: true,
     min: new Date(`1970-01-01`).getTime(),
     max: new Date(`2000-01-01`).getTime(),
   });
@@ -1399,7 +1412,7 @@ function testFormDate() {
 
   const b = `2001-01-01`;
   const checkedB = checkFormDate(b, `Date of Birth`, {
-    isRequired: true,
+    required: true,
     min: new Date(`1970-01-01`).getTime(),
     max: new Date(`1999-01-01`).getTime(),
   });
@@ -1407,7 +1420,7 @@ function testFormDate() {
 
   const c = `1980-02-02`;
   const checkedC = checkFormDate(c, `Date of Birth`, {
-    isRequired: true,
+    required: true,
     min: new Date(`1985-03-04`).getTime(),
     max: new Date(`2002-04-05`).getTime(),
   });
@@ -1415,15 +1428,21 @@ function testFormDate() {
 
   const d = undefined;
   const checkedD = checkFormDate(d, `Date of Birth`, {
-    isRequired: false,
+    required: false,
   });
   console.log(`${JSON.stringify(checkedD)}\r\n`);
 
   const e = `fart fart fart`;
   const checkedE = checkFormDate(e, `Date of Birth`, {
-    isRequired: true,
+    required: true,
   });
   console.log(`${JSON.stringify(checkedE)}\r\n`);
+
+  const f = ``;
+  const checkedF = checkFormDate(f, `Date of Birth`, {
+    required: true,
+  });
+  console.log(`${JSON.stringify(checkedF)}\r\n`);
 
   console.log(`/******************************************************************************/\r\n`);
 }

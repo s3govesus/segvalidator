@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 1.6.4: test fixes
+- fixed some issues with tests
+- added a test for `latinToHex()`
+
 ### 1.6.3: check form options changes
 - changed some of the names of the properties on the options for various check form functions to more accurately reflect the HTML equivalent
 
