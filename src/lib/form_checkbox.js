@@ -39,7 +39,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
     if (options.required !== undefined && options.required === true && result.valueAsBool === false) {
       const err = {
         code: 102,
-        error: `The ${type} must be checked.`,
+        error: `"${type}" must be checked.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -47,7 +47,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 103,
-      error: `An exception error occurred while attempting to check if the ${type} was required and checked.`,
+      error: `An exception error occurred while attempting to check if "${type}" was required and checked.`,
       exception: ex.message,
     };
     result.errors.push(err);

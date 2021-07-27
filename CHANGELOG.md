@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.6.5: form_checkbox error msg
+- made some minor improvements to the error messages for `checkFormCheckbox()`
+
 ### 1.6.4: test fixes
 - fixed some issues with tests
 - added a test for `latinToHex()`
