@@ -29,7 +29,7 @@ module.exports.checkFormPassword = (value, type, options) => {
   if (options.required === true && (result.value === undefined || result.value === `` || result.value.trim() === ``)) {
     const err = {
       code: 101,
-      error: `The value for the ${type} was empty.`,
+      error: `The value for "${type}" was empty.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -45,7 +45,7 @@ module.exports.checkFormPassword = (value, type, options) => {
     if (options.maxlength !== undefined && result.value.length > Number(options.maxlength)) {
       const err = {
         code: 102,
-        error: `The value for the ${type} failed to meet the specification for the maxlengthimum number of characters (${options.maxlength}).`,
+        error: `The value for "${type}" failed to meet the specification for the maximum number of characters (${options.maxlength}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -53,7 +53,7 @@ module.exports.checkFormPassword = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 103,
-      error: `An exception error occurred while attempting to check if the ${type} met the specification for the maxlengthimum number of characters.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the specification for the maximum number of characters.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -65,7 +65,7 @@ module.exports.checkFormPassword = (value, type, options) => {
     if (options.minlength !== undefined && result.value.length < Number(options.minlength)) {
       const err = {
         code: 104,
-        error: `The value for the ${type} failed to meet the specification for the minlengthimum number of characters (${options.minlength}).`,
+        error: `The value for "${type}" failed to meet the specification for the minimum number of characters (${options.minlength}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -73,7 +73,7 @@ module.exports.checkFormPassword = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 105,
-      error: `An exception error occurred while attempting to check if the ${type} met the specification for the minlengthimum number of characters.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the specification for the minimum number of characters.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -85,7 +85,7 @@ module.exports.checkFormPassword = (value, type, options) => {
     if (options.size !== undefined && result.value.length !== Number(options.size)) {
       const err = {
         code: 106,
-        error: `The value for the ${type} failed to meet the specification for the required exact character count (${options.size}).`,
+        error: `The value for "${type}" failed to meet the specification for the required exact character count (${options.size}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -93,7 +93,7 @@ module.exports.checkFormPassword = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 107,
-      error: `An exception error occurred while attempting to check if the ${type} met the specification for the required exact character count.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the specification for the required exact character count.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -105,7 +105,7 @@ module.exports.checkFormPassword = (value, type, options) => {
     if (options.pattern !== undefined && options.pattern.test(result.value) === false) {
       const err = {
         code: 108,
-        error: `The value for the ${type} failed to meet the required pattern specification and was considered invalid.`,
+        error: `The value for "${type}" failed to meet the required pattern specification and was considered invalid.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -113,7 +113,7 @@ module.exports.checkFormPassword = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 109,
-      error: `An exception error occurred while attempting to check if the ${type} met the required pattern specification.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the required pattern specification.`,
       exception: ex.message,
     };
     result.errors.push(err);

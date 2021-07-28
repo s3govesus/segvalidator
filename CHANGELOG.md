@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.6.6: check form error msg fixes
+- made some minor improvements to the error messages for the various check form functions and also fixed a few issues with some of those error messages
+
 ### 1.6.5: form_checkbox error msg
 - made some minor improvements to the error messages for `checkFormCheckbox()`
 

@@ -27,7 +27,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 101,
-      error: `An exception error occurred while attempting to convert the ${type} value to different data types.`,
+      error: `An exception error occurred while attempting to convert the value for "${type}" to different data types.`,
       exception: ex.message,
     };
     result.errors.push(err);

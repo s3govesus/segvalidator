@@ -25,7 +25,7 @@ module.exports.checkFormTextArea = (value, type, options) => {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
-      error: `The value for the ${type} was empty.`,
+      error: `The value for "${type}" was empty.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -52,14 +52,14 @@ module.exports.checkFormTextArea = (value, type, options) => {
     try {
       if (result.value.length > Number(options.maxlength)) {
         const err = {
-          error: `The value for the ${type} is too long (maxlength ${options.maxlength} characters).`,
+          error: `The value for "${type}" is too long (maxlength ${options.maxlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
       }
     } catch (ex) {
       const err = {
-        error: `An exception error occurred while attempting to check if the value for the ${type} is too long.`,
+        error: `An exception error occurred while attempting to check if the value for "${type}" is too long.`,
         exception: ex.message,
       };
       result.errors.push(err);
@@ -72,14 +72,14 @@ module.exports.checkFormTextArea = (value, type, options) => {
     try {
       if (result.value.length < Number(options.minlength)) {
         const err = {
-          error: `The value for the ${type} is too short (minlength ${options.minlength} characters).`,
+          error: `The value for "${type}" is too short (minlength ${options.minlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
       }
     } catch (ex) {
       const err = {
-        error: `An exception error occurred while attempting to check if the value for the ${type} is too short.`,
+        error: `An exception error occurred while attempting to check if the value for "${type}" is too short.`,
         exception: ex.message,
       };
       result.errors.push(err);

@@ -27,7 +27,7 @@ module.exports.checkFormText = (value, type, options) => {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
-      error: `The value for the ${type} was empty.`,
+      error: `The value for "${type}" was empty.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -55,7 +55,7 @@ module.exports.checkFormText = (value, type, options) => {
       if (result.value.length > Number(options.maxlength)) {
         const err = {
           code: 102,
-          error: `The value for the ${type} is too long (maxlength ${options.maxlength} characters).`,
+          error: `The value for "${type}" is too long (maxlength ${options.maxlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -63,7 +63,7 @@ module.exports.checkFormText = (value, type, options) => {
     } catch (ex) {
       const err = {
         code: 103,
-        error: `An exception error occurred while attempting to check if the value for the ${type} is too long.`,
+        error: `An exception error occurred while attempting to check if the value for "${type}" is too long.`,
         exception: ex.message,
       };
       result.errors.push(err);
@@ -77,7 +77,7 @@ module.exports.checkFormText = (value, type, options) => {
       if (result.value.length < Number(options.minlength)) {
         const err = {
           code: 104,
-          error: `The value for the ${type} is too short (minlength ${options.minlength} characters).`,
+          error: `The value for "${type}" is too short (minlength ${options.minlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -85,7 +85,7 @@ module.exports.checkFormText = (value, type, options) => {
     } catch (ex) {
       const err = {
         code: 105,
-        error: `An exception error occurred while attempting to check if the value for the ${type} is too short.`,
+        error: `An exception error occurred while attempting to check if the value for "${type}" is too short.`,
         exception: ex.message,
       };
       result.errors.push(err);
@@ -99,7 +99,7 @@ module.exports.checkFormText = (value, type, options) => {
       if (options.pattern.test(result.value) === false) {
         const err = {
           code: 106,
-          error: `The value for the ${type} doesn't meet the specified pattern requirements.`,
+          error: `The value for "${type}" doesn't meet the specified pattern requirements.`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -107,7 +107,7 @@ module.exports.checkFormText = (value, type, options) => {
     } catch (ex) {
       const err = {
         code: 107,
-        error: `An exception error occurred while attempting to check if the value for the ${type} meets the specified pattern requirements.`,
+        error: `An exception error occurred while attempting to check if the value for "${type}" meets the specified pattern requirements.`,
         exception: ex.message,
       };
       result.errors.push(err);
@@ -121,7 +121,7 @@ module.exports.checkFormText = (value, type, options) => {
       if (result.value.length !== Number(options.size)) {
         const err = {
           code: 108,
-          error: `The value for the ${type} isn't the correct number of characters (${options.size})`,
+          error: `The value for "${type}" isn't the correct number of characters (${options.size})`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -129,7 +129,7 @@ module.exports.checkFormText = (value, type, options) => {
     } catch (ex) {
       const err = {
         code: 109,
-        error: `An exception error occurred while attempting to check if the value for the ${type} is the correct number of characters.`,
+        error: `An exception error occurred while attempting to check if the value for "${type}" is the correct number of characters.`,
         exception: ex.message,
       };
       result.errors.push(err);

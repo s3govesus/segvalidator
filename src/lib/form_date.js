@@ -28,7 +28,7 @@ module.exports.checkFormDate = (value, type, options) => {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
-      error: `The value for the ${type} was empty.`,
+      error: `The value for "${type}" was empty.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -47,7 +47,7 @@ module.exports.checkFormDate = (value, type, options) => {
     if (Number.isNaN(result.valueAsNumber)) {
       const err = {
         code: 102,
-        error: `The value for the ${type} is not a valid date.`,
+        error: `The value for "${type}" is not a valid date.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -55,7 +55,7 @@ module.exports.checkFormDate = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 103,
-      error: `An exception error occurred while attempting to convert the ${type} to different data types.`,
+      error: `An exception error occurred while attempting to convert "${type}" to different data types.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -69,7 +69,7 @@ module.exports.checkFormDate = (value, type, options) => {
       if (result.valueAsNumber < minTime) {
         const err = {
           code: 104,
-          error: `The ${type} failed to meet the minimum date specification.`,
+          error: `"${type}" failed to meet the minimum date specification.`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -78,7 +78,7 @@ module.exports.checkFormDate = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 105,
-      error: `An exception error occurred while attempting to check if the ${type} met the minimum date restriction.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the minimum date restriction.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -91,7 +91,7 @@ module.exports.checkFormDate = (value, type, options) => {
     if (result.valueAsNumber > maxTime) {
       const err = {
         code: 106,
-        error: `The ${type} failed to meet the maximum date specification.`,
+        error: `"${type}" failed to meet the maximum date specification.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -99,7 +99,7 @@ module.exports.checkFormDate = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 107,
-      error: `An exception error occurred while attempting to check if the ${type} met the maximum date restriction.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the maximum date restriction.`,
       exception: ex.message,
     };
     result.errors.push(err);

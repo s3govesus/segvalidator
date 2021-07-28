@@ -29,7 +29,7 @@ module.exports.checkFormNumber = (value, type, options) => {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
-      error: `The value for the ${type} was empty.`,
+      error: `The value for "${type}" was empty.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -47,7 +47,7 @@ module.exports.checkFormNumber = (value, type, options) => {
     if (Number.isNaN(result.valueAsNumber)) {
       const err = {
         code: 102,
-        error: `The value for the ${type} is not a number.`,
+        error: `The value for "${type}" is not a number.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -55,7 +55,7 @@ module.exports.checkFormNumber = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 103,
-      error: `An exception error occurred while attempting to convert the ${type} to different data types.`,
+      error: `An exception error occurred while attempting to convert "${type}" to different data types.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -67,7 +67,7 @@ module.exports.checkFormNumber = (value, type, options) => {
     if (options.max !== undefined && result.valueAsNumber > Number(options.max)) {
       const err = {
         code: 104,
-        error: `The value for the ${type} was greater than the maximum value specification (${options.max}).`,
+        error: `The value for "${type}" was greater than the maximum value specification (${options.max}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -75,7 +75,7 @@ module.exports.checkFormNumber = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 105,
-      error: `An exception error occurred while attempting to check if the ${type} met the maximum value specification.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the maximum value specification.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -87,7 +87,7 @@ module.exports.checkFormNumber = (value, type, options) => {
     if (options.min !== undefined && result.valueAsNumber < Number(options.min)) {
       const err = {
         code: 106,
-        error: `The value for the ${type} was less than the minimum value specification (${options.min}).`,
+        error: `The value for "${type}" was less than the minimum value specification (${options.min}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -95,7 +95,7 @@ module.exports.checkFormNumber = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 107,
-      error: `An exception error occurred while attempting to check if the ${type} met the minimum value specification.`,
+      error: `An exception error occurred while attempting to check if "${type}" met the minimum value specification.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -107,7 +107,7 @@ module.exports.checkFormNumber = (value, type, options) => {
     if (options.step !== undefined && result.valueAsNumber % Number(options.step) > 0) {
       const err = {
         code: 108,
-        error: `The value for the ${type} was not a multiple of the specified stepping (${options.step}).`,
+        error: `The value for "${type}" was not a multiple of the specified stepping (${options.step}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -115,7 +115,7 @@ module.exports.checkFormNumber = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 109,
-      error: `An exception error occurred while attempting to check if the ${type} was a multiple of the specified stepping.`,
+      error: `An exception error occurred while attempting to check if "${type}" was a multiple of the specified stepping.`,
       exception: ex.message,
     };
     result.errors.push(err);

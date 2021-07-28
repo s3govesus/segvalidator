@@ -23,7 +23,7 @@ module.exports.checkFormSelect = (value, type, options) => {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
-      error: `The value for the ${type} was empty.`,
+      error: `The value for "${type}" was empty.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -46,7 +46,7 @@ module.exports.checkFormSelect = (value, type, options) => {
       if (found === false) {
         const err = {
           code: 102,
-          error: `The value for the ${type} failed to be found in the list of possible options.`,
+          error: `The value for "${type}" failed to be found in the list of possible options.`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -55,7 +55,7 @@ module.exports.checkFormSelect = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 103,
-      error: `An exception error occurred while attempting to check if the ${type} was one of the provided possible values.`,
+      error: `An exception error occurred while attempting to check if "${type}" was one of the provided possible values.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;

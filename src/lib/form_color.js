@@ -29,7 +29,7 @@ module.exports.checkFormColor = (value, type, options) => {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 101,
-      error: `The value for the ${type} was empty.`,
+      error: `The value for "${type}" was empty.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -72,7 +72,7 @@ module.exports.checkFormColor = (value, type, options) => {
     if (matchFound === false) {
       const err = {
         code: 102,
-        error: `The value for the ${type} was not a valid hexadecimal color string.`,
+        error: `The value for "${type}" was not a valid hexadecimal color string.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -80,7 +80,7 @@ module.exports.checkFormColor = (value, type, options) => {
   } catch (ex) {
     const err = {
       code: 103,
-      error: `An exception error occurred while attemping to check if the value for the ${type} was a valid hexadecimal color string.`,
+      error: `An exception error occurred while attemping to check if the value for "${type}" was a valid hexadecimal color string.`,
       exception: ex.message,
     };
     result.errors.push(err);
