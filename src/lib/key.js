@@ -1,14 +1,16 @@
 const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 
+/******************************************************************************/
+
 // checks an alphanumeric key for issues
 //
 // EXAMPLE OPTIONS
 // const exOptions = {
+//   type: `confirmation`,
 //   isRequired: true,
 //   trim: true,
 //   size: 20,
 //   isCaseSensitive: false,
-//   type: `confirmation`
 // };
 // TODO add a `clean` option that removes any hyphens or whitespace between characters
 // TODO add more specific error messages for things like length - don't rely only on a regular expression to check for validity
@@ -22,54 +24,32 @@ module.exports.checkKey = (value, options) => {
 
   try {
     // get the options data or fill it with defaults if necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        trim: true,
-        size: 20,
-        isCaseSensitive: false,
-        type: `alphanumeric key`,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.size === undefined) {
-        options.size = 20;
-      } else {
-        options.size = Number(options.size);
-      }
-      if (options.isCaseSensitive === undefined) {
-        options.isCaseSensitive = false;
-      } else {
-        options.isCaseSensitive = toBoolean(options.isCaseSensitive);
-      }
-      if (options.type === undefined) {
-        options.type = `alphanumeric key`;
-      } else if (options.type.indexOf(`key`) < 0) {
-        options.type = `${options.type} key`;
-      } else {
-        options.type = options.type.toString();
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    // get the type or clean it up to reduce redundancies in error messages created by appending 'key' after the type in the error strings
+    options.type = options.type !== undefined ? options.type.toString() : `confirmation`;
+    options.type = options.type.toLowerCase().lastIndexOf(`key`) === (options.type.length - 3) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(` key`)) : options.type;
+    // get the rest of the options
+    options.type = options.type[options.type.length - 1] === ` ` ? options.type.slice(0, options.type.length - 1) : options.type;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.size = options.size !== undefined ? Number(options.size) : 20;
+    options.isCaseSensitive = options.isCaseSensitive !== undefined ? toBoolean(options.isCaseSensitive) : false;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the ${options.type} is undefined.`,
+        error: `No value was provided for the ${options.type || `confirmation`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // attempt to reformat the data in 'value' if options specify to do so
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -79,7 +59,7 @@ module.exports.checkKey = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type} key for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -134,12 +114,12 @@ function checkInvalid(key, type, size, isCaseSensitive) {
     }
     if (keyExp.test(key) === false) {
       result = {
-        error: `The ${type} is not valid.`,
+        error: `The ${type} key is not valid.`,
       };
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the ${type} was a valid alphanumeric key.`,
+      error: `An exception error occurred while attempting to check if the ${type} key was a valid alphanumeric key.`,
       exception: ex.message,
     };
   }

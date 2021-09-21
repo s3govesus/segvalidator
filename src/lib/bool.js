@@ -1,14 +1,16 @@
 const { toBoolean } = require(`./sublib/misc`);
 
+/******************************************************************************/
+
 // check a boolean value to see if it's valid, also check if it's required
 // ! note that the `isRequired` property on the options for this function is somewhat different from most
 // ! on this function it checks to make sure the boolean value is whatever the value for `mustBe` is
 //
 // OPTIONS EXAMPLE
 // const options = {
+//   type: `form checkbox`,
 //   isRequired: false,
 //   mustBe: true, // this defines the value that is required, if the boolean is required to have a specific value (isRequired === true)
-//   type: `form checkbox`
 // };
 module.exports.checkBool = (value, options) => {
   const result = {
@@ -19,43 +21,30 @@ module.exports.checkBool = (value, options) => {
   };
 
   try {
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: false,
-        mustBe: true,
-        type: `form checkbox`,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = false;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.mustBe === undefined) {
-        options.mustBe = true;
-      } else {
-        options.mustBe = toBoolean(options.mustBe);
-      }
-      if (options.type === undefined) {
-        options.type = `form checkbox`;
-      } else {
-        options.type = options.type.toString();
-      }
-    }
+    // get the options data, or fill it with defaults if missing anything
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `form checkbox`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : false;
+    options.mustBe = options.mustBe !== undefined ? toBoolean(options.mustBe) : true;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the ${options.type} is undefined.`,
+        error: `No value was provided for the ${options.type || `form checkbox`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
-    value = toBoolean(value);
+    value = value !== undefined ? toBoolean(value) : false;
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the '${options.type}' boolean value for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the '${options.type || `form checkbox`}' boolean value for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);

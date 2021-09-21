@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### 1.7.1: undefined fixes and various improvements
+- fixed some possible issues when check functions were passed an undefined value and the `isRequired` option was false
+- cleaned up some of the code a little
+- added `type` fields to all `options` parameters
+- removed `checkEmailConfirm()` and `checkPasswordConfirm()` as they're outside the scope of this software
+
 ### 1.6.6: check form error msg fixes
 - made some minor improvements to the error messages for the various check form functions and also fixed a few issues with some of those error messages
 

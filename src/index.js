@@ -26,10 +26,8 @@ const { checkColumnName } = require(`./lib/column_name`);
 module.exports.checkColumnName = checkColumnName;
 const { checkDate } = require(`./lib/date`);
 module.exports.checkDate = checkDate;
-const { checkEmailAddress, checkEmailConfirm } = require(`./lib/email_address`);
+const { checkEmailAddress } = require(`./lib/email_address`);
 module.exports.checkEmailAddress = checkEmailAddress;
-module.exports.checkEmailConfirm = checkEmailConfirm;
-module.exports.checkEmailAddressConfirm = checkEmailConfirm;
 const { checkFormCheckbox } = require(`./lib/form_checkbox`);
 module.exports.checkFormCheckbox = checkFormCheckbox;
 const { checkFormColor } = require(`./lib/form_color`);
@@ -60,8 +58,6 @@ const { checkNumber } = require(`./lib/number`);
 module.exports.checkNumber = checkNumber;
 const { checkPassword } = require(`./lib/password`);
 module.exports.checkPassword = checkPassword;
-const { checkPasswordConfirm } = require(`./lib/password`);
-module.exports.checkPasswordConfirm = checkPasswordConfirm;
 const { checkString } = require(`./lib/string`);
 module.exports.checkString = checkString;
 const { checkUUID } = require(`./lib/uuid`);
@@ -162,16 +158,6 @@ module.exports.check = (mode, arg1, arg2, arg3) => {
     case `emailaddress`:
       result = checkEmailAddress(arg1, arg2);
       break;
-    case `email confirm`:
-    case `emailconfirm`:
-    case `email confirmation`:
-    case `emailconfirmation`:
-    case `email address confirm`:
-    case `emailaddressconfirm`:
-    case `email address confirmation`:
-    case `emailaddressconfirmation`:
-      result = checkEmailConfirm(arg1, arg2, arg3);
-      break;
     case `formcheckbox`:
     case `form checkbox`:
       result = checkFormCheckbox(arg1, arg2, arg3);
@@ -267,12 +253,6 @@ module.exports.check = (mode, arg1, arg2, arg3) => {
       break;
     case `password`:
       result = checkPassword(arg1, arg2);
-      break;
-    case `password confirm`:
-    case `passwordconfirm`:
-    case `password confirmation`:
-    case `passwordconfirmation`:
-      result = checkPasswordConfirm(arg1, arg2, arg3);
       break;
     case `string`:
       result = checkString(arg1, arg2);

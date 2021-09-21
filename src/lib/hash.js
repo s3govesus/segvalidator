@@ -4,11 +4,11 @@ const { toBoolean } = require(`./sublib/misc`);
 //
 // EXAMPLE OPTIONS
 // const options = {
+//   type: `cryptographic`,
 //   isRequired: true,
 //   trim: true,
 //   size: 128,
 //   isCompressed: false,
-//   type: `cryptographic`,
 //   toLowerCase: true
 // };
 // TODO add more specific error-checking with specific error messages, like for length
@@ -22,58 +22,33 @@ module.exports.checkHash = (value, options) => {
   // try to clean up the input
   try {
     // get the options data or fill it with defaults if necessary
-    if (options === undefined) {
-      options = {
-        isRequired: true, // * if false, accepts an empty value
-        trim: true, // * remove any whitespace from the ends of the string
-        size: 128, // * how many characters the value string should be in length
-        isCompressed: false, // * if true, assumes the hex has been converted using `hexToLatin()` and will accept any character instead of only hex values
-        type: `cryptographic`, // * for error messages
-        toLowerCase: true, // * convert the value string to all lowercase characters before processing
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.size === undefined) {
-        options.size = 128;
-      } else {
-        options.size = Number(options.size);
-      }
-      if (options.isCompressed === undefined) {
-        options.isCompressed = false;
-      } else {
-        options.isCompressed = toBoolean(options.isCompressed);
-      }
-      if (options.type === undefined) {
-        options.type = `cryptographic`;
-      } else {
-        options.type = String(options.type);
-      }
-      if (options.toLowerCase === undefined) {
-        options.toLowerCase = true;
-      } else {
-        options.toLowerCase = toBoolean(options.toLowerCase);
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    // get the type or clean it up to reduce redundancies in error messages created by appending 'hash' after the type in the error strings
+    options.type = options.type !== undefined ? String(options.type) : `cryptographic`;
+    options.type = options.type.toLowerCase().lastIndexOf(`hash`) === (options.type.length - 4) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(`hash`)) : options.type;
+    options.type = options.type[options.type.length - 1] === ` ` ? options.type.slice(0, options.type.length - 1) : options.type;
+    // get the rest of the options
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.size = options.size !== undefined ? Number(options.size) : 128;
+    options.isCompressed = options.isCompressed !== undefined ? toBoolean(options.isCompressed) : false;
+    options.toLowerCase = options.toLowerCase !== undefined ? toBoolean(options.toLowerCase) : true;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the ${options.type} hash is undefined.`,
+        error: `No value was provided for the ${options.type || `cryptographic`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // attempt to reformat the value data if the options specify to do so
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
 
     if (options.trim === true) {
       value = value.trim();
@@ -84,7 +59,7 @@ module.exports.checkHash = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} hash for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type || `cryptographic`} hash for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -138,7 +113,7 @@ function checkInvalid(hash, type, size, isCompressed) {
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the ${type} hash was a valid hash.`,
+      error: `An exception error occurred while attempting to check if the ${type} hash was a valid cryptographic hash.`,
       exception: ex.message,
     };
   }

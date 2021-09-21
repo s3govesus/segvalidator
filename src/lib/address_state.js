@@ -20,40 +20,27 @@ module.exports.checkAddressState = (value, options) => {
   //
   try {
     // get the options data, or fill it with defaults if missing anything
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        trim: true,
-        toUpperCase: true,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.toUpperCase === undefined) {
-        options.toUpperCase = true;
-      } else {
-        options.toUpperCase = toBoolean(options.toUpperCase);
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `state code`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.toUpperCase = options.toUpperCase !== undefined ? toBoolean(options.toUpperCase) : true;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the state is undefined.`,
+        error: `No value was provided for the ${options.type || `state code`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // attempt to reformat the value data if specified to do so by the options
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -63,7 +50,7 @@ module.exports.checkAddressState = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the state for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type || `state code`} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -79,14 +66,14 @@ module.exports.checkAddressState = (value, options) => {
     return result;
   }
 
-  const checkedEmpty = checkEmpty(result.value, { type: `state` });
+  const checkedEmpty = checkEmpty(result.value, { type: options.type });
   if (checkedEmpty) {
     result.errors.push(checkedEmpty);
     result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
   // check if the string value matches one in the list of valid states
-  const checkedValid = checkValid(result.value);
+  const checkedValid = checkValid(result.value, options.type);
   if (checkedValid) {
     result.errors.push(checkedValid);
     result.errstr += `${checkedValid.error}\r\n`;
@@ -98,7 +85,7 @@ module.exports.checkAddressState = (value, options) => {
 /******************************************************************************/
 
 // look through the list of 2-digit ISO state codes and see if the string value matches one of them
-function checkValid(state) {
+function checkValid(state, type) {
   let result;
   // attempt to iterate through the list of state codes looking for a match
   try {
@@ -117,7 +104,7 @@ function checkValid(state) {
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the state was valid.`,
+      error: `An exception error occurred while attempting to check if the ${type} was valid.`,
       exception: ex.message,
     };
   }

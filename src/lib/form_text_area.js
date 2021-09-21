@@ -1,10 +1,6 @@
 const { toBoolean } = require(`./sublib/misc`);
 
-const defaultOptions = {
-  required: false,
-  maxlength: undefined,
-  minlength: undefined,
-};
+/******************************************************************************/
 
 //
 module.exports.checkFormTextArea = (value, type, options) => {
@@ -15,17 +11,27 @@ module.exports.checkFormTextArea = (value, type, options) => {
   };
 
   // assign some basic default values if necessary
-  type = type !== undefined ? type : `form field`;
-  options = options !== undefined ? options : {};
-  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
-  options.maxlength = options.maxlength !== undefined ? options.maxlength : defaultOptions.maxlength;
-  options.minlength = options.minlength !== undefined ? options.minlength : defaultOptions.minlength;
+  try {
+    type = type !== undefined ? type : `form field`;
+    options = options !== undefined ? options : {};
+    options.required = options.required !== undefined ? toBoolean(options.required) : false;
+    options.maxlength = options.maxlength !== undefined ? Number(options.maxlength) : undefined;
+    options.minlength = options.minlength !== undefined ? Number(options.minlength) : undefined;
+  } catch (ex) {
+    const err = {
+      code: 101,
+      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      exception: ex.message,
+    };
+    result.errors.push(err);
+    result.errstr += `${err.error}\r\n`;
+  }
 
   // if the value is empty and required, make an early return
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
-      code: 101,
-      error: `The value for "${type}" was empty.`,
+      code: 102,
+      error: `No value was provided for the "${type}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -52,6 +58,7 @@ module.exports.checkFormTextArea = (value, type, options) => {
     try {
       if (result.value.length > Number(options.maxlength)) {
         const err = {
+          code: 103,
           error: `The value for "${type}" is too long (maxlength ${options.maxlength} characters).`,
         };
         result.errors.push(err);
@@ -59,6 +66,7 @@ module.exports.checkFormTextArea = (value, type, options) => {
       }
     } catch (ex) {
       const err = {
+        code: 104,
         error: `An exception error occurred while attempting to check if the value for "${type}" is too long.`,
         exception: ex.message,
       };
@@ -72,6 +80,7 @@ module.exports.checkFormTextArea = (value, type, options) => {
     try {
       if (result.value.length < Number(options.minlength)) {
         const err = {
+          code: 105,
           error: `The value for "${type}" is too short (minlength ${options.minlength} characters).`,
         };
         result.errors.push(err);
@@ -79,6 +88,7 @@ module.exports.checkFormTextArea = (value, type, options) => {
       }
     } catch (ex) {
       const err = {
+        code: 106,
         error: `An exception error occurred while attempting to check if the value for "${type}" is too short.`,
         exception: ex.message,
       };

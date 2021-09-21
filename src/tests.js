@@ -14,7 +14,6 @@ const {
   checkColumnName,
   checkDate,
   checkEmailAddress,
-  checkEmailConfirm,
   checkFormCheckbox,
   checkFormColor,
   checkFormDate,
@@ -31,14 +30,12 @@ const {
   checkName,
   checkNumber,
   checkPassword,
-  checkPasswordConfirm,
   checkString,
   checkUUID,
   checkWebAddress,
   hexToLatin,
   latinToHex,
 } = require(`./index`);
-const { checkEmailAddressConfirm } = require(`./lib/email_address`);
 
 console.log(`running tests...\r\n`);
 
@@ -647,45 +644,6 @@ testEmailAddress();
 
 /******************************************************************************/
 
-// test error-checking that checks to make sure an e-mail address and its confirmation field are identical and valid
-function testEmailAddressConfirm() {
-  console.log(`tests for checkEmailAddress()...\r\n`);
-
-  const a = `mrpoopface@email.com`;
-  const a2 = `mrpoopface@email.com`;
-  const checkedA = checkEmailConfirm(a, a2, {
-    isRequired: true,
-    trim: true,
-    toLowerCase: true,
-  });
-  console.log(`checkedA | value : ${JSON.stringify(checkedA)}\r\n`);
-
-  const b = `mrpoopface@email.com`;
-  const b2 = `mrfartface@email.com`;
-  const checkedB = checkEmailConfirm(b, b2, {
-    isRequired: true,
-    trim: true,
-    toLowerCase: true,
-  });
-  console.log(`checkedB | value : ${JSON.stringify(checkedB)}\r\n`);
-
-  const c = `  mrpoopface@email.com  `;
-  const c2 = `   mrpoopface@email.com        `;
-  const checkedC = checkEmailConfirm(c, c2, {
-    isRequired: true,
-    trim: true,
-    toLowerCase: true,
-  });
-  console.log(`checkedC | value : ${JSON.stringify(checkedC)}\r\n`);
-
-  console.log(
-    `/******************************************************************************/\r\n`,
-  );
-}
-testEmailAddressConfirm();
-
-/******************************************************************************/
-
 function testGender() {
   console.log(`tests for checkGender()...\r\n`);
 
@@ -1136,31 +1094,6 @@ function testPassword() {
   );
 }
 testPassword();
-
-/******************************************************************************/
-
-function testPasswordConfirm() {
-  console.log(`tests for checkPasswordConfirm()...\r\n`);
-
-  const a = `password123!`;
-  const a2 = `password123!`;
-  const checkedA = checkPasswordConfirm(a, a2, {
-    isRequired: true,
-  });
-  console.log(`checkedA | value : ${JSON.stringify(checkedA)}\r\n`);
-
-  const b = `password123!`;
-  const b2 = `paswsord1234`;
-  const checkedB = checkPasswordConfirm(b, b2, {
-    isRequired: true,
-  });
-  console.log(`checkedA | value : ${JSON.stringify(checkedB)}\r\n`);
-
-  console.log(
-    `/******************************************************************************/\r\n`,
-  );
-}
-testPasswordConfirm();
 
 /******************************************************************************/
 
@@ -1651,5 +1584,3 @@ function testFormText() {
   console.log(`/******************************************************************************/\r\n`);
 }
 testFormText();
-
-/******************************************************************************/

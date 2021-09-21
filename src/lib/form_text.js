@@ -1,11 +1,6 @@
 const { toBoolean } = require(`./sublib/misc`);
 
-const defaultOptions = {
-  required: false,
-  maxlength: undefined,
-  minlength: undefined,
-  pattern: undefined,
-};
+/******************************************************************************/
 
 //
 module.exports.checkFormText = (value, type, options) => {
@@ -16,18 +11,28 @@ module.exports.checkFormText = (value, type, options) => {
   };
 
   // assign some basic default values if necessary
-  type = type !== undefined ? type : `form field`;
-  options = options !== undefined ? options : {};
-  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
-  options.maxlength = options.maxlength !== undefined ? options.maxlength : defaultOptions.maxlength;
-  options.minlength = options.minlength !== undefined ? options.minlength : defaultOptions.minlength;
-  options.pattern = options.pattern !== undefined ? options.pattern : defaultOptions.pattern;
+  try {
+    type = type !== undefined ? type : `form field`;
+    options = options !== undefined ? options : {};
+    options.required = options.required !== undefined ? toBoolean(options.required) : false;
+    options.maxlength = options.maxlength !== undefined ? Number(options.maxlength) : undefined;
+    options.minlength = options.minlength !== undefined ? Number(options.minlength) : undefined;
+    options.pattern = options.pattern !== undefined ? options.pattern : undefined;
+  } catch (ex) {
+    const err = {
+      code: 101,
+      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      exception: ex.message,
+    };
+    result.errors.push(err);
+    result.errstr += `${err.error}\r\n`;
+  }
 
   // if the value is empty and required, make an early return
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
-      code: 101,
-      error: `The value for "${type}" was empty.`,
+      code: 102,
+      error: `No value was provided for the "${type}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -54,7 +59,7 @@ module.exports.checkFormText = (value, type, options) => {
     try {
       if (result.value.length > Number(options.maxlength)) {
         const err = {
-          code: 102,
+          code: 103,
           error: `The value for "${type}" is too long (maxlength ${options.maxlength} characters).`,
         };
         result.errors.push(err);
@@ -62,7 +67,7 @@ module.exports.checkFormText = (value, type, options) => {
       }
     } catch (ex) {
       const err = {
-        code: 103,
+        code: 104,
         error: `An exception error occurred while attempting to check if the value for "${type}" is too long.`,
         exception: ex.message,
       };
@@ -76,7 +81,7 @@ module.exports.checkFormText = (value, type, options) => {
     try {
       if (result.value.length < Number(options.minlength)) {
         const err = {
-          code: 104,
+          code: 105,
           error: `The value for "${type}" is too short (minlength ${options.minlength} characters).`,
         };
         result.errors.push(err);
@@ -84,7 +89,7 @@ module.exports.checkFormText = (value, type, options) => {
       }
     } catch (ex) {
       const err = {
-        code: 105,
+        code: 106,
         error: `An exception error occurred while attempting to check if the value for "${type}" is too short.`,
         exception: ex.message,
       };
@@ -98,7 +103,7 @@ module.exports.checkFormText = (value, type, options) => {
     try {
       if (options.pattern.test(result.value) === false) {
         const err = {
-          code: 106,
+          code: 107,
           error: `The value for "${type}" doesn't meet the specified pattern requirements.`,
         };
         result.errors.push(err);
@@ -106,7 +111,7 @@ module.exports.checkFormText = (value, type, options) => {
       }
     } catch (ex) {
       const err = {
-        code: 107,
+        code: 108,
         error: `An exception error occurred while attempting to check if the value for "${type}" meets the specified pattern requirements.`,
         exception: ex.message,
       };
@@ -120,7 +125,7 @@ module.exports.checkFormText = (value, type, options) => {
     try {
       if (result.value.length !== Number(options.size)) {
         const err = {
-          code: 108,
+          code: 109,
           error: `The value for "${type}" isn't the correct number of characters (${options.size})`,
         };
         result.errors.push(err);
@@ -128,7 +133,7 @@ module.exports.checkFormText = (value, type, options) => {
       }
     } catch (ex) {
       const err = {
-        code: 109,
+        code: 110,
         error: `An exception error occurred while attempting to check if the value for "${type}" is the correct number of characters.`,
         exception: ex.message,
       };

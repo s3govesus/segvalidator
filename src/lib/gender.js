@@ -4,6 +4,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //
 // EXAMPLE OPTIONS
 // const options = {
+//   type: `gender`,
 //   isRequired: false,
 //   trim: true,
 //   toLowerCase: true
@@ -19,40 +20,27 @@ module.exports.checkGender = (value, options) => {
   // try to clean up the input
   try {
     // get the options data or fill it with defaults if necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: false,
-        trim: true,
-        toLowerCase: true,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = false;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.toLowerCase === undefined) {
-        options.toLowerCase = true;
-      } else {
-        options.toLowerCase = toBoolean(options.toLowerCase);
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `gender`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : false;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.toLowerCase = options.toLowerCase !== undefined ? toBoolean(options.toLowerCase) : true;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the gender is undefined.`,
+        error: `No value was provided for the ${options.type || `gender`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // attempt to reformat the data in 'value' if options specify to do so
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -62,7 +50,7 @@ module.exports.checkGender = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the gender for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type || `gender`} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -77,13 +65,13 @@ module.exports.checkGender = (value, options) => {
     return result;
   }
 
-  const checkedEmpty = checkEmpty(result.value, { type: `gender` });
+  const checkedEmpty = checkEmpty(result.value, { type: options.type });
   if (checkedEmpty) {
     result.errors.push(checkedEmpty);
     result.errstr += `${checkedEmpty.error}\r\n`;
   }
 
-  const checkedInvalid = checkInvalid(result.value);
+  const checkedInvalid = checkInvalid(result.value, options.type);
   if (checkedInvalid) {
     result.errors.push(checkedInvalid);
     result.errstr += `${checkedInvalid.error}\r\n`;
@@ -94,17 +82,17 @@ module.exports.checkGender = (value, options) => {
 
 /******************************************************************************/
 
-function checkInvalid(gender) {
+function checkInvalid(gender, type) {
   let result;
   try {
     if (gender !== `none` && gender !== `male` && gender !== `female` && gender !== `other`) {
       result = {
-        error: `The gender is not one of the available options.`,
+        error: `The value provided for the ${type} is not one of the available options.`,
       };
     }
   } catch (ex) {
     result = {
-      error: `An exception error occurred while attempting to check if the gender was one of the available options.`,
+      error: `An exception error occurred while attempting to check if the value provided for the ${type} was one of the available options.`,
       exception: ex.message,
     };
   }

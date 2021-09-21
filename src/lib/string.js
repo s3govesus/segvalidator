@@ -1,9 +1,5 @@
 const {
-  checkEmpty,
-  checkLong,
-  checkShort,
-  checkRegex,
-  toBoolean,
+  checkEmpty, checkLong, checkShort, checkRegex, toBoolean,
 } = require(`./sublib/misc`);
 
 /******************************************************************************/
@@ -12,6 +8,7 @@ const {
 // a generic and versatile function for error-checking a string
 //
 // const exOptions = {
+//   type: `text string` // an identifier used primarily in error messages
 //   isRequired: true,
 //   max: -1, // maximum number of characters for checking long - use a value less than 0 to skip checking for this
 //   min: -1, // minimum number of characters for checking minshort - use a value less than 0 to skip checking for this
@@ -21,7 +18,6 @@ const {
 //   toLowerCase: false, // whether or not to reformat the string to lowercase
 //   toUpperCase: false, // whether or not to reformat the string to uppercase
 //   trim: true, // whether or not to trim the string
-//   type: `character string` // an identifier used primarily in error messages
 // };
 module.exports.checkString = (value, options) => {
   const result = {
@@ -33,86 +29,42 @@ module.exports.checkString = (value, options) => {
   // try to clean up the input values
   try {
     // set up defaults for the options or fill in any missing settings with defaults
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        max: -1,
-        min: -1,
-        regex: undefined,
-        list: [],
-        whitespace: false,
-        toLowerCase: false,
-        toUpperCase: false,
-        trim: true,
-        type: `character string`,
-      };
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `text string`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.max = options.max !== undefined ? Number(options.max) : -1;
+    options.min = options.min !== undefined ? Number(options.min) : -1;
+    options.whitespace = options.whitespace !== undefined ? toBoolean(options.whitespace) : false;
+    options.toLowerCase = options.toLowerCase !== undefined ? toBoolean(options.toLowerCase) : false;
+    options.toUpperCase = options.toUpperCase !== undefined ? toBoolean(options.toUpperCase) : false;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    if (options.list === undefined) {
+      options.list = [];
     } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
+      const newList = [];
+      for (const i in options.list) {
+        newList.push(String(options.list[i]));
       }
-      if (options.max === undefined) {
-        options.max = -1;
-      } else {
-        options.max = Number(options.max);
-      }
-      if (options.min === undefined) {
-        options.min = -1;
-      } else {
-        options.min = Number(options.min);
-      }
-      if (options.list === undefined) {
-        options.list = [];
-      } else {
-        const newList = [];
-        for (const i in options.list) {
-          newList.push(String(options.list[i]));
-        }
-        options.list = newList;
-      }
-      if (typeof options.list === `string`) {
-        options.list = [options.list];
-      }
-      if (options.whitespace === undefined) {
-        options.whitespace = false;
-      } else {
-        options.whitespace = toBoolean(options.whitespace);
-      }
-      if (options.toLowerCase === undefined) {
-        options.toLowerCase = false;
-      } else {
-        options.toLowerCase = toBoolean(options.toLowerCase);
-      }
-      if (options.toUpperCase === undefined) {
-        options.toUpperCase = false;
-      } else {
-        options.toUpperCase = toBoolean(options.toUpperCase);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.type === undefined) {
-        options.type = `character string`;
-      } else if (options.type.indexOf(`string`) < 0) {
-        options.type = `${String(options.type)} character string`;
-      } else {
-        options.type = String(options.type);
-      }
+      options.list = newList;
     }
+    if (typeof options.list === `string`) {
+      options.list = [options.list];
+    }
+
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the ${options.type} is undefined.`,
+        error: `No value was provided for the ${options.type || `text string`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // apply any string formatting defined by the options
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
     if (options.whitespace === true) {
       value = value.replace(/[\s\t\r\n]/g, ``);
     }
@@ -128,7 +80,7 @@ module.exports.checkString = (value, options) => {
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type || `text string`} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);

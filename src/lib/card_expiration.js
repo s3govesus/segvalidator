@@ -1,10 +1,15 @@
 const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 
+// * note that this file contains two exported functions checkCardExpirationMonth and checkCardExpirationYear
+
+/******************************************************************************/
+
 // check to make sure the 2-digit month on a payment card is a valid value between 01 and 12
 // ! while this is typically a 2-digit number, the data type is a string
 //
 // OPTIONS EXAMPLE
 // const options = {
+//   type: `card expiration month`,
 //   isRequired: true,
 //   trim: true,
 //   fill: false
@@ -19,40 +24,27 @@ module.exports.checkCardExpirationMonth = (value, options) => {
   // try to clean up the input
   try {
     // get the options data, or fill it with defaults where necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        trim: true,
-        fill: false,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.fill === undefined) {
-        options.fill = false;
-      } else {
-        options.fill = toBoolean(options.fill);
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `card expiration month`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.fill = options.fill !== undefined ? toBoolean(options.fill) : false;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the card expiration month is undefined.`,
+        error: `No value was provided for the ${options.type || `card expiration month`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -65,7 +57,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
   } catch (ex) {
     const error = {
       error:
-        `An exception error occurred while attempting to reformat the card expiration month for error-checking.`,
+        `An exception error occurred while attempting to reformat the ${options.type || `card expiration month`} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -84,10 +76,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
     return result;
   }
 
-  const checkedEmpty = checkEmpty(
-    result.value,
-    { type: `card expiration month` },
-  );
+  const checkedEmpty = checkEmpty(result.value, { type: options.type });
   if (checkedEmpty) {
     result.errors.push(checkedEmpty);
     result.errstr += `${checkedEmpty.error}\r\n`;
@@ -97,7 +86,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
     const regex = /^(0[1-9])|(1[012])$/g;
     if (regex.test(result.value) === false) {
       const error = {
-        error: `The card expiration month is not a valid month.`,
+        error: `The ${options.type} is not a valid month.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -105,7 +94,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
   } catch (ex) {
     const error = {
       error:
-        `An exception error occurred while attempting to check if the card expiration month was a valid month.`,
+        `An exception error occurred while attempting to check if the ${options.type} was a valid month.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -128,6 +117,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
 //
 // OPTIONS EXAMPLE
 // const options = {
+//   type: `card expiration year`,
 //   isRequired: true, // whether or not an error will be retuned if the value is effectively empty
 //   trim: true, // whether or not to trim any extra whitespace characters from the ends of the string - recommended : true
 //   fill: false // whether or not to automatically add `20` in front of the value if it is only 2 characters in length - recommended : false
@@ -141,35 +131,22 @@ module.exports.checkCardExpirationYear = (value, options) => {
 
   try {
     // get the options data, or fill it with defaults where necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        trim: true,
-        fill: false,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.fill === undefined) {
-        options.fill = false;
-      } else {
-        options.fill = toBoolean(options.fill);
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `card expiration year`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.fill = options.fill !== undefined ? toBoolean(options.fill) : false;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the card expiration year is undefined.`,
+        error: `No value was provided for the ${options.type || `card expiration year`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
+      return result;
+    }
+    if (value === undefined && options.isRequired === false) {
       return result;
     }
 
@@ -187,7 +164,7 @@ module.exports.checkCardExpirationYear = (value, options) => {
   } catch (ex) {
     const error = {
       error:
-        `An exception error occurred while attempting to reformat the card expiration year for error-checking.`,
+        `An exception error occurred while attempting to reformat the ${options.type || `card expiration year`} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -196,10 +173,7 @@ module.exports.checkCardExpirationYear = (value, options) => {
   }
 
   if (options.isRequired === true) {
-    const checkedEmpty = checkEmpty(
-      result.value,
-      { type: `card expiration year` },
-    );
+    const checkedEmpty = checkEmpty(result.value, { type: options.type });
     if (checkedEmpty) {
       result.errors.push(checkedEmpty);
       result.errstr += `${checkedEmpty.error}\r\n`;
@@ -216,7 +190,7 @@ module.exports.checkCardExpirationYear = (value, options) => {
     const regex = /^(19|20|21)\d\d$/g;
     if (regex.test(result.value) === false) {
       const error = {
-        error: `The card expiration year is not a valid year.`,
+        error: `The ${options.type} is not a valid year.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -224,7 +198,7 @@ module.exports.checkCardExpirationYear = (value, options) => {
   } catch (ex) {
     const error = {
       error:
-        `An exception error occurred while attempting to check if the card expiration year was a valid year.`,
+        `An exception error occurred while attempting to check if the ${options.type} was a valid year.`,
       exception: ex.message,
     };
     result.errors.push(error);

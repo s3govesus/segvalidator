@@ -1,12 +1,6 @@
 const { toBoolean } = require(`./sublib/misc`);
 
-const defaultOptions = {
-  required: false,
-  allow3: false, // allow shortened 3 character values
-  allow4: false, // allow shortened 4 character with opacity values
-  allow6: true, // this is the standard format for html color input
-  allow8: false, // allow full length 6 character with opacity values
-};
+/******************************************************************************/
 
 //
 module.exports.checkFormColor = (value, type, options) => {
@@ -16,20 +10,30 @@ module.exports.checkFormColor = (value, type, options) => {
     errstr: ``,
   };
 
-  // assign some basic default values if necessary
-  type = type !== undefined ? type : `form color`;
-  options = options !== undefined ? options : {};
-  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
-  options.allow3 = options.allow3 !== undefined ? options.allow3 : defaultOptions.allow3;
-  options.allow4 = options.allow4 !== undefined ? options.allow4 : defaultOptions.allow4;
-  options.allow6 = options.allow6 !== undefined ? options.allow6 : defaultOptions.allow6;
-  options.allow8 = options.allow8 !== undefined ? options.allow8 : defaultOptions.allow8;
+  // get the options data or fill it with defaults if necessary
+  try {
+    type = type !== undefined ? type : `form color`;
+    options = options !== undefined ? options : {};
+    options.required = options.required !== undefined ? toBoolean(options.required) : false;
+    options.allow3 = options.allow3 !== undefined ? toBoolean(options.allow3) : false;
+    options.allow4 = options.allow4 !== undefined ? toBoolean(options.allow4) : false;
+    options.allow6 = options.allow6 !== undefined ? toBoolean(options.allow6) : true;
+    options.allow8 = options.allow8 !== undefined ? toBoolean(options.allow8) : false;
+  } catch (ex) {
+    const err = {
+      code: 101,
+      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      exception: ex.message,
+    };
+    result.errors.push(err);
+    result.errstr += `${err.error}\r\n`;
+  }
 
   // if the value is empty and required, make an early return
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
-      code: 101,
-      error: `The value for "${type}" was empty.`,
+      code: 102,
+      error: `No value was provided for the "${type}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -71,7 +75,7 @@ module.exports.checkFormColor = (value, type, options) => {
 
     if (matchFound === false) {
       const err = {
-        code: 102,
+        code: 103,
         error: `The value for "${type}" was not a valid hexadecimal color string.`,
       };
       result.errors.push(err);
@@ -79,7 +83,7 @@ module.exports.checkFormColor = (value, type, options) => {
     }
   } catch (ex) {
     const err = {
-      code: 103,
+      code: 104,
       error: `An exception error occurred while attemping to check if the value for "${type}" was a valid hexadecimal color string.`,
       exception: ex.message,
     };

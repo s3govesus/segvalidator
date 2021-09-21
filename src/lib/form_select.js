@@ -1,9 +1,6 @@
 const { toBoolean } = require(`./sublib/misc`);
 
-const defaultOptions = {
-  required: false,
-  options: undefined,
-};
+/******************************************************************************/
 
 //
 module.exports.checkFormSelect = (value, type, options) => {
@@ -14,16 +11,26 @@ module.exports.checkFormSelect = (value, type, options) => {
   };
 
   // assign some basic default values if necessary
-  type = type !== undefined ? type : `form select`;
-  options = options !== undefined ? options : {};
-  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
-  options.options = options.options !== undefined ? options.options : defaultOptions.options;
+  try {
+    type = type !== undefined ? type : `form select`;
+    options = options !== undefined ? options : {};
+    options.required = options.required !== undefined ? toBoolean(options.required) : false;
+    options.options = options.options !== undefined ? options.options : undefined;
+  } catch (ex) {
+    const err = {
+      code: 101,
+      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      exception: ex.message,
+    };
+    result.errors.push(err);
+    result.errstr += `${err.error}\r\n`;
+  }
 
   // if the value is empty and required, make an early return
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
-      code: 101,
-      error: `The value for "${type}" was empty.`,
+      code: 102,
+      error: `No value was provided for the "${type}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -45,7 +52,7 @@ module.exports.checkFormSelect = (value, type, options) => {
       }
       if (found === false) {
         const err = {
-          code: 102,
+          code: 103,
           error: `The value for "${type}" failed to be found in the list of possible options.`,
         };
         result.errors.push(err);
@@ -54,7 +61,7 @@ module.exports.checkFormSelect = (value, type, options) => {
     }
   } catch (ex) {
     const err = {
-      code: 103,
+      code: 104,
       error: `An exception error occurred while attempting to check if "${type}" was one of the provided possible values.`,
     };
     result.errors.push(err);

@@ -6,9 +6,9 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //
 // OPTIONS EXAMPLE
 // const options = {
+//   type: `date`,
 //   isRequired: true,
 //   trim: true,
-//   type: `date`,
 //   mustBe13: false,
 //   mustBe18: false,
 //   sourceFormat: `yyyy/mm/dd`,
@@ -27,66 +27,30 @@ module.exports.checkDate = (value, options) => {
   // try to clean up the input
   try {
     // get the options data, or fill it with defaults where necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        trim: true,
-        type: `date`,
-        mustbe13: false,
-        mustbe18: false,
-        sourceFormat: `yyyy/mm/dd`,
-        targetFormat: `yyyy/mm/dd`,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.type === undefined) {
-        options.type = `date`;
-      } else {
-        options.type = options.type.toString();
-      }
-      if (options.mustBe18 === undefined) {
-        options.mustBe18 = false;
-      } else {
-        options.mustBe18 = toBoolean(options.mustBe18);
-      }
-      if (options.mustBe13 === undefined) {
-        options.mustBe13 = false;
-      } else {
-        options.mustBe13 = toBoolean(options.mustBe13);
-      }
-      if (options.sourceFormat === undefined) {
-        options.sourceFormat = `yyyy/mm/dd`;
-      } else {
-        options.sourceFormat = String(options.sourceFormat);
-        options.sourceFormat.replace(`/[-_ .]/g`, `/`);
-      }
-      if (options.targetFormat === undefined) {
-        options.targetFormat = String(options.sourceFormat); // default to the same format as the source
-      } else {
-        options.targetFormat = String(options.targetFormat);
-        options.targetFormat.replace(`/[-_ .]/g`, `/`);
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `date`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.mustBe18 = options.mustBe18 !== undefined ? toBoolean(options.mustBe18) : false;
+    options.mustBe13 = options.mustBe13 !== undefined ? toBoolean(options.mustBe13) : false;
+    options.sourceFormat = options.sourceFormat !== undefined ? options.sourceFormat.toString().replace(`/[-_ .]/g`, `/`) : `yyyy/mm/dd`;
+    options.targetFormat = options.targetFormat !== undefined ? options.targetFormat.toString().replace(`/[-_ .]/g`, `/`) : `yyyy/mm/dd`;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the ${options.type} is undefined.`,
+        error: `No value was provided for the ${options.type || `date`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -143,8 +107,8 @@ module.exports.checkDate = (value, options) => {
   if (options.sourceFormat !== options.targetFormat) {
     const conversion = this.convertDate(result.value, { sourceFormat: options.sourceFormat, targetFormat: options.targetFormat });
     if (conversion.success === false) {
-      result.errors.push({ error: `An error occurred while attempting to convert the date from '${options.sourceFormat}' to '${options.targetFormat}' : ${conversion.error}` });
-      result.errstr += `An error occurred while attempting to convert the date from '${options.sourceFormat}' to '${options.targetFormat}' : ${conversion.error}\r\n`;
+      result.errors.push({ error: `An error occurred while attempting to convert the ${options.type} from '${options.sourceFormat}' to '${options.targetFormat}' : ${conversion.error}` });
+      result.errstr += `An error occurred while attempting to convert the ${options.type} from '${options.sourceFormat}' to '${options.targetFormat}' : ${conversion.error}\r\n`;
     } else {
       result.value = conversion.value;
     }
@@ -193,7 +157,7 @@ function checkFormat(date, type, format) {
     }
     if (regex.test(date) === false) {
       result = {
-        error: `The date of birth was not in a valid format of '${format}'.`,
+        error: `The ${type} was not in a valid format of '${format}'.`,
       };
     }
     // let t = /^(?=.+([\/.-])..\1)(?=.{10}$)(?:(\d{4}).|)(\d\d).(\d\d)(?:.(\d{4})|)$/;

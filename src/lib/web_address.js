@@ -4,10 +4,10 @@ const { toBoolean } = require(`./sublib/misc`);
 //
 // EXAMPLE OPTIONS
 // const options = {
+//   type: `web`,
 //   isRequired: true,
 //   trim: true,
 //   mode: `either`, // or `ip` or `domain`
-//   type: `server`,
 // };
 module.exports.checkWebAddress = (value, options) => {
   const result = {
@@ -19,52 +19,35 @@ module.exports.checkWebAddress = (value, options) => {
   // try to clean up the input
   try {
     // get the options data or fill it with defaults if necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        trim: true,
-        mode: `either`
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.mode === undefined) {
-        options.mode = `either`;
-      } else {
-        options.mode = String(options.mode);
-      }
-      if (options.type === undefined) {
-        options.type = `server`;
-      } else {
-        options.type = String(options.type);
-      }
-      if (value === undefined && options.isRequired === true) {
-        const error = {
-          error: `The ${options.type} address is undefined.  A value must be provided for the ${options.type} address.`
-        };
-        result.errors.push(error);
-        result.errstr += error.error;
-        return result;
-      }
-      if (value === undefined) {
-        value = ``;
-      }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    // get the type or clean it up to reduce redundancies in error messages created by appending 'address' after the type in the error strings
+    options.type = options.type !== undefined ? options.type.toString() : `web`;
+    options.type = options.type.toLowerCase().lastIndexOf(`address`) === (options.type.length - 7) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(`address`)) : options.type;
+    options.type = options.type[options.type.length - 1] === ` ` ? options.type.slice(0, options.type.length - 1) : options.type;
+    // get the rest of the options
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.mode = options.mode !== undefined ? options.mode.toString() : `either`;
 
-      // attempt to reformat the data in 'value' if options specify to do so
-      value = String(value);
-      if (options.trim === true) {
-        value = value.trim();
-      }
-      result.value = value;
+    // if no value is provided and a value is required, early return with an error
+    if (value === undefined && options.isRequired === true) {
+      const error = {
+        error: `No value was provided for the ${options.type} address.`,
+      };
+      result.errors.push(error);
+      result.errstr += error.error;
+      return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
+
+    // attempt to reformat the data in 'value' if options specify to do so
+    value = value !== undefined ? String(value) : ``;
+    if (options.trim === true) {
+      value = value.trim();
+    }
+    result.value = value;
   } catch (ex) {
     const error = {
       error: `An exception error occurred while attempting to reformat the ${options.type} address for error-checking.`,
@@ -91,7 +74,7 @@ module.exports.checkWebAddress = (value, options) => {
   }
 
   return result;
-}
+};
 
 /******************************************************************************/
 
@@ -122,27 +105,27 @@ function checkInvalid(value, type, mode) {
       switch (mode) {
         case `ip`:
           result = {
-            error: `The ${type} IP address is invalid.`,
+            error: `The ${type} address is not a valid IP address.`,
           };
           break;
         case `ipv4`:
           result = {
-            error: `The ${type} IPv4 address is invalid.`,
+            error: `The ${type} address is not a valid IPv4 address.`,
           };
           break;
         case `ipv6`:
           result = {
-            error: `The ${type} IPv6 address is invalid.`,
+            error: `The ${type} address is not a valid IPv6 address.`,
           };
           break;
         case `domain`:
           result = {
-            error: `The ${type} address is invalid.`,
+            error: `The ${type} address is not a valid domain.`,
           };
           break;
         default:
           result = {
-            error: `The ${type} address is invalid.`,
+            error: `The ${type} address is not valid.`,
           };
           break;
       }

@@ -1,8 +1,6 @@
 const { toBoolean } = require(`./sublib/misc`);
 
-const defaultOptions = {
-  required: false, // if required === true, the checkbox value must be check, but false doesn't require unchecked
-};
+/******************************************************************************/
 
 //
 module.exports.checkFormCheckbox = (value, type, options) => {
@@ -14,10 +12,20 @@ module.exports.checkFormCheckbox = (value, type, options) => {
     errstr: ``,
   };
 
-  // assign some basic default values if necessary
-  type = type !== undefined ? type : `form checkbox`;
-  options = options !== undefined ? options : {};
-  options.required = options.required !== undefined ? toBoolean(options.required) : defaultOptions.required;
+  // get the options data or fill it with defaults if necessary
+  try {
+    type = type !== undefined ? type : `form checkbox`;
+    options = options !== undefined ? options : {};
+    options.required = options.required !== undefined ? toBoolean(options.required) : false;
+  } catch (ex) {
+    const err = {
+      code: 101,
+      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      exception: ex.message,
+    };
+    result.errors.push(err);
+    result.errstr += `${err.error}\r\n`;
+  }
 
   // possibly reformat the value
   // assign valueAsString and valueAsBool
@@ -26,7 +34,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
     result.valueAsString = toBoolean(result.value).toString();
   } catch (ex) {
     const err = {
-      code: 101,
+      code: 102,
       error: `An exception error occurred while attempting to convert the value for "${type}" to different data types.`,
       exception: ex.message,
     };
@@ -38,7 +46,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
   try {
     if (options.required !== undefined && options.required === true && result.valueAsBool === false) {
       const err = {
-        code: 102,
+        code: 103,
         error: `"${type}" must be checked.`,
       };
       result.errors.push(err);
@@ -46,7 +54,7 @@ module.exports.checkFormCheckbox = (value, type, options) => {
     }
   } catch (ex) {
     const err = {
-      code: 103,
+      code: 104,
       error: `An exception error occurred while attempting to check if "${type}" was required and checked.`,
       exception: ex.message,
     };

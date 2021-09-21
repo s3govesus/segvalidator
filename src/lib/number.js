@@ -3,6 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 // check a string to see if it can be converted into a valid number
 //
 // const exOptions = {
+//   type: `provided`,
 //   isRequired: true,
 //   min: undefined,
 //   max: undefined,
@@ -12,7 +13,6 @@ const { toBoolean } = require(`./sublib/misc`);
 //   mustBeOdd: false,
 //   mustBeEven: false,
 //   list: [],
-//   type: `number`
 // };
 module.exports.checkNumber = (value, options) => {
   const result = {
@@ -24,75 +24,42 @@ module.exports.checkNumber = (value, options) => {
   // try to clean up the input
   try {
     // get the options data or fill it with defaults if necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        min: undefined,
-        max: undefined,
-        mustBeInt: false,
-        mustBePositive: false,
-        mustBeNegative: false,
-        mustBeOdd: false,
-        mustBeEven: false,
-        list: [],
-        type: `number`,
-      };
+    options = options !== undefined && typeof options === `object` ? options : {};
+    // get the type or clean it up to reduce redundancies in error messages created by appending 'number' after the type in the error strings
+    options.type = options.type !== undefined ? options.type.toString() : `provided`;
+    options.type = options.type.toLowerCase().lastIndexOf(`number`) === (options.type.length - 6) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(`number`)) : options.type;
+    options.type = options.type[options.type.length - 1] === ` ` ? options.type.slice(0, options.type.length - 1) : options.type;
+    // get the rest of the options
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.min = options.min !== undefined ? Number(options.min) : undefined;
+    options.max = options.max !== undefined ? Number(options.max) : undefined;
+    options.mustBeInt = options.mustBeInt !== undefined ? toBoolean(options.mustBeInt) : false;
+    options.mustBePositive = options.mustBePositive !== undefined ? toBoolean(options.mustBePositive) : false;
+    options.mustBeNegative = options.mustBeNegative !== undefined ? toBoolean(options.mustBeNegative) : false;
+    options.mustBeEven = options.mustBeEven !== undefined ? toBoolean(options.mustBeEven) : false;
+    options.mustBeOdd = options.mustBeOdd !== undefined ? toBoolean(options.mustBeOdd) : false;
+    // parse the list as numbers or replace it with an empty array if necessary
+    if (options.list === undefined) {
+      options.list = [];
     } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
+      // reparse the data with every item being forced into a number
+      const newList = [];
+      for (let i = 0; i < options.list.length; i += 1) {
+        newList.push(Number(options.list[i]));
       }
-      if (options.min !== undefined) {
-        options.min = Number(options.min);
-      }
-      if (options.max !== undefined) {
-        options.max = Number(options.max);
-      }
-      if (options.mustBeInt === undefined) {
-        options.mustBeInt = false;
-      } else {
-        options.mustBeInt = toBoolean(options.mustBeInt);
-      }
-      if (options.mustBePositive === undefined) {
-        options.mustBePositive = false;
-      } else {
-        options.mustBePositive = toBoolean(options.mustBePositive);
-      }
-      if (options.mustBeNegative === undefined) {
-        options.mustBeNegative = false;
-      } else {
-        options.mustBeNegative = toBoolean(options.mustBeNegative);
-      }
-      if (options.mustBeOdd === undefined) {
-        options.mustBeOdd = false;
-      } else {
-        options.mustBeOdd = toBoolean(options.mustBeOdd);
-      }
-      if (options.list === undefined) {
-        options.list = [];
-      } else {
-        // reparse the data with every item being forced into a number
-        const newList = [];
-        for (let i = 0; i < options.list.length; i += 1) {
-          newList.push(Number(options.list[i]));
-        }
-        options.list = newList;
-      }
-      if (options.type === undefined) {
-        options.type = `number`;
-      } else if (options.type.indexOf(`number`) < 0) {
-        options.type = `${String(options.type)} number`;
-      } else {
-        options.type = String(options.type);
-      }
+      options.list = newList;
     }
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the ${options.type} is undefined.`,
+        error: `No value was provided for the ${options.type || `provided`} number.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
+      return result;
+    }
+    if (value === undefined && options.isRequired === false) {
       return result;
     }
 
@@ -108,11 +75,11 @@ module.exports.checkNumber = (value, options) => {
     }
 
     // attempt to reformat the data in 'value' to force it to be a number
-    value = Number(value);
+    value = value !== undefined ? Number(value) : undefined;
     result.value = value;
   } catch (ex) {
     const error = {
-      error: `An exception error occurred while attempting to reformat the ${options.type} for error-checking.`,
+      error: `An exception error occurred while attempting to reformat the ${options.type || `provided`} number for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -120,9 +87,9 @@ module.exports.checkNumber = (value, options) => {
     return result;
   }
 
-  if (isNaN(result.value)) {
+  if (Number.isNaN(result.value)) {
     const error = {
-      error: `The value for the ${options.type} is not a valid numerical value.`,
+      error: `The value for the ${options.type} number is not a valid numerical value.`,
     };
     result.errors.push(error);
     result.errstr += `${error.error}\r\n`;
@@ -131,7 +98,7 @@ module.exports.checkNumber = (value, options) => {
   if (options.min !== undefined) {
     if (result.value < options.min) {
       const error = {
-        error: `The ${options.type} value is not greater than the required minimum value of '${options.min}'.`,
+        error: `The ${options.type} number value is not greater than the required minimum value of '${options.min}'.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -141,7 +108,7 @@ module.exports.checkNumber = (value, options) => {
   if (options.max !== undefined) {
     if (result.value > options.max) {
       const error = {
-        error: `The ${options.type} value is not less than the required maximum value of '${options.max}'.`,
+        error: `The ${options.type} number value is not less than the required maximum value of '${options.max}'.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -152,7 +119,7 @@ module.exports.checkNumber = (value, options) => {
   if (options.mustBeInt === true) {
     if (Number.isInteger(result.value) === false) {
       const error = {
-        error: `The ${options.type} value must be an integer (whole number).`,
+        error: `The ${options.type} number value must be an integer (whole number).`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -163,7 +130,7 @@ module.exports.checkNumber = (value, options) => {
   if (options.mustBePositive === true) {
     if (result.value < 0) {
       const error = {
-        error: `The ${options.type} value must be a positive number greater than or equal to zero.`,
+        error: `The ${options.type} number value must be a positive number greater than or equal to zero.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -171,7 +138,7 @@ module.exports.checkNumber = (value, options) => {
   } else if (options.mustBeNegative === true) {
     if (result.value > 0) {
       const error = {
-        error: `The ${options.type} value must be a negative number less than or equal to zero.`,
+        error: `The ${options.type} number value must be a negative number less than or equal to zero.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -182,7 +149,7 @@ module.exports.checkNumber = (value, options) => {
   if (options.mustBeOdd === true) {
     if (result.value % 2 !== 1) {
       const error = {
-        error: `The ${options.type} value must be an odd number.`,
+        error: `The ${options.type} number value must be an odd number.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -190,7 +157,7 @@ module.exports.checkNumber = (value, options) => {
   } else if (options.mustBeEven === true) {
     if (result.value % 2 !== 0) {
       const error = {
-        error: `The ${options.type} value must be an even number.`,
+        error: `The ${options.type} number value must be an even number.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -208,7 +175,7 @@ module.exports.checkNumber = (value, options) => {
     }
     if (valueFound === false) {
       const error = {
-        error: `The ${options.type} value did not match any of the possible values from a predefined list.`,
+        error: `The ${options.type} number value did not match any of the possible values from a predefined list.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;

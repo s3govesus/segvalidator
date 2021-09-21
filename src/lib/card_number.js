@@ -7,6 +7,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //
 // OPTIONS EXAMPLE
 // const options = {
+//   type: `payment card number`,
 //   isRequired: true,
 //   trim: true,
 //   clean: true
@@ -21,40 +22,27 @@ module.exports.checkCardNumber = (value, options) => {
 
   try {
     // get the options data, or fill it with defaults where necessary
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        isRequired: true,
-        trim: true,
-        clean: true,
-      };
-    } else {
-      if (options.isRequired === undefined) {
-        options.isRequired = true;
-      } else {
-        options.isRequired = toBoolean(options.isRequired);
-      }
-      if (options.trim === undefined) {
-        options.trim = true;
-      } else {
-        options.trim = toBoolean(options.trim);
-      }
-      if (options.clean === undefined) {
-        options.clean = true;
-      } else {
-        options.clean = toBoolean(options.clean);
-      }
-    }
+    options = options !== undefined && typeof options === `object` ? options : {};
+    options.type = options.type !== undefined ? options.type.toString() : `payment card number`;
+    options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
+    options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
+    options.clean = options.clean !== undefined ? toBoolean(options.clean) : true;
+
+    // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
       const error = {
-        error: `The value for the payment card number is undefined.`,
+        error: `No value was proivded for the ${options.type || `payment card number`}.`,
       };
       result.errors.push(error);
       result.errstr += error.error;
       return result;
     }
+    if (value === undefined && options.isRequired === false) {
+      return result;
+    }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = String(value);
+    value = value !== undefined ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -65,7 +53,7 @@ module.exports.checkCardNumber = (value, options) => {
   } catch (ex) {
     const error = {
       error:
-        `An exception error occurred while attempting to reformat the payment card number for error-checking.`,
+        `An exception error occurred while attempting to reformat the ${options.type || `payment card number`} for error-checking.`,
       exception: ex.message,
     };
     result.errors.push(error);
@@ -84,10 +72,7 @@ module.exports.checkCardNumber = (value, options) => {
     return result;
   }
 
-  const checkedEmpty = checkEmpty(
-    result.value,
-    { type: `payment card number` },
-  );
+  const checkedEmpty = checkEmpty(result.value, { type: options.type });
   if (checkedEmpty) {
     result.errors.push(checkedEmpty);
     result.errstr += `${checkedEmpty.error}\r\n`;
@@ -118,7 +103,7 @@ module.exports.checkCardNumber = (value, options) => {
 
     if (isValid === false) {
       const error = {
-        error: `The payment card number is not a valid payment card number.`,
+        error: `The ${options.type} is not a valid payment card number.`,
       };
       result.errors.push(error);
       result.errstr += `${error.error}\r\n`;
@@ -126,7 +111,7 @@ module.exports.checkCardNumber = (value, options) => {
   } catch (ex) {
     const error = {
       error:
-        `An exception error occurred while attempting to check if the payment card number was valid.`,
+        `An exception error occurred while attempting to check if the ${options.type} was valid.`,
       exception: ex.message,
     };
     result.errors.push(error);
