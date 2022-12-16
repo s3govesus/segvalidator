@@ -1,4 +1,4 @@
-module.exports.countries = [
+const countries = [
   {
     name: `United States`,
     code: `US`,
@@ -1092,3 +1092,9 @@ module.exports.countries = [
     code: `ZW`,
   },
 ];
+
+/******************************************************************************/
+
+module.exports = {
+  countries,
+};

@@ -9,7 +9,7 @@ const { toBoolean } = require(`./sublib/misc`);
 //   trim: true,
 //   mode: `either`, // or `ip` or `domain`
 // };
-module.exports.checkWebAddress = (value, options) => {
+function checkWebAddress(value, options) {
   const result = {
     value,
     errors: [],
@@ -74,7 +74,7 @@ module.exports.checkWebAddress = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -138,3 +138,9 @@ function checkInvalid(value, type, mode) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkWebAddress,
+};

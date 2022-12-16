@@ -14,7 +14,7 @@ const {
 //   min: 1,
 //   max: 50
 // };
-module.exports.checkName = (value, options) => {
+function checkName(value, options) {
   const result = {
     value,
     errors: [],
@@ -91,4 +91,10 @@ module.exports.checkName = (value, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkName,
 };

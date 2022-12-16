@@ -11,7 +11,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   isRequired: true,
 //   trim: true
 // }
-module.exports.checkAddressZip = (value, options) => {
+function checkAddressZip(value, options) {
   const result = {
     value,
     errors: [],
@@ -80,7 +80,7 @@ module.exports.checkAddressZip = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -103,3 +103,9 @@ function checkValid(zip, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkAddressZip,
+};

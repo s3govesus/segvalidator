@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-module.exports.checkFormCheckbox = (value, type, options) => {
+function checkFormCheckbox(value, type, options) {
   const result = {
     value, // this will be a bool by default
     valueAsBool: undefined,
@@ -63,4 +63,10 @@ module.exports.checkFormCheckbox = (value, type, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkFormCheckbox,
 };

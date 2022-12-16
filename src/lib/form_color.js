@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-module.exports.checkFormColor = (value, type, options) => {
+function checkFormColor(value, type, options) {
   const result = {
     value,
     errors: [],
@@ -92,4 +92,10 @@ module.exports.checkFormColor = (value, type, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkFormColor,
 };

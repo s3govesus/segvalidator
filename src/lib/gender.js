@@ -10,7 +10,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   toLowerCase: true
 // };
 // TODO make this more PC to optionally allow specific non-binary genders instead of simply `other`
-module.exports.checkGender = (value, options) => {
+function checkGender(value, options) {
   const result = {
     value,
     errors: [],
@@ -78,7 +78,7 @@ module.exports.checkGender = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -98,3 +98,9 @@ function checkInvalid(gender, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkGender,
+};

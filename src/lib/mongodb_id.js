@@ -8,7 +8,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   trim: true,
 //   toLowerCase: true,
 // };
-module.exports.checkMongodbID = (value, options) => {
+function checkMongodbID(value, options) {
   const result = {
     value,
     errors: [],
@@ -84,7 +84,7 @@ module.exports.checkMongodbID = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -106,3 +106,9 @@ function checkInvalid(id, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkMongodbID,
+};

@@ -17,7 +17,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //
 // date format is yyyy/mm/dd
 // date regex is /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
-module.exports.checkDate = (value, options) => {
+function checkDate(value, options) {
   const result = {
     value,
     errors: [],
@@ -105,7 +105,7 @@ module.exports.checkDate = (value, options) => {
 
   // convert the format of the date, if the source and target formats are different
   if (options.sourceFormat !== options.targetFormat) {
-    const conversion = this.convertDate(result.value, { sourceFormat: options.sourceFormat, targetFormat: options.targetFormat });
+    const conversion = convertDate(result.value, { sourceFormat: options.sourceFormat, targetFormat: options.targetFormat });
     if (conversion.success === false) {
       result.errors.push({ error: `An error occurred while attempting to convert the ${options.type} from '${options.sourceFormat}' to '${options.targetFormat}' : ${conversion.error}` });
       result.errstr += `An error occurred while attempting to convert the ${options.type} from '${options.sourceFormat}' to '${options.targetFormat}' : ${conversion.error}\r\n`;
@@ -115,7 +115,7 @@ module.exports.checkDate = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -177,6 +177,7 @@ function checkFormat(date, type, format) {
 
 /******************************************************************************/
 
+// TODO move this to sublib/misc.js ???
 // EXAMPLE OPTIONS
 // const options = {
 //   sourceFormat: `YYYY/MM/DD`,
@@ -191,7 +192,7 @@ function checkFormat(date, type, format) {
 //   timestamp64: 496818000000, // the value as a 64-bit JavaScript timestamp
 //   success: true // whether or not the process completed successfully
 // };
-module.exports.convertDate = (date, options) => {
+function convertDate(date, options) {
   const result = {
     value: ``,
     timestamp: 0,
@@ -309,4 +310,11 @@ module.exports.convertDate = (date, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkDate,
+  convertDate,
 };

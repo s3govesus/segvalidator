@@ -12,7 +12,7 @@ const { toBoolean } = require(`./sublib/misc`);
 //   isRequired: false,
 //   mustBe: true, // this defines the value that is required, if the checkbox is required to have a specific value (isRequired === true)
 // };
-module.exports.checkCheckbox = (value, options) => {
+function checkCheckbox(value, options) {
   const result = {
     value,
     intVal: 0,
@@ -65,7 +65,7 @@ module.exports.checkCheckbox = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -98,3 +98,9 @@ function checkRequired(value, type, mustBe) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkCheckbox,
+};

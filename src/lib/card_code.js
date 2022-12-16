@@ -11,7 +11,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   isRequired: true,
 //   trim: true
 // }
-module.exports.checkCardCode = (value, options) => {
+function checkCardCode(value, options) {
   const result = {
     value,
     errors: [],
@@ -77,7 +77,7 @@ module.exports.checkCardCode = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -100,3 +100,9 @@ function checkValid(code, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkCardCode,
+};

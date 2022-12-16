@@ -1,6 +1,5 @@
 const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 const { states } = require(`./sublib/states`);
-module.exports.states = states;
 
 // check to make sure the state is one of the US state 2-digit ISO codes
 //
@@ -10,7 +9,7 @@ module.exports.states = states;
 //   trim: true,
 //   toUpperCase: true
 // };
-module.exports.checkAddressState = (value, options) => {
+function checkAddressState(value, options) {
   const result = {
     value,
     errors: [],
@@ -80,7 +79,7 @@ module.exports.checkAddressState = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -110,3 +109,10 @@ function checkValid(state, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkAddressState,
+  states,
+};

@@ -12,7 +12,7 @@ const { toBoolean } = require(`./sublib/misc`);
 //   toLowerCase: true
 // };
 // TODO add more specific error-checking with specific error messages, like for length
-module.exports.checkHash = (value, options) => {
+function checkHash(value, options) {
   const result = {
     value,
     errors: [],
@@ -91,7 +91,7 @@ module.exports.checkHash = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -119,3 +119,9 @@ function checkInvalid(hash, type, size, isCompressed) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkHash,
+};

@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-module.exports.checkFormNumber = (value, type, options) => {
+function checkFormNumber(value, type, options) {
   const result = {
     value, // this will be a number type by default
     valueAsNumber: undefined,
@@ -128,4 +128,10 @@ module.exports.checkFormNumber = (value, type, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkFormNumber,
 };

@@ -11,7 +11,7 @@ const { checkEmpty, checkLong, toBoolean } = require(`./sublib/misc`);
 //   trim: true
 //   toLowerCase: true
 // };
-module.exports.checkEmailAddress = (value, options) => {
+function checkEmailAddress(value, options) {
   const result = {
     value,
     errors: [],
@@ -88,7 +88,7 @@ module.exports.checkEmailAddress = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -110,3 +110,9 @@ function checkInvalid(emailAddress, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkEmailAddress,
+};

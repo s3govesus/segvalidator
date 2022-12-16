@@ -15,7 +15,7 @@ const {
 //   max: 255,
 //   regex: undefined
 // };
-module.exports.checkPassword = (value, options) => {
+function checkPassword(value, options) {
   const result = {
     value,
     errors: [],
@@ -104,4 +104,10 @@ module.exports.checkPassword = (value, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkPassword,
 };

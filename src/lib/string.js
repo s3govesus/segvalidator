@@ -19,7 +19,7 @@ const {
 //   toUpperCase: false, // whether or not to reformat the string to uppercase
 //   trim: true, // whether or not to trim the string
 // };
-module.exports.checkString = (value, options) => {
+function checkString(value, options) {
   const result = {
     value,
     errors: [],
@@ -162,4 +162,10 @@ module.exports.checkString = (value, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkString,
 };

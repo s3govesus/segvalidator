@@ -1,6 +1,5 @@
 const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 const { countries } = require(`./sublib/countries`);
-module.exports.countries = countries;
 
 // check to make sure the country is one of the 2-digit ISO country codes
 //
@@ -11,7 +10,7 @@ module.exports.countries = countries;
 //   trim: true,
 //   toUpperCase: true
 // };
-module.exports.checkAddressCountry = (value, options) => {
+function checkAddressCountry(value, options) {
   const result = {
     value,
     errors: [],
@@ -81,7 +80,7 @@ module.exports.checkAddressCountry = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -111,3 +110,10 @@ function checkValid(value, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkAddressCountry,
+  countries,
+};

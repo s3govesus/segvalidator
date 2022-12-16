@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-module.exports.checkFormDate = (value, type, options) => {
+function checkFormDate(value, type, options) {
   const result = {
     value,
     valueAsDate: undefined,
@@ -113,4 +113,10 @@ module.exports.checkFormDate = (value, type, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkFormDate,
 };

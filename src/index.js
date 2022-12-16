@@ -1,73 +1,37 @@
 const { checkAddressCity } = require(`./lib/address_city`);
-module.exports.checkAddressCity = checkAddressCity;
 const { checkAddressCountry, countries } = require(`./lib/address_country`);
-module.exports.checkAddressCountry = checkAddressCountry;
-module.exports.countries = countries;
 const { checkAddressState, states } = require(`./lib/address_state`);
-module.exports.checkAddressState = checkAddressState;
-module.exports.states = states;
 const { checkAddressLine1, checkAddressLine2 } = require(`./lib/address_street`);
-module.exports.checkAddressLine1 = checkAddressLine1;
-module.exports.checkAddressLine2 = checkAddressLine2;
 const { checkAddressZip } = require(`./lib/address_zip`);
-module.exports.checkAddressZip = checkAddressZip;
 const { checkBool } = require(`./lib/bool`);
-module.exports.checkBool = checkBool;
 const { checkCardCode } = require(`./lib/card_code`);
-module.exports.checkCardCode = checkCardCode;
 const { checkCardExpirationMonth, checkCardExpirationYear } = require(`./lib/card_expiration`);
-module.exports.checkCardExpirationMonth = checkCardExpirationMonth;
-module.exports.checkCardExpirationYear = checkCardExpirationYear;
 const { checkCardNumber } = require(`./lib/card_number`);
-module.exports.checkCardNumber = checkCardNumber;
 const { checkCheckbox } = require(`./lib/checkbox`);
-module.exports.checkCheckbox = checkCheckbox;
 const { checkColumnName } = require(`./lib/column_name`);
-module.exports.checkColumnName = checkColumnName;
 const { checkDate } = require(`./lib/date`);
-module.exports.checkDate = checkDate;
 const { checkEmailAddress } = require(`./lib/email_address`);
-module.exports.checkEmailAddress = checkEmailAddress;
 const { checkFormCheckbox } = require(`./lib/form_checkbox`);
-module.exports.checkFormCheckbox = checkFormCheckbox;
 const { checkFormColor } = require(`./lib/form_color`);
-module.exports.checkFormColor = checkFormColor;
 const { checkFormDate } = require(`./lib/form_date`);
-module.exports.checkFormDate = checkFormDate;
 const { checkFormEmail } = require(`./lib/form_email`);
-module.exports.checkFormEmail = checkFormEmail;
 const { checkFormNumber } = require(`./lib/form_number`);
-module.exports.checkFormNumber = checkFormNumber;
 const { checkFormPassword } = require(`./lib/form_password`);
-module.exports.checkFormPassword = checkFormPassword;
 const { checkFormSelect } = require(`./lib/form_select`);
-module.exports.checkFormSelect = checkFormSelect;
 const { checkFormText } = require(`./lib/form_text`);
-module.exports.checkFormText = checkFormText;
 const { checkFormTextArea } = require(`./lib/form_text_area`);
-module.exports.checkFormTextArea = checkFormTextArea;
 const { checkGender } = require(`./lib/gender`);
-module.exports.checkGender = checkGender;
 const { checkHash } = require(`./lib/hash`);
-module.exports.checkHash = checkHash;
 const { checkKey } = require(`./lib/key`);
-module.exports.checkKey = checkKey;
 const { checkName } = require(`./lib/name`);
-module.exports.checkName = checkName;
 const { checkNumber } = require(`./lib/number`);
-module.exports.checkNumber = checkNumber;
 const { checkPassword } = require(`./lib/password`);
-module.exports.checkPassword = checkPassword;
 const { checkString } = require(`./lib/string`);
-module.exports.checkString = checkString;
 const { checkUUID } = require(`./lib/uuid`);
-module.exports.checkUUID = checkUUID;
 const { checkMongodbID } = require(`./lib/mongodb_id`);
-module.exports.checkMongodbID = checkMongodbID;
 const { checkWebAddress } = require(`./lib/web_address`);
-module.exports.checkWebAddress = checkWebAddress;
 
-// expose the sublib functions
+// grab the sublib functions to be exposed later
 const {
   checkEmpty,
   checkLong,
@@ -77,16 +41,10 @@ const {
   hexToLatin,
   latinToHex,
 } = require(`./lib/sublib/misc`);
-module.exports.checkEmpty = checkEmpty;
-module.exports.checkLong = checkLong;
-module.exports.checkShort = checkShort;
-module.exports.checkRegex = checkRegex;
-module.exports.toBoolean = toBoolean;
-module.exports.hexToLatin = hexToLatin;
-module.exports.latinToHex = latinToHex;
 
 /******************************************************************************/
 
+// a more universal function, alternative to calling each individual check function
 module.exports.check = (mode, arg1, arg2, arg3) => {
   let result;
 
@@ -266,9 +224,61 @@ module.exports.check = (mode, arg1, arg2, arg3) => {
     case `mongodbid`:
       result = checkMongodbID(arg1, arg2);
       break;
+    case `web address`:
+    case `webaddress`:
+      result = checkWebAddress(arg1, arg2);
+      break;
     default:
       throw new Error(`Validation failed to find a suitable case.`);
   }
 
   return result;
+};
+
+/******************************************************************************/
+
+module.exports = {
+  checkAddressCity,
+  checkAddressCountry,
+  countries,
+  checkAddressState,
+  states,
+  checkAddressLine1,
+  checkAddressLine2,
+  checkAddressZip,
+  checkBool,
+  checkCardCode,
+  checkCardExpirationMonth,
+  checkCardExpirationYear,
+  checkCardNumber,
+  checkCheckbox,
+  checkColumnName,
+  checkDate,
+  checkEmailAddress,
+  checkFormCheckbox,
+  checkFormColor,
+  checkFormDate,
+  checkFormEmail,
+  checkFormNumber,
+  checkFormPassword,
+  checkFormSelect,
+  checkFormText,
+  checkFormTextArea,
+  checkGender,
+  checkHash,
+  checkKey,
+  checkName,
+  checkNumber,
+  checkPassword,
+  checkString,
+  checkUUID,
+  checkMongodbID,
+  checkWebAddress,
+  checkEmpty,
+  checkLong,
+  checkShort,
+  checkRegex,
+  toBoolean,
+  hexToLatin,
+  latinToHex,
 };

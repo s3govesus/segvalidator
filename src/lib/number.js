@@ -14,7 +14,7 @@ const { toBoolean } = require(`./sublib/misc`);
 //   mustBeEven: false,
 //   list: [],
 // };
-module.exports.checkNumber = (value, options) => {
+function checkNumber(value, options) {
   const result = {
     value,
     errors: [],
@@ -183,4 +183,10 @@ module.exports.checkNumber = (value, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkNumber,
 };

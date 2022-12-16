@@ -9,7 +9,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   trim: true,
 //   toLowerCase: true,
 // };
-module.exports.checkUUID = (value, options) => {
+function checkUUID(value, options) {
   const result = {
     value,
     errors: [],
@@ -89,7 +89,7 @@ module.exports.checkUUID = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -137,3 +137,9 @@ function checkInvalid(uuid, type, version) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkUUID,
+};

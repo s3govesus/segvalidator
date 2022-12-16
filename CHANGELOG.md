@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 1.7.2: polish
+- cleaned up code a bit
+- fixed an issue where I forgot to add `checkWebAddress()` to the universal `check()` function
+
 ### 1.7.1: undefined fixes and various improvements
 - fixed some possible issues when check functions were passed an undefined value and the `isRequired` option was false
 - cleaned up some of the code a little

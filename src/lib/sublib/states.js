@@ -1,4 +1,4 @@
-module.exports.states = [
+const states = [
   {
     name: `Alabama`,
     code: `AL`,
@@ -228,3 +228,9 @@ module.exports.states = [
     code: `VI`,
   },
 ];
+
+/******************************************************************************/
+
+module.exports = {
+  states,
+};

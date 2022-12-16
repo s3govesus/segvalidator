@@ -13,7 +13,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   trim: true,
 //   clean: false, // whether or not to replace whitespace characters with underscores
 // }
-module.exports.checkColumnName = (value, options) => {
+function checkColumnName(value, options) {
   const result = {
     value,
     errors: [],
@@ -82,7 +82,7 @@ module.exports.checkColumnName = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -104,3 +104,9 @@ function checkInvalid(name, type) {
   }
   return result;
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkColumnName,
+};

@@ -12,7 +12,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   trim: true,
 //   clean: true
 // };
-module.exports.checkCardNumber = (value, options) => {
+function checkCardNumber(value, options) {
   const result = {
     value,
     errors: [],
@@ -120,7 +120,7 @@ module.exports.checkCardNumber = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -170,3 +170,9 @@ function checkJCB(number) {
   const reg = /^(?:2131|1800|35\d{3})\d{11}$/;
   return reg.test(number);
 }
+
+/******************************************************************************/
+
+module.exports = {
+  checkCardNumber,
+};

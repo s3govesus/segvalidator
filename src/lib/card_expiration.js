@@ -14,7 +14,7 @@ const { checkEmpty, toBoolean } = require(`./sublib/misc`);
 //   trim: true,
 //   fill: false
 // }
-module.exports.checkCardExpirationMonth = (value, options) => {
+function checkCardExpirationMonth(value, options) {
   const result = {
     value,
     errors: [],
@@ -103,7 +103,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -122,7 +122,7 @@ module.exports.checkCardExpirationMonth = (value, options) => {
 //   trim: true, // whether or not to trim any extra whitespace characters from the ends of the string - recommended : true
 //   fill: false // whether or not to automatically add `20` in front of the value if it is only 2 characters in length - recommended : false
 // };
-module.exports.checkCardExpirationYear = (value, options) => {
+function checkCardExpirationYear(value, options) {
   const result = {
     value,
     errors: [],
@@ -207,4 +207,11 @@ module.exports.checkCardExpirationYear = (value, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkCardExpirationMonth,
+  checkCardExpirationYear,
 };

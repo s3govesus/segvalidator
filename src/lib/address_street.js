@@ -15,7 +15,7 @@ const { checkEmpty, checkLong, toBoolean } = require(`./sublib/misc`);
 //   isRequired: true,
 //   trim: true
 // };
-module.exports.checkAddressLine1 = (value, options) => {
+function checkAddressLine1(value, options) {
   const result = {
     value,
     errors: [],
@@ -82,7 +82,7 @@ module.exports.checkAddressLine1 = (value, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -94,7 +94,7 @@ module.exports.checkAddressLine1 = (value, options) => {
 //   isRequired: false,
 //   trim: true
 // };
-module.exports.checkAddressLine2 = (value, options) => {
+function checkAddressLine2(value, options) {
   const result = {
     value,
     errors: [],
@@ -164,4 +164,11 @@ module.exports.checkAddressLine2 = (value, options) => {
   // TODO improve this - add error-checking for minimalistic inputs
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkAddressLine1,
+  checkAddressLine2,
 };

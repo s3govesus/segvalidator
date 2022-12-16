@@ -4,7 +4,7 @@
 // const options = {
 //   type: `character string`
 // };
-module.exports.checkEmpty = (value, options) => {
+function checkEmpty(value, options) {
   let result;
   try {
     // get the options or fill in the undefined with defaults
@@ -30,7 +30,7 @@ module.exports.checkEmpty = (value, options) => {
     };
   }
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -42,7 +42,7 @@ module.exports.checkEmpty = (value, options) => {
 //   max: 255,
 //   filterWhitespace: false, // ignore whitespace characters when calculating string length
 // };
-module.exports.checkLong = (value, options) => {
+function checkLong(value, options) {
   let result;
   try {
     // get the options or fill in the undefined with defaults
@@ -82,7 +82,7 @@ module.exports.checkLong = (value, options) => {
     };
   }
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -94,7 +94,7 @@ module.exports.checkLong = (value, options) => {
 //   min: 1,
 //   filterWhitespace: false,
 // };
-module.exports.checkShort = (value, options) => {
+function checkShort(value, options) {
   let result;
   try {
     // get the options or fill in the undefined with defaults
@@ -118,7 +118,7 @@ module.exports.checkShort = (value, options) => {
       if (options.filterWhitespace === undefined) {
         options.filterWhitespace = false;
       } else {
-        options.filterWhitespace = this.toBoolean(options.filterWhitespace);
+        options.filterWhitespace = toBoolean(options.filterWhitespace);
       }
     }
 
@@ -148,7 +148,7 @@ module.exports.checkShort = (value, options) => {
     }
   }
   return result;
-};
+}
 
 /******************************************************************************/
 
@@ -158,7 +158,7 @@ module.exports.checkShort = (value, options) => {
 // const options = {
 //   type: `data value`,
 // };
-module.exports.checkRegex = (value, regex, options) => {
+function checkRegex(value, regex, options) {
   let result;
 
   try {
@@ -199,12 +199,12 @@ module.exports.checkRegex = (value, regex, options) => {
   }
 
   return result;
-};
+}
 
 /******************************************************************************/
 
 // converts a string or numeric value to a boolean true or false
-module.exports.toBoolean = (value) => {
+function toBoolean(value) {
   if (typeof value === `number`) {
     if (value === 1) {
       return true;
@@ -234,13 +234,13 @@ module.exports.toBoolean = (value) => {
   throw new Error(
     `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
   );
-};
+}
 
 /******************************************************************************/
 
 // takes a string of hexadecimal characters and converts them to plain-text latin1 encoded characters
 // * resulting string will be 1/2x in length
-module.exports.hexToLatin = (hexStr) => {
+function hexToLatin(hexStr) {
   let result;
 
   result = hexStr.split(/(\w\w)/g)
@@ -249,14 +249,13 @@ module.exports.hexToLatin = (hexStr) => {
     .join(``);
 
   return result;
-};
-const { hexToLatin } = this;
+}
 
 /******************************************************************************/
 
 // takes a string of plain-text latin1 encoded characters and converts them to a hexadecimal string
 // * resulting string will be 2x in length
-module.exports.latinToHex = (plainStr) => {
+function latinToHex(plainStr) {
   let result;
 
   result = plainStr.split(``)
@@ -264,5 +263,16 @@ module.exports.latinToHex = (plainStr) => {
     .join(``);
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkEmpty,
+  checkLong,
+  checkShort,
+  checkRegex,
+  toBoolean,
+  hexToLatin,
+  latinToHex,
 };
-const { latinToHex } = this;

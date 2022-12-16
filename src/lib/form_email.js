@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-module.exports.checkFormEmail = (value, type, options) => {
+function checkFormEmail(value, type, options) {
   const result = {
     value,
     valueAsArray: [],
@@ -207,4 +207,10 @@ module.exports.checkFormEmail = (value, type, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkFormEmail,
 };

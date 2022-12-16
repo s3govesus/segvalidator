@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-module.exports.checkFormSelect = (value, type, options) => {
+function checkFormSelect(value, type, options) {
   const result = {
     value,
     errors: [],
@@ -69,4 +69,10 @@ module.exports.checkFormSelect = (value, type, options) => {
   }
 
   return result;
+}
+
+/******************************************************************************/
+
+module.exports = {
+  checkFormSelect,
 };
