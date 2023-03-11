@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.7.3: more polish
+- changed some variable names in some functions to avoid potential issues/confusion
+
 ### 1.7.2: polish
 - cleaned up code a bit
 - fixed an issue where I forgot to add `checkWebAddress()` to the universal `check()` function

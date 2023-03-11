@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-function checkFormEmail(value, type, options) {
+function checkFormEmail(value, label, options) {
   const result = {
     value,
     valueAsArray: [],
@@ -13,7 +13,7 @@ function checkFormEmail(value, type, options) {
 
   // assign some basic default values if necessary
   try {
-    type = type !== undefined ? type : `form e-mail address`;
+    label = label !== undefined ? label : `form e-mail address`;
     options = options !== undefined ? options : {};
     options.required = options.required !== undefined ? toBoolean(options.required) : false;
     options.maxlength = options.maxlength !== undefined ? Number(options.maxlength) : undefined;
@@ -23,7 +23,7 @@ function checkFormEmail(value, type, options) {
   } catch (ex) {
     const err = {
       code: 101,
-      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      error: `An exception error occurred while attempting to parse the options for handling the "${label}"'s error-checking.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -34,7 +34,7 @@ function checkFormEmail(value, type, options) {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 102,
-      error: `No value was provided for the "${type}" field.`,
+      error: `No value was provided for the "${label}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -51,7 +51,7 @@ function checkFormEmail(value, type, options) {
   } catch (ex) {
     const err = {
       code: 103,
-      error: `An exception error occurred while attempting to parse "${type}" as an array.`,
+      error: `An exception error occurred while attempting to parse "${label}" as an array.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -66,7 +66,7 @@ function checkFormEmail(value, type, options) {
           if (result.valueAsArray[i].length > Number(options.maxlength)) {
             const err = {
               code: 104,
-              error: `The value for "${type}" - '${result.valueAsArray[i]}' - failed to meet the specification for the maximum number of characters (${options.maxlength}).`,
+              error: `The value for "${label}" - '${result.valueAsArray[i]}' - failed to meet the specification for the maximum number of characters (${options.maxlength}).`,
             };
             result.errors.push(err);
             result.errstr += `${err.error}\r\n`;
@@ -77,7 +77,7 @@ function checkFormEmail(value, type, options) {
         if (result.value.length > Number(options.maxlength)) {
           const err = {
             code: 105,
-            error: `The value for "${type}" failed to meet the specification for the maximum number of characters (${options.maxlength}).`,
+            error: `The value for "${label}" failed to meet the specification for the maximum number of characters (${options.maxlength}).`,
           };
           result.errors.push(err);
           result.errstr += `${err.error}\r\n`;
@@ -87,7 +87,7 @@ function checkFormEmail(value, type, options) {
   } catch (ex) {
     const err = {
       code: 106,
-      error: `An exception error occurred while attempting to check if "${type}" met the specification for the maximum number of characters.`,
+      error: `An exception error occurred while attempting to check if "${label}" met the specification for the maximum number of characters.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -103,7 +103,7 @@ function checkFormEmail(value, type, options) {
           if (result.valueAsArray[i].length < Number(options.minlength)) {
             const err = {
               code: 107,
-              error: `The value for "${type}" - '${result.valueAsArray[i]}' - failed to meet the specification for the minimum number of characters (${options.minlength}).`,
+              error: `The value for "${label}" - '${result.valueAsArray[i]}' - failed to meet the specification for the minimum number of characters (${options.minlength}).`,
             };
             result.errors.push(err);
             result.errstr += `${err.error}\r\n`;
@@ -114,7 +114,7 @@ function checkFormEmail(value, type, options) {
         if (result.value.length < Number(options.minlength)) {
           const err = {
             code: 108,
-            error: `The value for "${type}" failed to meet the specification for the minimum number of characters (${options.minlength}).`,
+            error: `The value for "${label}" failed to meet the specification for the minimum number of characters (${options.minlength}).`,
           };
           result.errors.push(err);
           result.errstr += `${err.error}\r\n`;
@@ -124,7 +124,7 @@ function checkFormEmail(value, type, options) {
   } catch (ex) {
     const err = {
       code: 109,
-      error: `An exception error occurred while attempting to check if "${type}" met the specification for the minimum number of characters.`,
+      error: `An exception error occurred while attempting to check if "${label}" met the specification for the minimum number of characters.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -140,7 +140,7 @@ function checkFormEmail(value, type, options) {
           if (result.valueAsArray[i].length === Number(options.size)) {
             const err = {
               code: 110,
-              error: `The value for "${type}" - '${result.valueAsArray[i]}' - failed to meet the specification for the required number of characters (${options.size}).`,
+              error: `The value for "${label}" - '${result.valueAsArray[i]}' - failed to meet the specification for the required number of characters (${options.size}).`,
             };
             result.errors.push(err);
             result.errstr += `${err.error}\r\n`;
@@ -151,7 +151,7 @@ function checkFormEmail(value, type, options) {
         if (result.value.length === Number(options.size)) {
           const err = {
             code: 111,
-            error: `The value for "${type}" failed to meet the specification for the required number of characters (${options.size}).`,
+            error: `The value for "${label}" failed to meet the specification for the required number of characters (${options.size}).`,
           };
           result.errors.push(err);
           result.errstr += `${err.error}\r\n`;
@@ -161,7 +161,7 @@ function checkFormEmail(value, type, options) {
   } catch (ex) {
     const err = {
       code: 112,
-      error: `An exception error occurred while attempting to check if "${type}" met the specification for the required number of characters.`,
+      error: `An exception error occurred while attempting to check if "${label}" met the specification for the required number of characters.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -178,7 +178,7 @@ function checkFormEmail(value, type, options) {
           if (options.pattern.test(result.valueAsArray[i]) === false) {
             const err = {
               code: 113,
-              error: `The value for "${type}" - '${result.valueAsArray[i]}' - failed to meet the specified pattern requirements.`,
+              error: `The value for "${label}" - '${result.valueAsArray[i]}' - failed to meet the specified pattern requirements.`,
             };
             result.errors.push(err);
             result.errstr += `${err.error}\r\n`;
@@ -189,7 +189,7 @@ function checkFormEmail(value, type, options) {
         if (options.pattern.test(result.value) === false) {
           const err = {
             code: 114,
-            error: `The value for "${type}" failed to meet the specified pattern requirements.`,
+            error: `The value for "${label}" failed to meet the specified pattern requirements.`,
           };
           result.errors.push(err);
           result.errstr += `${err.error}\r\n`;
@@ -199,7 +199,7 @@ function checkFormEmail(value, type, options) {
   } catch (ex) {
     const err = {
       code: 115,
-      error: `An exception error occurred while attempting to check if "${type}" met the specified pattern requirements.`,
+      error: `An exception error occurred while attempting to check if "${label}" met the specified pattern requirements.`,
       exception: ex.message,
     };
     result.errors.push(err);

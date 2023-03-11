@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-function checkFormCheckbox(value, type, options) {
+function checkFormCheckbox(value, label, options) {
   const result = {
     value, // this will be a bool by default
     valueAsBool: undefined,
@@ -14,13 +14,13 @@ function checkFormCheckbox(value, type, options) {
 
   // get the options data or fill it with defaults if necessary
   try {
-    type = type !== undefined ? type : `form checkbox`;
+    label = label !== undefined ? label : `form checkbox`;
     options = options !== undefined ? options : {};
     options.required = options.required !== undefined ? toBoolean(options.required) : false;
   } catch (ex) {
     const err = {
       code: 101,
-      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      error: `An exception error occurred while attempting to parse the options for handling the "${label}"'s error-checking.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -35,7 +35,7 @@ function checkFormCheckbox(value, type, options) {
   } catch (ex) {
     const err = {
       code: 102,
-      error: `An exception error occurred while attempting to convert the value for "${type}" to different data types.`,
+      error: `An exception error occurred while attempting to convert the value for "${label}" to different data types.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -47,7 +47,7 @@ function checkFormCheckbox(value, type, options) {
     if (options.required !== undefined && options.required === true && result.valueAsBool === false) {
       const err = {
         code: 103,
-        error: `"${type}" must be checked.`,
+        error: `"${label}" must be checked.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -55,7 +55,7 @@ function checkFormCheckbox(value, type, options) {
   } catch (ex) {
     const err = {
       code: 104,
-      error: `An exception error occurred while attempting to check if "${type}" was required and checked.`,
+      error: `An exception error occurred while attempting to check if "${label}" was required and checked.`,
       exception: ex.message,
     };
     result.errors.push(err);

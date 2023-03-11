@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-function checkFormNumber(value, type, options) {
+function checkFormNumber(value, label, options) {
   const result = {
     value, // this will be a number type by default
     valueAsNumber: undefined,
@@ -14,7 +14,7 @@ function checkFormNumber(value, type, options) {
 
   // assign some basic default values if necessary
   try {
-    type = type !== undefined ? type : `form number`;
+    label = label !== undefined ? label : `form number`;
     options = options !== undefined ? options : {};
     options.required = options.required !== undefined ? toBoolean(options.required) : false;
     options.max = options.max !== undefined ? Number(options.max) : undefined;
@@ -23,7 +23,7 @@ function checkFormNumber(value, type, options) {
   } catch (ex) {
     const err = {
       code: 101,
-      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      error: `An exception error occurred while attempting to parse the options for handling the "${label}"'s error-checking.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -34,7 +34,7 @@ function checkFormNumber(value, type, options) {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 102,
-      error: `No value was provided for the "${type}" field.`,
+      error: `No value was provided for the "${label}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -52,7 +52,7 @@ function checkFormNumber(value, type, options) {
     if (Number.isNaN(result.valueAsNumber)) {
       const err = {
         code: 103,
-        error: `The value for "${type}" is not a number.`,
+        error: `The value for "${label}" is not a number.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -60,7 +60,7 @@ function checkFormNumber(value, type, options) {
   } catch (ex) {
     const err = {
       code: 104,
-      error: `An exception error occurred while attempting to convert "${type}" to different data types.`,
+      error: `An exception error occurred while attempting to convert "${label}" to different data types.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -72,7 +72,7 @@ function checkFormNumber(value, type, options) {
     if (options.max !== undefined && result.valueAsNumber > Number(options.max)) {
       const err = {
         code: 105,
-        error: `The value for "${type}" was greater than the maximum value specification (${options.max}).`,
+        error: `The value for "${label}" was greater than the maximum value specification (${options.max}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -80,7 +80,7 @@ function checkFormNumber(value, type, options) {
   } catch (ex) {
     const err = {
       code: 106,
-      error: `An exception error occurred while attempting to check if "${type}" met the maximum value specification.`,
+      error: `An exception error occurred while attempting to check if "${label}" met the maximum value specification.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -92,7 +92,7 @@ function checkFormNumber(value, type, options) {
     if (options.min !== undefined && result.valueAsNumber < Number(options.min)) {
       const err = {
         code: 107,
-        error: `The value for "${type}" was less than the minimum value specification (${options.min}).`,
+        error: `The value for "${label}" was less than the minimum value specification (${options.min}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -100,7 +100,7 @@ function checkFormNumber(value, type, options) {
   } catch (ex) {
     const err = {
       code: 108,
-      error: `An exception error occurred while attempting to check if "${type}" met the minimum value specification.`,
+      error: `An exception error occurred while attempting to check if "${label}" met the minimum value specification.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -112,7 +112,7 @@ function checkFormNumber(value, type, options) {
     if (options.step !== undefined && result.valueAsNumber % Number(options.step) > 0) {
       const err = {
         code: 109,
-        error: `The value for "${type}" was not a multiple of the specified stepping (${options.step}).`,
+        error: `The value for "${label}" was not a multiple of the specified stepping (${options.step}).`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -120,7 +120,7 @@ function checkFormNumber(value, type, options) {
   } catch (ex) {
     const err = {
       code: 110,
-      error: `An exception error occurred while attempting to check if "${type}" was a multiple of the specified stepping.`,
+      error: `An exception error occurred while attempting to check if "${label}" was a multiple of the specified stepping.`,
       exception: ex.message,
     };
     result.errors.push(err);

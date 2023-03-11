@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-function checkFormTextArea(value, type, options) {
+function checkFormTextArea(value, label, options) {
   const result = {
     value,
     errors: [],
@@ -12,7 +12,7 @@ function checkFormTextArea(value, type, options) {
 
   // assign some basic default values if necessary
   try {
-    type = type !== undefined ? type : `form field`;
+    label = label !== undefined ? label : `form field`;
     options = options !== undefined ? options : {};
     options.required = options.required !== undefined ? toBoolean(options.required) : false;
     options.maxlength = options.maxlength !== undefined ? Number(options.maxlength) : undefined;
@@ -20,7 +20,7 @@ function checkFormTextArea(value, type, options) {
   } catch (ex) {
     const err = {
       code: 101,
-      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      error: `An exception error occurred while attempting to parse the options for handling the "${label}"'s error-checking.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -31,7 +31,7 @@ function checkFormTextArea(value, type, options) {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 102,
-      error: `No value was provided for the "${type}" field.`,
+      error: `No value was provided for the "${label}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -59,7 +59,7 @@ function checkFormTextArea(value, type, options) {
       if (result.value.length > Number(options.maxlength)) {
         const err = {
           code: 103,
-          error: `The value for "${type}" is too long (maxlength ${options.maxlength} characters).`,
+          error: `The value for "${label}" is too long (maxlength ${options.maxlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -67,7 +67,7 @@ function checkFormTextArea(value, type, options) {
     } catch (ex) {
       const err = {
         code: 104,
-        error: `An exception error occurred while attempting to check if the value for "${type}" is too long.`,
+        error: `An exception error occurred while attempting to check if the value for "${label}" is too long.`,
         exception: ex.message,
       };
       result.errors.push(err);
@@ -81,7 +81,7 @@ function checkFormTextArea(value, type, options) {
       if (result.value.length < Number(options.minlength)) {
         const err = {
           code: 105,
-          error: `The value for "${type}" is too short (minlength ${options.minlength} characters).`,
+          error: `The value for "${label}" is too short (minlength ${options.minlength} characters).`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -89,7 +89,7 @@ function checkFormTextArea(value, type, options) {
     } catch (ex) {
       const err = {
         code: 106,
-        error: `An exception error occurred while attempting to check if the value for "${type}" is too short.`,
+        error: `An exception error occurred while attempting to check if the value for "${label}" is too short.`,
         exception: ex.message,
       };
       result.errors.push(err);

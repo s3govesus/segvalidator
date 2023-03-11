@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-function checkFormSelect(value, type, options) {
+function checkFormSelect(value, label, options) {
   const result = {
     value,
     errors: [],
@@ -12,14 +12,14 @@ function checkFormSelect(value, type, options) {
 
   // assign some basic default values if necessary
   try {
-    type = type !== undefined ? type : `form select`;
+    label = label !== undefined ? label : `form select`;
     options = options !== undefined ? options : {};
     options.required = options.required !== undefined ? toBoolean(options.required) : false;
     options.options = options.options !== undefined ? options.options : undefined;
   } catch (ex) {
     const err = {
       code: 101,
-      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      error: `An exception error occurred while attempting to parse the options for handling the "${label}"'s error-checking.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -30,7 +30,7 @@ function checkFormSelect(value, type, options) {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 102,
-      error: `No value was provided for the "${type}" field.`,
+      error: `No value was provided for the "${label}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -53,7 +53,7 @@ function checkFormSelect(value, type, options) {
       if (found === false) {
         const err = {
           code: 103,
-          error: `The value for "${type}" failed to be found in the list of possible options.`,
+          error: `The value for "${label}" failed to be found in the list of possible options.`,
         };
         result.errors.push(err);
         result.errstr += `${err.error}\r\n`;
@@ -62,7 +62,7 @@ function checkFormSelect(value, type, options) {
   } catch (ex) {
     const err = {
       code: 104,
-      error: `An exception error occurred while attempting to check if "${type}" was one of the provided possible values.`,
+      error: `An exception error occurred while attempting to check if "${label}" was one of the provided possible values.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;

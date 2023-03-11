@@ -3,7 +3,7 @@ const { toBoolean } = require(`./sublib/misc`);
 /******************************************************************************/
 
 //
-function checkFormColor(value, type, options) {
+function checkFormColor(value, label, options) {
   const result = {
     value,
     errors: [],
@@ -12,7 +12,7 @@ function checkFormColor(value, type, options) {
 
   // get the options data or fill it with defaults if necessary
   try {
-    type = type !== undefined ? type : `form color`;
+    label = label !== undefined ? label : `form color`;
     options = options !== undefined ? options : {};
     options.required = options.required !== undefined ? toBoolean(options.required) : false;
     options.allow3 = options.allow3 !== undefined ? toBoolean(options.allow3) : false;
@@ -22,7 +22,7 @@ function checkFormColor(value, type, options) {
   } catch (ex) {
     const err = {
       code: 101,
-      error: `An exception error occurred while attempting to parse the options for handling the "${type}"'s error-checking.`,
+      error: `An exception error occurred while attempting to parse the options for handling the "${label}"'s error-checking.`,
       exception: ex.message,
     };
     result.errors.push(err);
@@ -33,7 +33,7 @@ function checkFormColor(value, type, options) {
   if (options.required === true && (result.value === undefined || result.value === ``)) {
     const err = {
       code: 102,
-      error: `No value was provided for the "${type}" field.`,
+      error: `No value was provided for the "${label}" field.`,
     };
     result.errors.push(err);
     result.errstr += `${err.error}\r\n`;
@@ -76,7 +76,7 @@ function checkFormColor(value, type, options) {
     if (matchFound === false) {
       const err = {
         code: 103,
-        error: `The value for "${type}" was not a valid hexadecimal color string.`,
+        error: `The value for "${label}" was not a valid hexadecimal color string.`,
       };
       result.errors.push(err);
       result.errstr += `${err.error}\r\n`;
@@ -84,7 +84,7 @@ function checkFormColor(value, type, options) {
   } catch (ex) {
     const err = {
       code: 104,
-      error: `An exception error occurred while attemping to check if the value for "${type}" was a valid hexadecimal color string.`,
+      error: `An exception error occurred while attemping to check if the value for "${label}" was a valid hexadecimal color string.`,
       exception: ex.message,
     };
     result.errors.push(err);
