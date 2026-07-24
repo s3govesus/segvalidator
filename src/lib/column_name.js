@@ -43,7 +43,7 @@ function checkColumnName(value, options) {
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }

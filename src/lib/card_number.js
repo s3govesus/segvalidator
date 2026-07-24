@@ -42,7 +42,7 @@ function checkCardNumber(value, options) {
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -143,7 +143,7 @@ function checkMasterCard(number) {
 
 // checks if the given credit card number is a valid American Express card number, returns true or false
 function checkAmericanExpress(number) {
-  const reg = /^3[47][0-9]{13}/;
+  const reg = /^3[47][0-9]{13}$/;
   return reg.test(number);
 }
 

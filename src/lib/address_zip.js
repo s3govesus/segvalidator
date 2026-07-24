@@ -39,7 +39,7 @@ function checkAddressZip(value, options) {
     }
 
     // attempt to reformat the value data if specified to do so by the options
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }

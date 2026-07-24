@@ -33,8 +33,8 @@ function checkDate(value, options) {
     options.trim = options.trim !== undefined ? toBoolean(options.trim) : true;
     options.mustBe18 = options.mustBe18 !== undefined ? toBoolean(options.mustBe18) : false;
     options.mustBe13 = options.mustBe13 !== undefined ? toBoolean(options.mustBe13) : false;
-    options.sourceFormat = options.sourceFormat !== undefined ? options.sourceFormat.toString().replace(`/[-_ .]/g`, `/`) : `yyyy/mm/dd`;
-    options.targetFormat = options.targetFormat !== undefined ? options.targetFormat.toString().replace(`/[-_ .]/g`, `/`) : `yyyy/mm/dd`;
+    options.sourceFormat = options.sourceFormat !== undefined ? options.sourceFormat.toString().replace(/[-_ .]/g, `/`) : `yyyy/mm/dd`;
+    options.targetFormat = options.targetFormat !== undefined ? options.targetFormat.toString().replace(/[-_ .]/g, `/`) : `yyyy/mm/dd`;
 
     // if no value is provided and a value is required, early return with an error
     if (value === undefined && options.isRequired === true) {
@@ -50,7 +50,7 @@ function checkDate(value, options) {
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }

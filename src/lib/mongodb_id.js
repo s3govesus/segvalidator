@@ -42,7 +42,7 @@ function checkMongodbID(value, options) {
     }
 
     // attempt to reformat the data in 'value' if options specify to do so
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }

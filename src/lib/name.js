@@ -27,7 +27,7 @@ function checkName(value, options) {
     options = options !== undefined && typeof options === `object` ? options : {};
     // get the type or clean it up to reduce redundancies in error messages created by appending 'name' after the type in the error strings
     options.type = options.type !== undefined ? options.type.toString() : `user`;
-    options.type = options.type.toLowerCase().lastIndexOf(`name`) === (options.type.length - 4) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(`user`)) : options.type;
+    options.type = options.type.toLowerCase().lastIndexOf(`name`) === (options.type.length - 4) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(`name`)) : options.type;
     options.type = options.type[options.type.length - 1] === ` ` ? options.type.slice(0, options.type.length - 1) : options.type;
     // get the rest of the options
     options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
@@ -49,7 +49,7 @@ function checkName(value, options) {
     }
 
     // attempt to reformat the data in 'value' if options specify to do so
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }

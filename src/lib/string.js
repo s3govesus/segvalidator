@@ -64,7 +64,7 @@ function checkString(value, options) {
     }
 
     // apply any string formatting defined by the options
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.whitespace === true) {
       value = value.replace(/[\s\t\r\n]/g, ``);
     }

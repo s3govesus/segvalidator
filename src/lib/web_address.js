@@ -43,7 +43,7 @@ function checkWebAddress(value, options) {
     }
 
     // attempt to reformat the data in 'value' if options specify to do so
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -82,22 +82,29 @@ function checkWebAddress(value, options) {
 function checkInvalid(value, type, mode) {
   let result;
   try {
+    // pattern sources, combined and anchored below depending on `mode`
+    // ! note that the ipv6 pattern supports both fully-expanded and `::`-compressed notation, in either upper or lower case
+    const octetSrc = `(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])`;
+    const ipv4Src = `${octetSrc}(?:\\.${octetSrc}){3}`;
+    const ipv6Src = `(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(?::[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(?::[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(?::[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(?::[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:(?:(?::[0-9a-fA-F]{1,4}){1,6})|:(?:(?::[0-9a-fA-F]{1,4}){1,7}|:)`;
+    const domainSrc = `(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,}`;
+
     let regex;
     switch (mode) {
       case `ip`:
-        regex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$|^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/;
+        regex = new RegExp(`^(?:${ipv4Src})$|^(?:${ipv6Src})$`, `i`);
         break;
       case `ipv4`:
-        regex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+        regex = new RegExp(`^${ipv4Src}$`);
         break;
       case `ipv6`:
-        regex = /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/;
+        regex = new RegExp(`^(?:${ipv6Src})$`, `i`);
         break;
       case `domain`:
-        regex = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/;
+        regex = new RegExp(`^${domainSrc}$`, `i`);
         break;
       default:
-        regex = /^((?!-)[A-Za-z0-9-]{1, 63}(?<!-)\\.)+[A-Za-z]{2, 6}$|^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$|^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/;
+        regex = new RegExp(`^${domainSrc}$|^${ipv4Src}$|^(?:${ipv6Src})$`, `i`);
         break;
     }
     if (regex.test(value) === false) {

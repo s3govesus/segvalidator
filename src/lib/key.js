@@ -27,7 +27,7 @@ function checkKey(value, options) {
     options = options !== undefined && typeof options === `object` ? options : {};
     // get the type or clean it up to reduce redundancies in error messages created by appending 'key' after the type in the error strings
     options.type = options.type !== undefined ? options.type.toString() : `confirmation`;
-    options.type = options.type.toLowerCase().lastIndexOf(`key`) === (options.type.length - 3) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(` key`)) : options.type;
+    options.type = options.type.toLowerCase().lastIndexOf(`key`) === (options.type.length - 3) ? options.type.slice(0, options.type.toLowerCase().lastIndexOf(`key`)) : options.type;
     // get the rest of the options
     options.type = options.type[options.type.length - 1] === ` ` ? options.type.slice(0, options.type.length - 1) : options.type;
     options.isRequired = options.isRequired !== undefined ? toBoolean(options.isRequired) : true;
@@ -49,7 +49,7 @@ function checkKey(value, options) {
     }
 
     // attempt to reformat the data in 'value' if options specify to do so
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }

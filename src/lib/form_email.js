@@ -19,7 +19,7 @@ function checkFormEmail(value, label, options) {
     options.maxlength = options.maxlength !== undefined ? Number(options.maxlength) : undefined;
     options.minlength = options.minlength !== undefined ? Number(options.minlength) : undefined;
     options.size = options.size !== undefined ? Number(options.size) : undefined;
-    options.pattern = options.pattern !== undefined ? options.pattern : /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; // uses a regex for the RFC 5322 standard by default
+    options.pattern = options.pattern !== undefined ? options.pattern : /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i; // uses a regex for the RFC 5322 standard by default
   } catch (ex) {
     const err = {
       code: 101,
@@ -137,7 +137,7 @@ function checkFormEmail(value, label, options) {
       // check an array if necessary
       if (result.valueAsArray.length > 1) {
         for (let i in result.valueAsArray) {
-          if (result.valueAsArray[i].length === Number(options.size)) {
+          if (result.valueAsArray[i].length !== Number(options.size)) {
             const err = {
               code: 110,
               error: `The value for "${label}" - '${result.valueAsArray[i]}' - failed to meet the specification for the required number of characters (${options.size}).`,
@@ -148,7 +148,7 @@ function checkFormEmail(value, label, options) {
         }
       } else {
         // check a single email if there's only one email address instead of an array
-        if (result.value.length === Number(options.size)) {
+        if (result.value.length !== Number(options.size)) {
           const err = {
             code: 111,
             error: `The value for "${label}" failed to meet the specification for the required number of characters (${options.size}).`,

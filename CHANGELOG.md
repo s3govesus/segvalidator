@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 1.7.4: bug fixes
+- fixed `checkEmailAddress()` and `checkFormEmail()`'s default pattern not being anchored, which let strings merely *containing* an email address pass as valid
+- fixed a regex operator precedence bug in `checkCardExpirationMonth()` that let some invalid month values pass
+- fixed `checkCardNumber()`'s American Express regex missing an end anchor, allowing overly-long numbers to validate
+- fixed `checkWebAddress()`'s default-mode domain regex (invalid quantifier syntax and an over-escaped dot made that branch effectively dead), its IPv6 regex (now accepts lowercase and `::`-compressed addresses), and its IPv4 regex (each octet is now bounded to 0-255 instead of accepting any 1-3 digit number, e.g. `999.168.1.1` no longer validates)
+- fixed inverted `size` check logic in `checkFormEmail()` that flagged correctly-sized values as errors and let incorrectly-sized ones through
+- fixed `checkName()` and `checkKey()` mangling the `type` string used in error messages due to copy/paste and space-matching mistakes
+- fixed `checkDate()`'s `sourceFormat`/`targetFormat` normalization being a no-op (a regex was passed as a plain string), which broke non-default date format separators
+- fixed `checkNumber()` throwing an internal exception instead of treating `null` as empty when `isRequired: false`
+- fixed `null` values being converted to the literal string `"null"` instead of being treated as empty across most `check*()` functions
+- fixed a typo in `checkPassword()`'s exception message and a stray character in `checkUUID()`'s v6/v7 regex
+
 ### 1.7.3: more polish
 - changed some variable names in some functions to avoid potential issues/confusion
 

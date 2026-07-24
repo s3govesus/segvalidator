@@ -44,7 +44,7 @@ function checkCardExpirationMonth(value, options) {
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -83,7 +83,7 @@ function checkCardExpirationMonth(value, options) {
   }
 
   try {
-    const regex = /^(0[1-9])|(1[012])$/g;
+    const regex = /^(0[1-9]|1[012])$/;
     if (regex.test(result.value) === false) {
       const error = {
         error: `The ${options.type} is not a valid month.`,
@@ -151,7 +151,7 @@ function checkCardExpirationYear(value, options) {
     }
 
     // attempt to reformat the data in 'value' however defined by 'options'
-    value = String(value);
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }

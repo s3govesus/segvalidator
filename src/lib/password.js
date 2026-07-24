@@ -44,7 +44,7 @@ function checkPassword(value, options) {
       return result;
     }
 
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     result.value = value;
   } catch (ex) {
     const error = {
@@ -94,7 +94,7 @@ function checkPassword(value, options) {
     } catch (ex) {
       // exception error!
       const error = {
-        error: `An exception error occurred while attempting to check if the $ met criteria provided by the server.`,
+        error: `An exception error occurred while attempting to check if the ${options.type} met criteria provided by the server.`,
         exception: ex.message,
       };
       result.errors.push(error);

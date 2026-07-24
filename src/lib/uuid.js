@@ -51,7 +51,7 @@ function checkUUID(value, options) {
     }
 
     // attempt to reformat the data in 'value' if options specify to do so
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -118,7 +118,7 @@ function checkInvalid(uuid, type, version) {
         break;
       case 6: // avoid 6 and 7
       case 7:
-        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}-[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}=[0-9A-F]{4}-[0-9A-F]{12}$/i;
+        uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}-[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
         break;
       default:
         uuidExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;

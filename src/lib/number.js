@@ -51,7 +51,7 @@ function checkNumber(value, options) {
     }
 
     // if no value is provided and a value is required, early return with an error
-    if (value === undefined && options.isRequired === true) {
+    if ((value === undefined || value === null) && options.isRequired === true) {
       const error = {
         error: `No value was provided for the ${options.type || `provided`} number.`,
       };
@@ -59,7 +59,7 @@ function checkNumber(value, options) {
       result.errstr += error.error;
       return result;
     }
-    if (value === undefined && options.isRequired === false) {
+    if ((value === undefined || value === null) && options.isRequired === false) {
       return result;
     }
 

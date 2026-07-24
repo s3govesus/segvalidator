@@ -41,7 +41,7 @@ function checkEmailAddress(value, options) {
     }
 
     // attempt to reformat the data in 'value' if the options specify to do so
-    value = value !== undefined ? String(value) : ``;
+    value = value !== undefined && value !== null ? String(value) : ``;
     if (options.trim === true) {
       value = value.trim();
     }
@@ -96,7 +96,7 @@ function checkEmailAddress(value, options) {
 function checkInvalid(emailAddress, type) {
   let result;
   try {
-    const emailExp = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    const emailExp = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
     if (emailExp.test(emailAddress) === false) {
       result = {
         error: `The ${type} is invalid.`,
